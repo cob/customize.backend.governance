@@ -1,0 +1,343 @@
+
+.governance-container{
+    margin: 0;
+    font-family: "trebuchet ms", Verdana, arial, sans-serif;
+    font-size: 12px;
+    line-height: 20px;
+    color: #333;
+    
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    overflow: auto;
+    background-color: #f7f6f3;
+}
+
+div.extra-info-modal{
+    margin: 0;
+    font-family: "trebuchet ms", Verdana, arial, sans-serif;
+    font-size: 12px;
+    line-height: 20px;
+    color: #333;
+}
+
+.hidden{
+    display: none;
+}
+
+.governance-info.well {
+    background-color: #CCC !important;
+    color: white !important;
+}
+
+.governance-info.well h4,
+.governance-info.well h3{
+    color: rgba(213, 24, 75, 0.63);
+}
+
+.governance-info.alert{
+    background-color:rgba(104, 176, 228, 0.08) !important;
+}
+
+.governance-info{
+    color: black !important;
+    border-color:#ddd !important
+}
+
+.governance-icon{
+    height: 50px;
+}
+
+.governance-control-item{
+    background-color:rgba(169, 50, 29, 0.09) !important;
+}
+.governance-info-control{
+    color: black !important;
+    background-color:rgba(0, 0, 0, 0) !important;
+    border-style: none !important;
+    border-color:#ddd !important
+}
+
+.governance-kibana {
+    height:341px;
+    width:100%;
+    border: none !important;
+}
+/********************/
+/*Evolution data Bar*/
+/********************/
+
+/*default size*/
+.evolution-bar .evolution-data-row{
+    vertical-align: baseline;
+}
+
+.evolution-bar .evolution-data-sparkline{
+    width:110px;
+    vertical-align: bottom;
+}
+
+.evolution-bar .evolution-data-total {
+    text-align: right;
+    padding-top: 9px;
+    width: 80px;
+}
+
+.evolution-bar .evolution-data-total > span{
+    font-weight:bold;
+    font-size: 2.6em;
+}
+
+.evolution-bar .evolution-data-info{
+    width:20px;
+    vertical-align: middle;
+}
+
+
+.evolution-bar .evolution-data-info >button{
+    text-decoration: none;
+}
+.evolution-bar .evolution-data-info .info-btn-inactive{
+    cursor: default;
+    outline: none;
+}
+
+
+/*big size*/
+.evolution-bar-big{
+    padding-left: 50px;
+}
+.evolution-bar-big .evolution-data-row{
+    vertical-align: bottom;
+}
+
+.evolution-bar-big .evolution-data-total > span{
+    width:60px;
+    font-weight:bold;
+    font-size: 3.4em;
+}
+
+.evolution-bar-big .evolution-data-info{
+    font-size: 1em;
+    padding-bottom: 10px;
+}
+
+
+.evolution-data-weight-wrapper{
+    height:26px;
+    width:26px;
+    position:relative;
+    float: right;
+    bottom:5px;
+}
+
+.evolution-data-weight-wrapper img {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 26px;
+}
+
+.evolution-data-weight-wrapper span{
+    z-index: 100;
+    color: white;
+    position: absolute;
+    right: 5px;
+    font-weight: bold;
+    font-size: 10px;
+    top: 9px;
+}
+
+/*big size with donut chart*/
+.evolution-bar-big .evolution-data-total .chart-donut {
+    width: 100px;
+    height: 100px;
+}
+.evolution-bar-big .evolution-data-total .chart-text {
+    fill: #337ab7;
+}
+.evolution-bar-big .evolution-data-total .chart-path {
+    fill: #337ab7;
+}
+.evolution-bar-big .evolution-data-total .chart-path--empty {
+    fill: #CCC;
+}
+
+
+/********************
+Main title
+********************/
+.main-title-container{
+    text-align:center;
+    margin-bottom: 10px;
+}
+.main-title-name,
+.main-title-name-link{
+    display: inline-block;
+    font-size: 2.5em;
+}
+.main-title-back-btn{
+    vertical-align:inherit;
+    font-size:0.6em;
+    cursor: pointer;
+}
+.main-title-name-link{
+    font-size:inherit;
+    cursor: pointer;
+}
+/********************
+Goals e Controls
+********************/
+.goal-name-link,
+.control-name-link{
+    font-size:1.2em;
+    cursor: pointer;
+}
+
+.goal-evolution-bar-container,
+.control-evolution-bar-container{
+    float: right;
+    margin-top: 7px;
+}
+
+.goal-create-btn-container,
+.control-create-btn-container{
+    float:right;
+    margin-right:0;
+}
+.goal-create-btn-container .btn,
+.control-create-btn-container .btn{
+    color:black;
+}
+.goal-create-btn,
+.control-create-btn{
+    font-size:1.7em;
+}
+
+.toggle-resultWeight-btn{
+    font-size:1.7em;
+    text-decoration: none;
+}
+
+.toggle-resultWeight-btn:focus{
+    outline: none;
+    text-decoration: none;
+}
+
+.toggle-resultWeight-btn img{
+    width: 1em;
+    margin-top: -6px;
+}
+
+.findings-counts-wrapper{
+    padding-bottom: 10px;
+}
+
+.findings-counts-wrapper h5 {
+   border-bottom: 1px solid lightgray;
+   padding-bottom: 10px;
+}
+
+.last-assessment-wrapper h5 {
+    padding-top: 10px;
+    border-bottom: 1px solid lightgray;
+    padding-bottom: 10px;
+}
+
+.findings-counts-wrapper>h5>span.findings-total,
+.last-assessment-wrapper>h5>span.last-assessment-obs-date
+{
+    font-size: 0.9em;
+    margin-left:5px;
+}
+
+.findings-counts{
+    font-weight: bold;
+    width: 40px;
+}
+
+.count-label{
+    width: 30px;
+    border-radius: 10px;
+    display: inline-block;
+    padding: 2px;
+    text-align: center;
+    margin: 1px;
+    font-size: 0.8em;
+}
+
+.count-label>a{
+    color: white;
+}
+
+.urgent-text{
+    color: red;
+}
+.urgent-label{
+    background-color: red;
+    color: white;
+}
+
+.warning-label{
+    background-color: orange;
+    color: white;
+}
+.warning-text{
+    color: orange;
+}
+
+.junk-text{
+    color: #cbf18e;
+}
+.junk-label{
+    background-color: #cbf18e;
+    color: white;
+}
+
+.info-text{
+    color: green;
+}
+.inactive-text{
+    color: lightgrey;
+}
+
+.extra-info-modal .modal-dialog .modal-body{
+    max-height: inherit;
+}
+
+/***********************
+Manual Assessment forms
+************************/
+
+.assessment-form{
+    min-height: 200px;
+}
+.assessment-form .assessment-value {
+    width: 200px ;
+    height: 34px;
+}
+.assessment-form .assessment-value-label {
+    padding: 5px;
+}
+.assessment-form .assessment-value-label-error {
+    padding: 5px;
+    color: red;
+}
+.assessment-form .assessment-obs{
+    width: 98%
+}
+
+.assessment-submited-alert{
+    background-color: #F7F6F3;
+    text-align: center;
+    min-height: 200px;
+    padding-top: 7%;
+}
+
+@media (max-width: 767px) {
+    .assessment-form .assessment-value {
+        width: 98%;
+
+    }
+}
