@@ -10,10 +10,11 @@ import GovernanceDashboard from './components/governance-dashboard';
 
 
 
-let _userOrg = cob.app.getGroups().find(function(g){if(g.startsWith("ORG ")) return g;} ); 
+let _userOrg = cob.app.getGroups().find(function(g){if(g.startsWith("ORG ")) return g;} );
 if(_userOrg) _userOrg  = _userOrg.substr(4);
 
 const governanceConfs = {
+    maxGoalsLevel: 3,
     goalsDefId: 56,
     controlsDefId: 57,
     assessmentsDefId: 58,
@@ -36,7 +37,7 @@ const governanceConfs = {
     */
 
     userOrg: _userOrg,
-    canSeeAll: _userOrg == "Internal"
+    canSeeAll: true //_userOrg == "Internal"
 }
 
 console.log("XXXXXXZZZ");

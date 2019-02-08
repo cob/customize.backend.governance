@@ -2,14 +2,10 @@ import React from 'react';
 import ReactDOM  from 'react-dom';
 
 import {Button,Alert} from 'react-bootstrap'
-
+import ReactMarkdown from 'react-markdown';
 
 class GoalDetails extends React.Component{
-    getMarkup(text) {
-        let rawMarkup = text? marked(text.toString(), {sanitize: false}) : "";
-        return { __html: rawMarkup };
-    }
-
+ 
     buildCloneGoalUrl(goal){
 
         let createArgs = "103" +
@@ -38,7 +34,7 @@ class GoalDetails extends React.Component{
         if(!goal.descrição || !goal.descrição[0]){
             details = (<span>Este Goal não tem descrição ...</span>);
         }else{
-            details = (<span dangerouslySetInnerHTML={this.getMarkup(goal.descrição)} />);
+            details = (<div><ReactMarkdown source={goal.descrição[0]} /></div>);
         }
 
         let viewGoalHref = "#/instance/" + goal.id;

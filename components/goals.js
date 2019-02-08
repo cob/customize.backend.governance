@@ -10,6 +10,8 @@ import {
 } from 'react-bootstrap'
 
 import EvolutionBar from './evolution-bar';
+import ReactMarkdown from 'react-markdown';
+
 
 //TODO JBARATA passar esta função para uma classe de uteis
 let unimplementedFn = function(){
@@ -447,12 +449,7 @@ class Goals extends React.Component{
 
         return extraInfo;
     }
-
-    getMarkup(text) {
-        let rawMarkup = text? marked(text.toString(), {sanitize: false}) : "";
-        return { __html: rawMarkup };
-    }
-
+e
     render() {
         let rows = [];
         let _this = this;
@@ -484,7 +481,9 @@ class Goals extends React.Component{
         });
 
         if(rows.length == 0 && this.state.noGoalsInfo){
-            emptyRow = (<Well bsSize="small" className="governance-info" ><span dangerouslySetInnerHTML={this.getMarkup(this.state.noGoalsInfo)} /></Well>);
+            emptyRow = (<Well bsSize="small" className="governance-info" >
+            <ReactMarkdown source={this.state.noGoalsInfo} />
+            </Well>);
         }
 
 
