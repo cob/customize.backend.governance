@@ -10,12 +10,15 @@
   "author": "",
   "license": "BSD-2-Clause",
   "dependencies": {
+    "npm": "^6.7.0",
     "prop-types": "^15.6.0",
     "react": "^16.1.1",
     "react-bootstrap": "^0.31.5",
     "react-dom": "^16.1.1",
     "react-router-dom": "^4.2.2",
-    "react-sparklines": "1.7.0"
+    "react-sparklines": "1.7.0",
+    "to": "^0.2.9",
+    "update": "^0.7.4"
   },
   "devDependencies": {
     "babel-core": "^6.26.0",
