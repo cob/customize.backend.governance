@@ -12,8 +12,7 @@
         var _userOrg = cob.app.getGroups().find(function(g){if(g.startsWith("ORG ")) return g;} );
         if(_userOrg) _userOrg  = _userOrg.substr(4);
 
-        //confs da lidl
-        window.cob = window.cob || {};
+        //confs exemplo
         cob.governanceConfs = {
             maxGoalsLevel: 3,
             goalsDefId: 56,
