@@ -8,12 +8,14 @@ import ReactDOM  from 'react-dom';
 
 import GovernanceDashboard from './components/governance-dashboard';
 
-
-
 let _userOrg = cob.app.getGroups().find(function(g){if(g.startsWith("ORG ")) return g;} );
 if(_userOrg) _userOrg  = _userOrg.substr(4);
 
-const governanceConfs = {
+window.cob = window.cob || {};
+const governanceConfs= window.cob.governanceConfs || {};
+
+
+cob.utils.extend(governanceConfs, {
     maxGoalsLevel: 3,
     goalsDefId: 56,
     controlsDefId: 57,
@@ -38,7 +40,9 @@ const governanceConfs = {
 
     userOrg: _userOrg,
     canSeeAll: true //_userOrg == "Internal"
-}
+});
+
+console.log("Governance confs:" + governanceConfs);
 
 console.log("XXXXXXZZZ");
 let url=new URL(document.location);
