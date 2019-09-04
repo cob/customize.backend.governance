@@ -108,7 +108,7 @@ class Controls extends React.Component{
               "must": [
                 {
                   "query_string": {
-                    "query": "id_control.raw:__CONTROL_ID__",
+                    "query": "id_control.raw:__CONTROL_ID__ AND peso_global:>0",
                     "analyze_wildcard": true
                   }
                 },
@@ -500,7 +500,7 @@ class Controls extends React.Component{
 
                     <img src="localresource/governance/img/control.png" className="governance-icon"/>
 
-                     <a onClick={ () => _this.handleShowDetails(control.id)} className="control-name-link">
+                     <a onClick={ () => _this.handleShowDetails(control.id)} className={"control-name-link" + ((+control.peso)==0?" zero-weight":"")}>
                      {control["âmbito"]} - {control.nome}
                      </a>
 

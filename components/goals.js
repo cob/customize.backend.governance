@@ -115,7 +115,7 @@ class Goals extends React.Component{
                 {
                   "query_string": {
                     "analyze_wildcard": true,
-                    "query": "id_goal_nível___NIVEL__.raw:__GOALID__" + (!_this.props.confs.canSeeAll ? " AND  âmbito.raw:__USERORG__" : "")
+                    "query": "id_goal_nível___NIVEL__.raw:__GOALID__" + (!_this.props.confs.canSeeAll ? " AND  âmbito.raw:__USERORG__" : "") + " AND peso_global:>0"
                   }
                 },
                 {
@@ -463,7 +463,7 @@ e
 
                     <img src={iconUrl} className="governance-icon"/>
 
-                    <Button bsStyle="link" bsSize="large" className="goal-name-link"
+                    <Button bsStyle="link" bsSize="large" className={"goal-name-link" + ((+goal.peso)==0?" zero-weight":"")}
                             onClick={ () => _this.goLevelClick(goal) }>
                         {goal.nome}
                     </Button>

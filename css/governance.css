@@ -196,6 +196,11 @@ Goals e Controls
     cursor: pointer;
 }
 
+.goal-name-link.zero-weight,
+.control-name-link.zero-weight{
+    color:darkgray;
+}
+
 .goal-evolution-bar-container,
 .control-evolution-bar-container{
     float: right;
