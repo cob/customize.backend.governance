@@ -10,6 +10,8 @@ import {
 } from 'react-bootstrap'
 
 import EvolutionBar from './evolution-bar';
+import ReactMarkdown from 'react-markdown';
+
 
 //TODO JBARATA passar esta função para uma classe de uteis
 let unimplementedFn = function(){
@@ -113,7 +115,7 @@ class Goals extends React.Component{
                 {
                   "query_string": {
                     "analyze_wildcard": true,
-                    "query": "id_goal_nível___NIVEL__.raw:__GOALID__" + (!_this.props.confs.canSeeAll ? " AND  âmbito.raw:__USERORG__" : "")
+                    "query": "id_goal_nível___NIVEL__.raw:__GOALID__" + (!_this.props.confs.canSeeAll ? " AND  âmbito.raw:__USERORG__" : "") + " AND peso_global:>0"
                   }
                 },
                 {
@@ -447,12 +449,7 @@ class Goals extends React.Component{
 
         return extraInfo;
     }
-
-    getMarkup(text) {
-        let rawMarkup = text? marked(text.toString(), {sanitize: false}) : "";
-        return { __html: rawMarkup };
-    }
-
+e
     render() {
         let rows = [];
         let _this = this;
@@ -466,7 +463,7 @@ class Goals extends React.Component{
 
                     <img src={iconUrl} className="governance-icon"/>
 
-                    <Button bsStyle="link" bsSize="large" className="goal-name-link"
+                    <Button bsStyle="link" bsSize="large" className={"goal-name-link" + ((+goal.peso)==0?" zero-weight":"")}
                             onClick={ () => _this.goLevelClick(goal) }>
                         {goal.nome}
                     </Button>
@@ -484,7 +481,9 @@ class Goals extends React.Component{
         });
 
         if(rows.length == 0 && this.state.noGoalsInfo){
-            emptyRow = (<Well bsSize="small" className="governance-info" ><span dangerouslySetInnerHTML={this.getMarkup(this.state.noGoalsInfo)} /></Well>);
+            emptyRow = (<Well bsSize="small" className="governance-info" >
+            <ReactMarkdown source={this.state.noGoalsInfo} />
+            </Well>);
         }
 
 

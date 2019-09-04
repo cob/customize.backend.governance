@@ -4,6 +4,7 @@ import ReactDOM  from 'react-dom';
 import {Button,Alert,Well} from 'react-bootstrap';
 
 import ManualAssessmentForm from './manual-assessment-form';
+import ReactMarkdown from 'react-markdown';
 
 //TODO JBARATA passar esta função para uma classe de uteis
 let unimplementedFn = function(){
@@ -63,11 +64,6 @@ class ControlDetails extends React.Component {
     }
 
 
-    getMarkup(text) {
-        let rawMarkup = text? marked(text.toString(), {sanitize: false}) : "";
-        return { __html: rawMarkup };
-    }
-
     handleAssessmentSubmited(){
         let _this = this;
         this.loadAssessmentCount(this.props.control.id, function(count){
@@ -77,12 +73,18 @@ class ControlDetails extends React.Component {
 
     render() {
         let control = this.props.control;
-        let details = (<span dangerouslySetInnerHTML={this.getMarkup(control.descrição)} />);
+        let details;
+
+        if(!control.descrição || !control.descrição[0]){
+            details = (<span>Este control não tem descrição ...</span>);
+        }else{
+            details = (<div><ReactMarkdown source={control.descrição[0]} /></div>);
+        }
 
 
         let viewControlHref = "#/instance/" + control.id;
         let searchAssessmentsHref = "#/definitions/" + this.props.confs.assessmentsDefId + "/q=" + encodeURIComponent("id_control.raw:" + control.id);
-        let searchFindingsHref = "#/definitions/" + this.props.confs.findingsDefId + "/q=" + encodeURIComponent("control.raw:" + control.id + " AND -estado:(Resolvido OR Cancelado)") + "&av=9";
+        let searchFindingsHref = "#/definitions/" + this.props.confs.findingsDefId + "/q=" + encodeURIComponent("control.raw:" + control.id + " AND -estado:(Resolvido OR Cancelado)");
 
         let manualAss;
         if(control["assessment_tool"]=="Manual"){

@@ -14,7 +14,7 @@ import Controls from './controls';
 class GovernanceDashboard extends React.Component{
     constructor(props) {
         super(props);
-        
+
         this.state = {
             currentLevel:1,
             parentGoalId: undefined,
@@ -98,7 +98,7 @@ class GovernanceDashboard extends React.Component{
         let goals;
         let goalDetails;
 
-        if(this.state.currentLevel < 4){
+        if(this.state.currentLevel < this.props.confs.maxGoalsLevel + 1){
             goals =(<Goals  level={this.state.currentLevel}
                             parentGoalId={this.state.parentGoalId}
                             onGoToLevel={this.handleGoToLevel}
@@ -110,11 +110,11 @@ class GovernanceDashboard extends React.Component{
                     />);
         }
 
-        if(this.state.currentLevel < 5 && this.state.currentGoal && this.state.showGoalDetails){
+        if(this.state.currentLevel < this.props.confs.maxGoalsLevel + 2 && this.state.currentGoal && this.state.showGoalDetails){
             goalDetails = (<GoalDetails goal={this.state.currentGoal} onHideGoalDetails={this.handleHideGoalDetails} />)
         }
 
-        if(this.state.currentLevel == 4 ){
+        if(this.state.currentLevel == this.props.confs.maxGoalsLevel + 1 ){
             controls = ( <Controls level={this.state.currentLevel}
                                     goal={this.state.currentGoal}
                                     key={this.state.currentGoal.id}
@@ -171,6 +171,9 @@ class GovernanceDashboard extends React.Component{
 };
 
 GovernanceDashboard.defaultProps = {
+    confs: {
+        maxGoalsLevel: 3
+    },
     stateHistory : [] //array to hold the dashboard states as we navigate so we can easaly go back
 };
 

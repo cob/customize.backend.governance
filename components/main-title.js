@@ -44,7 +44,7 @@ class MainTitle extends React.Component{
               "must": [
                 {
                   "query_string": {
-                    "query": "*" + (!_this.props.confs.canSeeAll ? " AND  âmbito.raw:__USERORG__" : ""),
+                    "query": "*" + (!_this.props.confs.canSeeAll ? " AND  âmbito.raw:__USERORG__" : "") + " AND peso_global:>0",
                     "analyze_wildcard": true
                   }
                 },
@@ -91,7 +91,7 @@ class MainTitle extends React.Component{
               "must": [
                 {
                   "query_string": {
-                    "query": "id_goal_nível___NIVEL__.raw:__GOALID__"+ (!_this.props.confs.canSeeAll ? " AND  âmbito.raw:__USERORG__" : ""),
+                    "query": "id_goal_nível___NIVEL__.raw:__GOALID__"+ (!_this.props.confs.canSeeAll ? " AND  âmbito.raw:__USERORG__" : "") + " AND peso_global:>0",
                     "analyze_wildcard": true
                   }
                 },

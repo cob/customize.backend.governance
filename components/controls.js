@@ -11,6 +11,7 @@ import {
 
 import EvolutionBar from './evolution-bar';
 import ControlDetails from './control-details';
+import ReactMarkdown from 'react-markdown';
 
 //TODO JBARATA passar esta função para uma classe de uteis
 let unimplementedFn = function(){
@@ -107,7 +108,7 @@ class Controls extends React.Component{
               "must": [
                 {
                   "query_string": {
-                    "query": "id_control.raw:__CONTROL_ID__",
+                    "query": "id_control.raw:__CONTROL_ID__ AND peso_global:>0",
                     "analyze_wildcard": true
                   }
                 },
@@ -346,7 +347,7 @@ class Controls extends React.Component{
             assessmentInfo = (
                 <div className="last-assessment-wrapper">
                     <h5> Observações <span className="last-assessment-obs-date">({control.lastAssessment["data_do_resultado_formatted"]})</span></h5>
-                    <div dangerouslySetInnerHTML={_this.getMarkup(control.lastAssessment["observações"])} ></div>
+                    <ReactMarkdown source={control.lastAssessment["observações"]} />
                 </div>
             );
         }
@@ -477,11 +478,6 @@ class Controls extends React.Component{
         } );
     }
 
-    getMarkup(text) {
-        let rawMarkup = text? marked(text.toString(), {sanitize: false}) : "";
-        return { __html: rawMarkup };
-    }
-
     render() {
         let rows = [];
         let _this = this;
@@ -504,7 +500,7 @@ class Controls extends React.Component{
 
                     <img src="localresource/governance/img/control.png" className="governance-icon"/>
 
-                     <a onClick={ () => _this.handleShowDetails(control.id)} className="control-name-link">
+                     <a onClick={ () => _this.handleShowDetails(control.id)} className={"control-name-link" + ((+control.peso)==0?" zero-weight":"")}>
                      {control["âmbito"]} - {control.nome}
                      </a>
 
@@ -524,9 +520,8 @@ class Controls extends React.Component{
         });
 
         if(rows.length == 0 && this.state.noControlInfo){
-            //emptyRow = (<Well bsSize="small">Não há controls definidos para este Goal</Well>);
             emptyRow = (<Well bsSize="small" className="governance-info" >
-                            <span dangerouslySetInnerHTML={this.getMarkup(this.state.noControlInfo)} />
+                            <ReactMarkdown source={this.state.noControlInfo} />
                         </Well>);
         }
 
