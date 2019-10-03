@@ -16,19 +16,47 @@ class ControlDetails extends React.Component {
         super(props);
         this.state = {
             assessmentCount:0,
-            findingsCount:0
+            findingsCount:0,
+            assessmentViews:[],
+            findingViews:[]
         };
     }
 
     componentDidMount() {
-        let _this=this;
+        const _this=this;
+
         this.loadAssessmentCount(this.props.control.id, function(count){
-            _this.setState({assessmentCount: count});
+            _this.loadViewsForDefinition(_this.props.confs.assessmentsDefId, function(viewsJsonArr) {
+                _this.setState({
+                    assessmentCount: count,
+                    assessmentViews: viewsJsonArr
+                });
+            });
         });
 
         this.loadFindingsCount(this.props.control.id, function(count){
-            _this.setState({findingsCount: count});
+            _this.loadViewsForDefinition(_this.props.confs.findingsDefId, function(viewsJsonArr) {
+                _this.setState({
+                    findingsCount: count,
+                    findingViews: viewsJsonArr
+                });
+            });
         });
+    }
+
+    loadViewsForDefinition(defId, onSuccess){
+        const viewsUrl = "/recordm/user/settings/definitions-" + defId + "/views";
+
+        $.ajax({
+            url: viewsUrl,
+            xhrFields: { withCredentials: true },
+            dataType: 'json',
+            cache: false,
+            success: function(viewsJsonArr) {
+                onSuccess(viewsJsonArr);
+            }
+        });
+
     }
 
     loadAssessmentCount(controlId, onSuccess){
@@ -44,7 +72,6 @@ class ControlDetails extends React.Component {
               onSuccess(json.hits.total);
           }
         });
-
     }
 
     loadFindingsCount(controlId, onSuccess){
@@ -60,7 +87,6 @@ class ControlDetails extends React.Component {
               onSuccess(json.hits.total);
           }
         });
-
     }
 
 
@@ -85,6 +111,30 @@ class ControlDetails extends React.Component {
         let viewControlHref = "#/instance/" + control.id;
         let searchAssessmentsHref = "#/definitions/" + this.props.confs.assessmentsDefId + "/q=" + encodeURIComponent("id_control.raw:" + control.id);
         let searchFindingsHref = "#/definitions/" + this.props.confs.findingsDefId + "/q=" + encodeURIComponent("control.raw:" + control.id + " AND -estado:(Resolvido OR Cancelado)");
+
+        if(control["vista_de_assessments_no_governance"] !== undefined
+           && control["vista_de_assessments_no_governance"][0] !== undefined){
+            const assessmentView = this.state.assessmentViews.find((view) => {
+                return (view.key === control["vista_de_assessments_no_governance"][0]
+                        && (view.isShared || view.user === cob.app.getCurrentLoggedInUser()));
+            });
+
+            if(assessmentView !== undefined){
+                searchAssessmentsHref += "&av=" + assessmentView.id;
+            }
+        }
+
+        if(control["vista_de_findings_no_governance"] !== undefined
+           && control["vista_de_findings_no_governance"][0] !== undefined){
+            const findingView = this.state.findingViews.find((view) => {
+                return (view.key === control["vista_de_findings_no_governance"][0]
+                        && (view.isShared || view.user === cob.app.getCurrentLoggedInUser()));
+            });
+
+            if(findingView !== undefined){
+                searchFindingsHref += "&av=" + findingView.id;
+            }
+        }
 
         let manualAss;
         if(control["assessment_tool"]=="Manual"){
