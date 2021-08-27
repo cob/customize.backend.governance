@@ -69,7 +69,7 @@ class ControlDetails extends React.Component {
           dataType: 'json',
           cache: false,
           success: function(json) {
-              onSuccess(json.hits.total);
+              onSuccess(json.hits.total.value);
           }
         });
     }
@@ -84,7 +84,7 @@ class ControlDetails extends React.Component {
           dataType: 'json',
           cache: false,
           success: function(json) {
-              onSuccess(json.hits.total);
+              onSuccess(json.hits.total.value);
           }
         });
     }
