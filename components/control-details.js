@@ -50,6 +50,7 @@ class ControlDetails extends React.Component {
         $.ajax({
             url: viewsUrl,
             xhrFields: { withCredentials: true },
+            contentType: "application/json",
             dataType: 'json',
             cache: false,
             success: function(viewsJsonArr) {
@@ -66,6 +67,7 @@ class ControlDetails extends React.Component {
         $.ajax({
           url: searchAssessmentsUrl,
           xhrFields: { withCredentials: true },
+          contentType: "application/json",
           dataType: 'json',
           cache: false,
           success: function(json) {
@@ -81,6 +83,7 @@ class ControlDetails extends React.Component {
         $.ajax({
           url: searchFindingsUrl,
           xhrFields: { withCredentials: true },
+          contentType: "application/json",
           dataType: 'json',
           cache: false,
           success: function(json) {

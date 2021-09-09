@@ -78,6 +78,7 @@ class ManualAssessmentForm extends React.Component{
         $.ajax({
           url: "/integrationm/msgs/",
           data : JSON.stringify(msg),
+          contentType: "application/json",
           dataType: 'json',
           type: "POST",
           xhrFields: { withCredentials: true },

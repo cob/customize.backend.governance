@@ -181,28 +181,30 @@ class MainTitle extends React.Component{
 
 
         $.ajax({
-          url: url,
-          data : aggsQuery,
-          type: "POST",
-          xhrFields: { withCredentials: true },
-          cache: false,
-          success(json) {
-              let sparklineData = [];
+            url: url,
+            data: aggsQuery,
+            type: "POST",
+            contentType: "application/json",
+            dataType: 'json',
+            xhrFields: {withCredentials: true},
+            cache: false,
+            success(json) {
+                let sparklineData = [];
 
-              //NOTA IMPORTANTE: segundo o mimes é possivel que as 2 keys seguintes mudem caso a query seja alterada (com mais aggs ou assim)
-              let aggregationsKey  = "2";
-              let bucketsKey  = "1";
+                //NOTA IMPORTANTE: segundo o mimes é possivel que as 2 keys seguintes mudem caso a query seja alterada (com mais aggs ou assim)
+                let aggregationsKey = "2";
+                let bucketsKey = "1";
 
-              if(json.aggregations){
-                  json.aggregations[aggregationsKey].buckets.forEach(function(bucket){
-                      let value = bucket[bucketsKey].value;
+                if (json.aggregations) {
+                    json.aggregations[aggregationsKey].buckets.forEach(function(bucket) {
+                        let value = bucket[bucketsKey].value;
 
-                      if(value!=null) sparklineData.push(value.toFixed(3))
-                  });
-              }
+                        if (value != null) sparklineData.push(value.toFixed(3))
+                    });
+                }
 
-              onSucess(sparklineData);
-          }
+                onSucess(sparklineData);
+            }
         });
     }
 

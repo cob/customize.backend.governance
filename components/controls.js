@@ -52,6 +52,7 @@ class Controls extends React.Component{
         $.ajax({
           url: "/recordm/recordm/definitions/search/" + _this.props.confs.controlsDefId + "?q=goal_nível_3.raw:" + goalId + sort,
           xhrFields: { withCredentials: true },
+          contentType: "application/json",
           dataType: 'json',
           cache: false,
           success: function(json) {
@@ -175,28 +176,30 @@ class Controls extends React.Component{
         };
 
         $.ajax({
-          url: url,
-          data : aggsQuery,
-          type: "POST",
-          xhrFields: { withCredentials: true },
-          cache: false,
-          success: function(json) {
-              let sparklineData = [];
+            url: url,
+            data: aggsQuery,
+            contentType: "application/json",
+            dataType: 'json',
+            type: "POST",
+            xhrFields: {withCredentials: true},
+            cache: false,
+            success: function(json) {
+                let sparklineData = [];
 
-              //NOTA IMPORTANTE: segundo o mimes é possivel que as 2 keys seguintes mudem caso a query seja alterada (com mais aggs ou assim)
-              let aggregationsKey  = "2";
-              let bucketsKey  = "1";
+                //NOTA IMPORTANTE: segundo o mimes é possivel que as 2 keys seguintes mudem caso a query seja alterada (com mais aggs ou assim)
+                let aggregationsKey = "2";
+                let bucketsKey = "1";
 
-              if(json.aggregations){
-                  json.aggregations[aggregationsKey].buckets.forEach(function(bucket){
-                      let value = bucket[bucketsKey].value;
+                if (json.aggregations) {
+                    json.aggregations[aggregationsKey].buckets.forEach(function(bucket) {
+                        let value = bucket[bucketsKey].value;
 
-                      if(value!=null) sparklineData.push(value.toFixed(3))
-                  });
-              }
+                        if (value != null) sparklineData.push(value.toFixed(3))
+                    });
+                }
 
-              onSucess(sparklineData);
-          }
+                onSucess(sparklineData);
+            }
         });
     }
 
@@ -207,6 +210,7 @@ class Controls extends React.Component{
         $.ajax({
           url: "/recordm/recordm/definitions/search/" + _this.props.confs.informacaoDefId + "?q=" + encodeURIComponent(query),
           xhrFields: { withCredentials: true },
+          contentType: "application/json",
           dataType: 'json',
           cache: false,
           success: function(json) {
@@ -226,6 +230,7 @@ class Controls extends React.Component{
         $.ajax({
           url: "/recordm/recordm/definitions/search/" + _this.props.confs.assessmentsDefId + "?q=id_control.raw:" + controlId + sort,
           xhrFields: { withCredentials: true },
+          contentType: "application/json",
           dataType: 'json',
           cache: false,
           success: function(json) {
@@ -285,46 +290,48 @@ class Controls extends React.Component{
         };
 
         $.ajax({
-          url: url,
-          data : aggsQuery,
-          type: "POST",
-          xhrFields: { withCredentials: true },
-          cache: false,
-          success: function(json) {
-              let findingsCounts = {};
+            url: url,
+            data: aggsQuery,
+            type: "POST",
+            contentType: "application/json",
+            dataType: 'json',
+            xhrFields: {withCredentials: true},
+            cache: false,
+            success: function(json) {
+                let findingsCounts = {};
 
-              //NOTA IMPORTANTE: segundo o mimes é possivel que as 2 keys seguintes mudem caso a query seja alterada (com mais aggs ou assim)
-              let aggregationsKey  = "2";
-              let bucketsKey  = "3";
+                //NOTA IMPORTANTE: segundo o mimes é possivel que as 2 keys seguintes mudem caso a query seja alterada (com mais aggs ou assim)
+                let aggregationsKey = "2";
+                let bucketsKey = "3";
 
-              if(json.aggregations){
-                  json.aggregations[aggregationsKey].buckets.forEach(function(bucket){
-                      let estado = bucket.key;
+                if (json.aggregations) {
+                    json.aggregations[aggregationsKey].buckets.forEach(function(bucket) {
+                        let estado = bucket.key;
 
-                      bucket[bucketsKey].buckets.forEach(function(reposicaoBucket){
-                          if(reposicaoBucket.key == "Sim"){
-                              findingsCounts[estado+"_OK"] = reposicaoBucket.doc_count;
-                          }else{
-                              findingsCounts[estado+"_NOK"] = reposicaoBucket.doc_count;
-                          }
-                      });
-                      //no final hão-de haver Por Tratar_OK, Por Tratar_NOK, Em Resolução_OK, Em Resolução_NOK, etc...
-                  });
-              }
+                        bucket[bucketsKey].buckets.forEach(function(reposicaoBucket) {
+                            if (reposicaoBucket.key == "Sim") {
+                                findingsCounts[estado + "_OK"] = reposicaoBucket.doc_count;
+                            } else {
+                                findingsCounts[estado + "_NOK"] = reposicaoBucket.doc_count;
+                            }
+                        });
+                        //no final hão-de haver Por Tratar_OK, Por Tratar_NOK, Em Resolução_OK, Em Resolução_NOK, etc...
+                    });
+                }
 
 
-              //count findings atribuidos ao user
-              let currentUsername = cob.app.getCurrentLoggedInUser();
-              let userFindingsTotal = 0;
-              json.hits.hits.forEach(function(hit){
-                  let src = hit._source;
-                  if (src && src["atribuido_a_username"][0] == currentUsername){
-                      userFindingsTotal++;
-                  }
-              });
+                //count findings atribuidos ao user
+                let currentUsername = cob.app.getCurrentLoggedInUser();
+                let userFindingsTotal = 0;
+                json.hits.hits.forEach(function(hit) {
+                    let src = hit._source;
+                    if (src && src["atribuido_a_username"][0] == currentUsername) {
+                        userFindingsTotal++;
+                    }
+                });
 
-              onSucess(findingsCounts, userFindingsTotal);
-          }
+                onSucess(findingsCounts, userFindingsTotal);
+            }
         });
     }
 
