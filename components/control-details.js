@@ -144,8 +144,7 @@ class ControlDetails extends React.Component {
             manualAss =(<ManualAssessmentForm control={control} onAssessmentSubmited={this.handleAssessmentSubmited}/>);
         }
 
-
-        let baseKibanaUrl = "/kibana/#/dashboard/__KIB_DASHBOARD_ID__?embed&_g=(refreshInterval:(display:Off,pause:!f,section:0,value:0),time:(from:__LOWER_DATE__,mode:quick,to:__UPPER_DATE__))&_a=(filters:!(),query:(query_string:(analyze_wildcard:!t,query:'id_control.raw:__CONTROL_ID__')))";
+        let baseKibanaUrl = "/kibana/app/dashboards#/view/__KIB_DASHBOARD_ID__?embed&_g=(refreshInterval:(display:Off,pause:!f,section:0,value:0),time:(from:__LOWER_DATE__,mode:quick,to:__UPPER_DATE__))&_a=(filters:!(),query:(query_string:(analyze_wildcard:!t,query:'id_control.raw:__CONTROL_ID__')))";
         baseKibanaUrl = baseKibanaUrl.replace(/__KIB_DASHBOARD_ID__/g, this.props.confs.totals.kibanaControlsDashboardId)
                                 .replace(/__CONTROL_ID__/g, control.id)
                                 .replace(/__LOWER_DATE__/g, this.props.confs.totals.lowerDate)
