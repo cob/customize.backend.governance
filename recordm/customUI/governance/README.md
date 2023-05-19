@@ -2,16 +2,10 @@
 
 ## Deploy
 
-* Compilar com `npm run build-prod`
+* Compilar com `npm run build`
 
-* Copiar os ficheiros necessários para a directoria local do servidor executando o comando 
-`DEST=<path (absoluto ou relativo) para directoria destino> npm run local-dist`
+* Usar o cob-cli customization ou copiar manualmente a dir `dist` para o recordm/customUI do server destino
+                  
 
-  * Ficheiros a copiar para o servidor:
-    * build/browser-bundle.js
-    * css/*
-    * img/*
-
-
-O `governance.html` deve existir no servidor com as confs que são particulares 
-de cada instalação (existe aqui só para exemplo)
+* **IMPORTANTE** `dist/dashboard.html` deve ser configurado no servidor com as confs que são particulares 
+de cada instalação

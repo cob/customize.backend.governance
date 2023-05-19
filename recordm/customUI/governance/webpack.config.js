@@ -1,9 +1,23 @@
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const CleanWebpackPlugin = require('clean-webpack-plugin');
+
 module.exports = {
-  entry: './index',
+  plugins: [
+    new CleanWebpackPlugin(['dist']),
+    new CopyWebpackPlugin([
+      {from: 'src/css',to:'css/'},
+      {from: 'src/img',to:'img/'},
+      {from: 'src/dashboard.html', to: 'dashboard.html'}
+    ], {}),
+  ],
+
+  entry: './src/index.js',
   output: {
-    filename: 'browser-bundle.js',
-    path: __dirname +'/build'
+    filename: 'js/browser-bundle.js',
+    path: __dirname +'/dist'
   },
+
+
   //devtool: 'source-map',
   externals: {
         // require("jquery") is external and available
@@ -22,4 +36,5 @@ module.exports = {
       }
     ]
   }
+
 };

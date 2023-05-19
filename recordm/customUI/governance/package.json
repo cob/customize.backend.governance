@@ -1,12 +1,11 @@
 {
-  "name": "react-webpack-template",
-  "version": "0.0.0",
+  "name": "cob-governance-dashboard",
+  "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build-prod": "node_modules/webpack/bin/webpack.js --progress -p",
-    "build-watch": "node_modules/webpack/bin/webpack.js --progress --watch",
-    "local-dist": "./copy-to-local-server-dir.sh"
+    "build": "node_modules/webpack/bin/webpack.js --progress -p",
+    "build-watch": "node_modules/webpack/bin/webpack.js --progress --watch"
   },
   "author": "",
   "license": "BSD-2-Clause",
@@ -29,6 +28,8 @@
     "babel-preset-react": "^6.24.1",
     "babel-preset-stage-1": "^6.24.1",
     "jquery": "^2.2.3",
-    "webpack": "^3.8.1"
+    "webpack": "^3.8.1",
+    "copy-webpack-plugin": "^4.6.0",
+    "clean-webpack-plugin": "^0.1.19"
   }
 }
