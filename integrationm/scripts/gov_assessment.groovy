@@ -13,6 +13,8 @@ import javax.ws.rs.core.Cookie
 import javax.ws.rs.core.MediaType
 import javax.ws.rs.core.Response
 
+import config.GovernanceConfig
+
 log = LogFactory.getLog("GOVERNANCE Assessment");
 rmRest = actionPacks.get("rmRest")
 umRest = actionPacks.get("umRest")
@@ -619,10 +621,10 @@ def somaValoresES(indices, pesquisa, campoSoma, campoTempo, momentoInicio) {
     log.info("$indices || $query || $aggs || $esJsonStr");
     
     Response response= ClientBuilder.newClient()
-        .target("http://localhost:40190")
+        .target(GovernanceConfig.ES_URL)
         .path("/${indices}/_search")
         .request(MediaType.APPLICATION_JSON)
-        .cookie(new Cookie("cobtoken", "XXXXXXXXXX"))
+        .cookie(new Cookie("cobtoken", GovernanceConfig.COBTOKEN))
         .post(Entity.entity(esJsonStr, MediaType.APPLICATION_JSON), Response.class)
 
     String body = response.getEntity(String.class);
@@ -1201,7 +1203,7 @@ class SendMail {
     def SENDER_NAME = "Sistema de Governância CoB"
 
     def SENDGRID_SEND_MAIL_RESOURCE = "https://api.sendgrid.com/v3/mail/send"
-    def SENDGRID_API_KEY = "xxxxxxxxxxxxxxxxx"
+    def SENDGRID_API_KEY = GovernanceConfig.SENDGRID_API_KEY
     // --------------------------------------------------------------------
     def SendMail() {}
     // --------------------------------------------------------------------
@@ -1249,8 +1251,8 @@ class SendMail {
 class SendSMS {
     def log = LogFactory.getLog("send-mail")
     def SENDER = "CoB-Govrnc"
-    def PLIVO_SEND_SMS_RESOURCE = "https://api.plivo.com/v1/Account/MAZTHMMJAZMDI5ODZLMD/Message/"
-    def PLIVO_API_KEY = "xxxxxxxxxxx"
+    def PLIVO_SEND_SMS_RESOURCE = GovernanceConfig.PLIVO_SEND_SMS_RESOURCE
+    def PLIVO_API_KEY = GovernanceConfig.PLIVO_API_KEY
     // --------------------------------------------------------------------
     def SendSMS() {}
     // --------------------------------------------------------------------
