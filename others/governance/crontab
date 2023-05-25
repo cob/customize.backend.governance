@@ -1,4 +1,4 @@
 #######################
 ## GOVERNANCE ##
 #######################
-0,15,30,45 * * * * /home/cob/bin/sendMsg2IM clock clockTick governance > /dev/null
+0,15,30,45 * * * * /usr/local/bin/sendMsg2IM clock clockTick governance > /dev/null
