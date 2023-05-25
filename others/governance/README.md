@@ -2,7 +2,14 @@
 
 ### Passos manuais a fazer no servidor após o `cob-cli customize`
 
-* Importar as 5 definições que estão no `others/governance/definitions`
+* Importar as 5 definições que estão no `others/governance/definitions` pela ordem:
+  * Informação
+  * Goal
+  * Control
+  * Finding
+  * Assessment
+* Opcionalmente criar um dominio Governance e por lá estas defs
+
 * configurar os ids das definições criadas no `dist/dashboard.html` 
 * //TODO JBARATA: configurar o id do dashboard Kibana no`dist/dashboard.html` (default MM-GOV-2) 
 * configurar o `integrationm/common/config/GovernanceConfig` com os valores adequados  
