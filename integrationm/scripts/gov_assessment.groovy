@@ -1,5 +1,4 @@
 // vim: et sw=4 ts=4
-package groovy
 
 import org.apache.commons.logging.LogFactory
 import org.codehaus.jettison.json.*
@@ -24,50 +23,50 @@ REGEX_VARS_ESPECIAIS = /[;,]?\$([^\$]*)\$[;,]?/
 
 // ====================================================================================================
 //  MAIN LOGIC - START  -  As Avaliações (Assessments) acontece em 2 circunstâncias:
-//   1) nos instantes previstos pela periodicidade do Control (ver ~/COB_APPS/GovernanceGlobal/governance_clock.sh)
+//   1) nos instantes previstos pela periodicidade do Control (ver ~/others/GovernanceGlobal/governance_clock.sh)
 //   2) ou directamente na interface do Control (ver recordm/customUI/js/cob/governance.js)
 // ====================================================================================================
 if(    (msg.product == "governance" && msg.type == "clock"     && msg.action == "clockTick")
     || (msg.product == "governance" && msg.type == "controlUI" && msg.action == "forceAssessment") ) {
-        log.info ("Start Controls evaluations.")
+    log.info ("Start Controls evaluations.")
 
-        // Obtem lista dos controls ligados
-        def controls = getInstances("Control", "-periodicidade.raw:Off")
+    // Obtem lista dos controls ligados
+    def controls = getInstances("Control", "-periodicidade.raw:Off")
 
-        // Obtem matriz com  todos os pesos por objectivo para depois usar no cálculo da importância relativa de cada assessment
-        def pesos = obtemMatrizCompletaDePesos(controls)
+    // Obtem matriz com  todos os pesos por objectivo para depois usar no cálculo da importância relativa de cada assessment
+    def pesos = obtemMatrizCompletaDePesos(controls)
 
-        // Para cada um destes controls :
-        controls.each{ control ->
-            // Se for uma avaliação pedida na interface fazer skip a todos os controls menos a esse id específico
-            if(msg.action == "forceAssessment" && ""+control.id != messageMap.id) return
+    // Para cada um destes controls :
+    controls.each{ control ->
+        // Se for uma avaliação pedida na interface fazer skip a todos os controls menos a esse id específico
+        if(msg.action == "forceAssessment" && control.id != msg.id) return
 
-            // obtem um assessment válido (com a indicação no control de se necessita de ser avaliado agora)
-            def assessment = getAssessmentInstance(control, msg.action, pesos)
+        // obtem um assessment válido (com a indicação no control de se necessita de ser avaliado agora)
+        def assessment = getAssessmentInstance(control, msg.action, pesos)
 
-            // Se control marcado para avaliação então avalia, actualiza resultado do assessment e cria/actualiza findings
-            if( control["_marked_ToEval_"] || control["_marked_CollectDeviceMValues_"] ) {
-                log.info ("Evaluate Control and gather Assessment info ${control[_("Nome")]} ...")
+        // Se control marcado para avaliação então avalia, actualiza resultado do assessment e cria/actualiza findings
+        if( control["_marked_ToEval_"] || control["_marked_CollectDeviceMValues_"] ) {
+            log.info ("Evaluate Control and gather Assessment info ${control[_("Nome")]} ...")
 
-                //Avalia control e complementa dados do assessment com os resultados !!
-                assessment << assessControl(control)
+            //Avalia control e complementa dados do assessment com os resultados !!
+            assessment << assessControl(control)
 
-                //Processa acções complementares: envia Emails e SMSs
-                executaAccoesComplementares(control, assessment)
+            //Processa acções complementares: envia Emails e SMSs
+            executaAccoesComplementares(control, assessment)
 
-                // Se não for necessário actualizar dados remove campo de Data e Observações para não haver alterações na instância desnecessárias
-                if( control["_marked_OnlyUpdateDataIfChanged"] && !assessment["_marked_Changed"] ) {
-                    assessment.remove("Data do Resultado")
-                    assessment.remove("Observações")
-                }
-            } else {
-                log.info ("Just create (or update if exists) the daily Assessment info ${control[_("Nome")]} ...")
+            // Se não for necessário actualizar dados remove campo de Data e Observações para não haver alterações na instância desnecessárias
+            if( control["_marked_OnlyUpdateDataIfChanged"] && !assessment["_marked_Changed"] ) {
+                assessment.remove("Data do Resultado")
+                assessment.remove("Observações")
             }
-
-            // cria ou actualiza instância de Assessment
-            createOrUpdateInstance("Assessment", assessment)
+        } else {
+            log.info ("Just create (or update if exists) the daily Assessment info ${control[_("Nome")]} ...")
         }
-        log.info ("Finished Controls evaluations.")
+
+        // cria ou actualiza instância de Assessment
+        createOrUpdateInstance("Assessment", assessment)
+    }
+    log.info ("Finished Controls evaluations.")
 }
 
 // ====================================================================================================
@@ -100,20 +99,20 @@ def obtemMatrizCompletaDePesos(controls){
         float pC = (control[_("Peso")][0]).toInteger()?:0.00001
 
         if(!done[g1]) {
-             done[g1]=true
-             pesos["global"] = pesos["global"]  ? pesos["global"] + p1 : p1
+            done[g1]=true
+            pesos["global"] = pesos["global"]  ? pesos["global"] + p1 : p1
         }
         if(!done[g2]) {
-             done[g2]=true
-             pesos[g1] = pesos[g1] ? pesos[g1] + p2 : p2
+            done[g2]=true
+            pesos[g1] = pesos[g1] ? pesos[g1] + p2 : p2
         }
         if(!done[g3]) {
-             done[g3]=true
-             pesos[g2] = pesos[g2] ? pesos[g2] + p3 : p3
+            done[g3]=true
+            pesos[g2] = pesos[g2] ? pesos[g2] + p3 : p3
         }
         if(!done[c]) {
-             done[c]=true
-             pesos[g3] = pesos[g3] ? pesos[g3] + pC : pC
+            done[c]=true
+            pesos[g3] = pesos[g3] ? pesos[g3] + pC : pC
         }
     }
     return pesos
@@ -204,7 +203,7 @@ def copyOrCreateAssessment(control, lastValidAssessment, runType) {
 
             // Verifica se há comandos devicem com resultados por avaliar
             if( control[_("Assessment Tool")][0] == "DeviceM" ) {
-                if( lastValidAssessment[_("DeviceM JobID")][0] ) {
+                if( getFirstValue(lastValidAssessment,_("DeviceM JobID")) != null ) {
                     control << ["_marked_CollectDeviceMValues_":   lastValidAssessment[_("DeviceM JobID")][0] ]
                 }
             }
@@ -212,11 +211,11 @@ def copyOrCreateAssessment(control, lastValidAssessment, runType) {
             assessment << ["Data": today]
         }
 
-        assessment << ["Objectivo":         "" + lastValidAssessment[_("Objectivo")][0]]
-        assessment << ["Resultado":         "" + lastValidAssessment[_("Resultado")][0]]
-        assessment << ["Atingimento":       "" + lastValidAssessment[_("Atingimento")][0]]
-        assessment << ["Data do Resultado": "" + lastValidAssessment[_("Data do Resultado")][0]]
-        assessment << ["Observações":       "" + lastValidAssessment[_("Observações")][0]]
+        assessment << ["Objectivo":         "" + getFirstValue(lastValidAssessment,_("Objectivo"))?:""]
+        assessment << ["Resultado":         "" + getFirstValue(lastValidAssessment,_("Resultado"))?:""]
+        assessment << ["Atingimento":       "" + getFirstValue(lastValidAssessment,_("Atingimento"))?:""]
+        assessment << ["Data do Resultado": "" + getFirstValue(lastValidAssessment,_("Data do Resultado"))?:""]
+        assessment << ["Observações":       "" + getFirstValue(lastValidAssessment,_("Observações"))?:""]
 
         // Decompõe o clock tick (arrendondado aos 15m certos)
         def quarterHour = now.getAt(Calendar.MINUTE).intdiv(15)
@@ -226,22 +225,22 @@ def copyOrCreateAssessment(control, lastValidAssessment, runType) {
 
         // Se há um assessment válido só será para reavaliar se:
         if( (runType == "forceAssessment")  // Avaliação pedida explicitamente na interface
-            ||
-            (periodicidade == "15m" )  // Periodicidade menor que o dia (corre sempre pois é a unidade minima de tempo)
-            ||
-            (hourOfDay == 8 && quarterHour == 2)  // Se for o início do dia (definido como 8h30) e:
-            && (
-                  periodicidade == "Diária"   // Ou for diário
-                  ||
-                  (dayOfWeek == 2 && periodicidade == "Semanal") // Ou for Semanal e for segunda(além das 8h30)
-                  ||
-                  (dayOfMonth == 1 && periodicidade == "Mensal") // Ou for Mensal e primeiro dia do mês (além das 8h30)
-               )
-          ) {
-                control    << ["_marked_ToEval_":    true]
-                assessment << ["Data do Resultado": "" + now.time]
-                // Se não é novo marca para apenas actualizar a data se a avaliação mudar
-                if(assessment["id"]) control << ["_marked_OnlyUpdateDataIfChanged": true]
+                ||
+                (periodicidade == "15m" )  // Periodicidade menor que o dia (corre sempre pois é a unidade minima de tempo)
+                ||
+                (hourOfDay == 8 && quarterHour == 2)  // Se for o início do dia (definido como 8h30) e:
+                && (
+                periodicidade == "Diária"   // Ou for diário
+                        ||
+                        (dayOfWeek == 2 && periodicidade == "Semanal") // Ou for Semanal e for segunda(além das 8h30)
+                        ||
+                        (dayOfMonth == 1 && periodicidade == "Mensal") // Ou for Mensal e primeiro dia do mês (além das 8h30)
+        )
+        ) {
+            control    << ["_marked_ToEval_":    true]
+            assessment << ["Data do Resultado": "" + now.time]
+            // Se não é novo marca para apenas actualizar a data se a avaliação mudar
+            if(assessment["id"]) control << ["_marked_OnlyUpdateDataIfChanged": true]
         }
     } else {
         assessment << ["Data": today]
@@ -259,7 +258,7 @@ def copyOrCreateAssessment(control, lastValidAssessment, runType) {
 // ----------------------------------------------------------------------------------------------------
 def assessControl(control){
     def assessment = [
-        "Findings":[]
+            "Findings":[]
     ]
 
     // Constroi lista com findings abertos do control (mais performante que pedir um de cada vez)
@@ -288,12 +287,13 @@ def assessControl(control){
 
     // Realiza a avaliação do control contra cada registo especificado
     evaluationList.each { instanceToEval ->
-        def resultado      = evalInstance(control, instanceToEval)
+        def previousFinding = openFindings[""+instanceToEval.id];
+        def resultado      = evalInstance(control, instanceToEval, previousFinding);
         objectivoTotal    += resultado["Objectivo"]
         atingimentoTotal  += resultado["Atingimento"]
 
         def finding = createOrUpdateFinding(control, openFindings, instanceToEval, resultado);
-        
+
         if(finding != null){
             processedFindings += finding
             assessment["Findings"] += finding
@@ -302,7 +302,7 @@ def assessControl(control){
                 addSpecialAssessMap(specVar, control, instanceToEval, resultado, finding, specialVarAssessments);
             };
         }
-        
+
         openFindings.remove(""+instanceToEval.id)
     }
 
@@ -315,10 +315,12 @@ def assessControl(control){
     assessment << buildAssessmentResultMap(control, processedFindings, objectivoTotal, atingimentoTotal);
 
     // Para cada finding aberto que não tenha sido processado (por não fazer mais parte da lista de instâncias a avaliar) repor e indicar remoção
-    openFindings.each { finding ->
-        def resultado = ["Objectivo":"mock_value","Atingimento":"mock_value","Observações":"Instance removed from evaluation filter"]
-        def instanceToEval = ["id" : finding.key]
-        processedFindings += createOrUpdateFinding(control, openFindings, instanceToEval, resultado)?:[]
+    if(!(control[_("Assessment Tool")][0] == "DeviceM" && control["_marked_ToEval_"])){
+        openFindings.each { finding ->
+            def resultado = ["Objectivo":"mock_value","Atingimento":"mock_value","Observações":"Instance removed from evaluation filter"]
+            def instanceToEval = ["id" : finding.key]
+            processedFindings += createOrUpdateFinding(control, openFindings, instanceToEval, resultado)?:[]
+        }
     }
 
     def suspeitos = processedFindings.findAll { !it.containsKey("_marked_Inaltered") && (it.containsKey("Estado") && !it["Estado"].contains("Suspeito")) };
@@ -359,7 +361,7 @@ def obterVariaveisEspeciaisDoControlo(control){
     Set<String> specialVars = new HashSet<>();
 
     ["Telemóvel", "Email Destino"].each{ fieldName ->
-        def value = control[_(fieldName)][0];
+        def value = control.containsKey(_(fieldName))? control[_(fieldName)][0]:null;
 
         if(value != null){
             def vars = (value =~ REGEX_VARS_ESPECIAIS)
@@ -416,7 +418,7 @@ def addSpecialAssessMap(specVar, control, instanceToEval, resultado, finding, sp
 def getCpeRecordMInstance(instanceToEval, definitionName){
     def definitionId = getDefinitionId(definitionName);
     def instance = null;
-    
+
     switch (definitionName){
         case "Loja":
             //instanceToEval.id = DeviceM external Id = RecordM id
@@ -435,10 +437,10 @@ def getCpeRecordMInstance(instanceToEval, definitionName){
 
 def buildAssessmentResultMap(control, findings, objectivoTotal, atingimentoTotal){
     return [
-        "Objectivo": "" + objectivoTotal,
-        "Atingimento": "" + atingimentoTotal,
-        "Resultado": "" + Math.round((100 * atingimentoTotal / (objectivoTotal?:1) )*100)/100, // % arredondada às décimas
-        "Observações":  "" + buildReport(control, findings)
+            "Objectivo": "" + objectivoTotal,
+            "Atingimento": "" + atingimentoTotal,
+            "Resultado": "" + ( (atingimentoTotal==0 && objectivoTotal==0) ? 100: Math.round((100 * atingimentoTotal / (objectivoTotal?:1) )*100)/100 ), // % arredondada às décimas
+            "Observações":  "" + buildReport(control, findings)
     ];
 }
 // ----------------------------------------------------------------------------------------------------
@@ -448,24 +450,24 @@ def obterFindingsAbertos(control){
     def searchResult =  getInstances("Finding", query);
     searchResult.each { finding ->
         existingFindings << [
-            (finding[_("Id Asset Origem")][0]) : [
-                "id":                       "" + finding.id,
-                "Control":                  "" + control.id,
-                "Identificador do Finding": finding[_("Identificador do Finding")][0],
-                "Estado":                   finding[_("Estado")][0],
-                "Reposição Detectada":      finding[_("Reposição Detectada")][0],
-                "Label Asset Origem":       finding[_("Label Asset Origem")][0],
-                "Observações":              finding[_("Observações")][0],
-                "Id Definição Origem":      finding[_("Id Definição Origem")][0],
-                "Id Asset Origem":          finding[_("Id Asset Origem")][0],
-                "_limite_suspeita_":        finding[_("Data Limite da Suspeita")][0]
-            ]
+                (finding[_("Id Asset Origem")][0]) : [
+                        "id":                       "" + finding.id,
+                        "Control":                  "" + control.id,
+                        "Identificador do Finding": getFirstValue(finding,_("Identificador do Finding"))?:"",
+                        "Estado":                   getFirstValue(finding,_("Estado"))?:"",
+                        "Reposição Detectada":      getFirstValue(finding,_("Reposição Detectada"))?:"",
+                        "Label Asset Origem":       getFirstValue(finding,_("Label Asset Origem"))?:"",
+                        "Observações":              getFirstValue(finding,_("Observações"))?:"",
+                        "Id Definição Origem":      getFirstValue(finding,_("Id Definição Origem"))?:"",
+                        "Id Asset Origem":          getFirstValue(finding,_("Id Asset Origem"))?:"",
+                        "_limite_suspeita_":        getFirstValue(finding,_("Data Limite da Suspeita"))?:""
+                ]
         ]
     }
     return existingFindings
 }
 // ----------------------------------------------------------------------------------------------------
-def evalInstance(control, instanceToEval) {
+def evalInstance(control, instanceToEval, previousFinding) {
     def condicaoSucesso = control[_("Condição de sucesso")][0]
 
     // Assume de cada avaliação vale 1 para o objectivo e que, à partida, o teste vai passar
@@ -476,7 +478,7 @@ def evalInstance(control, instanceToEval) {
     def output = null
     try {
         // Prepara dados e código adicional a passar para a avaliação de forma a simplificar o código de avaliação
-        def evalInfo = prepareEvalInfo(condicaoSucesso, instanceToEval, control)
+        def evalInfo = prepareEvalInfo(condicaoSucesso, instanceToEval, previousFinding, control)
 
         // Avalia o código do control, enqiquecido com os código base
         output = Eval.x(evalInfo.map, evalInfo.code)
@@ -497,22 +499,22 @@ def evalInstance(control, instanceToEval) {
 
     return resultado
 }
-
 // --------------------------------------------------------------------
-def prepareEvalInfo(condicaoSucesso, instanceToEval, control) {
+def prepareEvalInfo(condicaoSucesso, instanceToEval, previousFinding, control) {
     def evalMap = [:]
 
     //Aumenta código de avaliação com dados e métodos para simplificar a escrita dos testes
     evalMap["instancia"]        = instanceToEval
+    evalMap["previousFinding"]  = previousFinding
     evalMap["log"]              = { msg -> log.info(msg) }
     evalMap["rmRest"]           = rmRest
     evalMap["pesquisaRegistos"] = { definicao,pesquisa,size ->
         def resp = rmRest.get("recordm/definitions/search/"+definicao,
-                        [
-                            'q': ""+pesquisa,
-                            'from': "0", 'size': ""+size
-                        ],
-                        "");
+                [
+                        'q': ""+pesquisa,
+                        'from': "0", 'size': ""+size
+                ],
+                "");
 
         if(resp =="NOT_OK"){
             throw new Exception("Não foi possível fazer a pesquisa pretendida ($definicao,$pesquisa).")
@@ -523,17 +525,17 @@ def prepareEvalInfo(condicaoSucesso, instanceToEval, control) {
     evalMap["contaRegistos"] = { nomeDefinicao,pesquisa ->
         def definicao = getDefinitionId(nomeDefinicao)
         def resp = rmRest.get("recordm/definitions/search/"+definicao,
-                        [
-                            'q': ""+pesquisa,
-                            'from': "0", 'size': "0"
-                        ],
-                        "");
+                [
+                        'q': ""+pesquisa,
+                        'from': "0", 'size': "0"
+                ],
+                "");
 
         if(resp =="NOT_OK"){
             throw new Exception("Não foi possível fazer a pesquisa pretendida ($nomeDefinicao,$pesquisa).")
         }
         JSONObject esResult = new JSONObject(resp)
-        return esResult.hits.total
+        return esResult.hits.total.value
     };
 
     evalMap["somaGrandezasUltimosDias"] = { campoASomar, pesquisa, numDias  ->
@@ -555,7 +557,7 @@ def prepareEvalInfo(condicaoSucesso, instanceToEval, control) {
 
     evalMap["regional"] = { instancia ->
         def assessTool = control[_("Assessment Tool")][0];
-        def assessDef = control[_("Definição")][0] ?: null;
+        def assessDef = getFirstValue(control,_("Definição"));
 
         def instance = null;
 
@@ -570,15 +572,15 @@ def prepareEvalInfo(condicaoSucesso, instanceToEval, control) {
                 }
                 break
         }
-        
+
         return (instance != null
                 ? instance[_("Regional")]?.get(0)?.toUpperCase()
                 : null);
     };
 
     evalMap["utilizadores"] = { String... groups ->
-        List users = getUserWithGroups(groups, 0 , 1);
-        
+        List users = getUsersWithGroups(groups);
+
         return [
                 "emails": users.collect { it.email }.join(","),
                 "telefones": users.collect { it.contact ?: "" }.join(",")
@@ -591,10 +593,12 @@ def prepareEvalInfo(condicaoSucesso, instanceToEval, control) {
         import groovy.time.TimeCategory
 
         def instancia = x.instancia
+        def previousFinding = x.previousFinding
         def log = x.log
         def pesquisaRegistos = x.pesquisaRegistos
         def contaRegistos = x.contaRegistos
         def somaGrandezasUltimosDias = x.somaGrandezasUltimosDias
+        def mediaGrandezasUltimosDias = x.mediaGrandezasUltimosDias
         def regional = x.regional
         def utilizadores = x.utilizadores
         def resultado = [:]
@@ -619,15 +623,10 @@ def somaValoresES(indices, pesquisa, campoSoma, campoTempo, momentoInicio) {
             "}"
 
     log.info("$indices || $query || $aggs || $esJsonStr");
-    
-    Response response= ClientBuilder.newClient()
-        .target(GovernanceConfig.ES_URL)
-        .path("/${indices}/_search")
-        .request(MediaType.APPLICATION_JSON)
-        .cookie(new Cookie("cobtoken", GovernanceConfig.COBTOKEN))
-        .post(Entity.entity(esJsonStr, MediaType.APPLICATION_JSON), Response.class)
 
-    String body = response.getEntity(String.class);
+    Response response = doAggSearch(indices, esJsonStr);
+
+    String body = response.readEntity(String.class);
 
     if(response.getStatus().intdiv(100) != 2){
         throw new Exception("Não foi possível fazer a pesquisa pretendida ($indices, $pesquisa, $campoSoma, $campoTempo, $momentoInicio): $body");
@@ -638,9 +637,41 @@ def somaValoresES(indices, pesquisa, campoSoma, campoTempo, momentoInicio) {
     return esResult.aggregations.field_sum.value;
 };
 
+def mediaValoresES(indices, pesquisa, campoMedia, campoTempo, momentoInicio) {
+    def query = getEsQuery(pesquisa, campoTempo, momentoInicio);
+    def aggs =  getEsAgg("field_avg", "avg", campoMedia);
+
+    def esJsonStr = "{\"size\":0, " +
+            "\"query\":${query}," +
+            "\"aggregations\":${aggs}" +
+            "}";
+
+    def response = doAggSearch(indices, esJsonStr);
+
+    String body = response.readEntity(String.class);
+
+    if(response.getStatus().intdiv(100) != 2){
+        throw new Exception("Não foi possível fazer a pesquisa pretendida ($indices, $pesquisa, $campoMedia, $campoTempo, $momentoInicio): $body");
+    }
+
+    JSONObject esResult = new JSONObject(body);
+
+    return esResult.aggregations.field_avg.value;
+};
+
+def doAggSearch(indices, esJsonStr){
+    //uses integrationm token
+    return ClientBuilder.newClient()
+            .target(GovernanceConfig.ES_URL)
+            .path("/${indices}/_search")
+            .request(MediaType.APPLICATION_JSON)
+            .cookie(new Cookie("cobtoken", GovernanceConfig.COBTOKEN))
+            .post(Entity.entity(esJsonStr, MediaType.APPLICATION_JSON), Response.class)
+};
+
 def getEsQuery(pesquisa, campoTempo, momentoInicio){
-    def esQuery = "{\"filtered\":{" +
-            "\"query\":{" +
+    def esQuery = "{\"bool\":{" +
+            "\"must\":{" +
             "\"query_string\":{" +
             "\"query\":\"${pesquisa}\"," +
             "\"analyze_wildcard\": true" +
@@ -682,13 +713,14 @@ def parse(textWithVars, instanceToEval, nomeVarInstancia){
     def parsedText = textWithVars.replace("\$id\$", "" + instanceToEval.id)
 
     // _[Nome Campo]_ = instancia["<Nome do campo>"][0]
-    parsedText = parsedText.replaceAll( /_\[([^\]]*?)\]_/ ) { m -> "${nomeVarInstancia}[\"${_(m[1])}\"][0]" }
+    parsedText = parsedText.replaceAll( /_\[([^\]]*?)\]_/ ) { m -> "(${nomeVarInstancia}.containsKey(\"${_(m[1])}\") ? ${nomeVarInstancia}[\"${_(m[1])}\"][0] : null)" }
 
     // $Nome Campo$ = "<valor do campo>"
     parsedText = parsedText.replaceAll( /[$](.+?)[$]/ ) { m ->
         def fieldName = m[1];
         def esFieldName = _(fieldName);
-        def esField = (instanceToEval["${esFieldName}"] ?: instanceToEval["${fieldName}"]);
+        def esField = (instanceToEval["${esFieldName}"]
+                ?: instanceToEval["${fieldName}"]);
 
         if(esField == null){
             log.warn("O campo \"${fieldName}\" não existe na instância a avaliar {{instance:${instanceToEval.id}}}")
@@ -702,7 +734,7 @@ def parse(textWithVars, instanceToEval, nomeVarInstancia){
 }
 // ----------------------------------------------------------------------------------------------------
 def createOrUpdateFinding(control, openFindings, instanceToEval, resultado) {
-    def successFlag     = resultado["Objectivo"] == resultado["Atingimento"]
+    def successFlag     = (resultado["Objectivo"] == resultado["Atingimento"])
     def previousFinding = openFindings[""+instanceToEval.id]
     def previousTestOk  = previousFinding ? previousFinding["Reposição Detectada"] : ""
     def previousState   = previousFinding ? previousFinding["Estado"] : ""
@@ -736,7 +768,7 @@ def createOrUpdateFinding(control, openFindings, instanceToEval, resultado) {
             createOrUpdateInstance("Finding", previousFinding)
             previousFinding["_marked_ChangedToNOK"] = true
 
-        // Caso houvesse finding anterior só é necessário actualizar o Finding se observação mudou. De qualquer forma retorna o anterior finding para reportar
+            // Caso houvesse finding anterior só é necessário actualizar o Finding se observação mudou. De qualquer forma retorna o anterior finding para reportar
         } else if( previousTestOk == "Não" ) {
             if(previousState == "Suspeito") {
                 if(Long.valueOf(previousFinding["_limite_suspeita_"]) < now.time) {
@@ -753,11 +785,11 @@ def createOrUpdateFinding(control, openFindings, instanceToEval, resultado) {
                     }
                 }
                 previousFinding["_marked_Inaltered"] = true
-           }
+            }
 
-        // Caso contrário não havia um finding e então cria um novo
+            // Caso contrário não havia um finding e então cria um novo
         } else {
-            def suspectFindindNotYetToCreate = control[_("Quando considerar inconformidade")][0]=="Após repetição da detecção"
+            def suspectFindindNotYetToCreate = getFirstValue(control,_("Quando considerar inconformidade"))=="Após repetição da detecção"
             def intervalo
             switch (control[_("Periodicidade")][0]) {
                 case "Mensal":  intervalo = 30*24*60; break;
@@ -767,26 +799,26 @@ def createOrUpdateFinding(control, openFindings, instanceToEval, resultado) {
             }
 
             def newFinding = [
-                "Estado":                   suspectFindindNotYetToCreate ? "Suspeito" : "Por Tratar" ,
-                "Data Limite da Suspeita":  suspectFindindNotYetToCreate ? "" + (now.time + control[_("Quantidade repetições")][0].toInteger() * 60000 * intervalo) : "",
-                "Reposição Detectada":      "Não" ,
-                "Control":                  "" + control.id,
-                "Atribuido a":              "" + (control[_("Responsável")][0] ?: ""),
-                "Identificador do Finding": "" + control[_("Código")][0] + "-" + instanceToEval.id,
-                "Label Asset Origem":       "" + (instanceToEval[_(instanceToEval._definitionInfo.instanceLabel.name[0])]?:[""])[0],
-                "Id Definição Origem":      "" + instanceToEval._definitionInfo.id,
-                "Id Asset Origem":          "" + instanceToEval.id
+                    "Estado":                   suspectFindindNotYetToCreate ? "Suspeito" : "Por Tratar" ,
+                    "Data Limite da Suspeita":  suspectFindindNotYetToCreate ? "" + (now.time + control[_("Quantidade repetições")][0].toInteger() * 60000 * intervalo) : "",
+                    "Reposição Detectada":      "Não" ,
+                    "Control":                  "" + control.id,
+                    "Atribuido a":              "" + getFirstValue(control,_("Responsável"))?:"",
+                    "Identificador do Finding": "" + control[_("Código")][0] + "-" + instanceToEval.id,
+                    "Label Asset Origem":       "" + (instanceToEval[_(instanceToEval._definitionInfo.instanceLabel.name[0])]?:[""])[0],
+                    "Id Definição Origem":      "" + instanceToEval._definitionInfo.id,
+                    "Id Asset Origem":          "" + instanceToEval.id
             ]
 
             newFinding["Observações"] = resultado["Observações"] ?: (newFinding["Label Asset Origem"]?:"id:"+instanceToEval.id) + " - " + control[_("Código")][0]
 
-            if(control[_("Acção")][0]=="Contabilizar e Reportar Inconformidades") {
+            if(getFirstValue(control,_("Acção"))=="Contabilizar e Reportar Inconformidades") {
                 createOrUpdateInstance("Finding", newFinding)
             }
 
             previousFinding = newFinding //to return
             if(suspectFindindNotYetToCreate == false) {
-                if(control[_("Acção")][0]=="Contabilizar e Reportar Inconformidades") {
+                if(getFirstValue(control,_("Acção"))=="Contabilizar e Reportar Inconformidades") {
                     previousFinding["_marked_New"] = true
                 } else {
                     previousFinding["_marked_NewButNoReport"] = true
@@ -931,17 +963,17 @@ def executaAccoesComplementares(control, assessment) {
     if ( assessment["_marked_Changed"] || msg.action == "forceAssessment")  {
         control[_("Acção Complementar")].eachWithIndex { action, idx ->
             def sendNow = true
-            if(control[_("Tolerância")][0] == "Prazo após criação") {
+            if(getFirstValue(control,_("Tolerância")) == "Prazo após criação") {
                 //TODO: Calacular se prazo já foi atingido
-                if(control[_("Prazo")][0] > now.time) {
+                if(getFirstValue(control,_("Prazo")) > now.time) {
                     sendNow = false
                     //calcular findings a incluir
                     //TODO
                 }
             }
 
-            def textoBase = control[_("Texto")][idx];
-            
+            def textoBase = control.containsKey(_("Texto"))? control[_("Texto")][idx] : "";
+
             if ( sendNow && action == "Enviar Email Resumo alterações" ) {
                 def assessmentsEspeciais = [:];
 
@@ -952,20 +984,24 @@ def executaAccoesComplementares(control, assessment) {
                         assessmentsEspeciais.put(specVar, specAssess)
                     }
                 };
-                
-                def emails = control[_("Email Destino")][mailActionsIdx++];
+
+                String emails = control[_("Email Destino")][mailActionsIdx];
                 def emailsEspeciais = obterVarsEspeciais(emails, assessmentsEspeciais);
+
+                String emailsBcc = control[_("Email Destino BCC")]!=null? control[_("Email Destino BCC")][mailActionsIdx] :"";
 
                 if(emailsEspeciais.size() > 0){
 
-                    enviarEmailsEspeciais(emailsEspeciais, subject, textoBase);
+                    enviarEmailsEspeciais(emailsEspeciais, emailsBcc, subject, textoBase);
 
                     emails = removerVarsEspeciais(emails, emailsEspeciais);
                 }
 
-                if(emails.length() > 0){
+                if(emails && emails.length() > 0){
                     new SendMail().send(subject, body + "\n\n" + textoBase , emails)
                 }
+
+                mailActionsIdx++;
             }
 
             //Enviar apenas novas inconformidades para poupar caracteres (max 747 nas SMS)
@@ -979,7 +1015,7 @@ def executaAccoesComplementares(control, assessment) {
                         assessmentsEspeciais.put(specVar, specAssess)
                     }
                 };
-                
+
                 def codigo = control[_("Código")][0];
                 def numsTel = control[_("Telemóvel")][smsActionsIdx++];
 
@@ -1015,17 +1051,17 @@ def obterVarsEspeciais(vars, assessmentsEspeciais){
     };
 }
 
-def enviarEmailsEspeciais(emailsEspeciais, subject, textoBase){
+def enviarEmailsEspeciais(emailsEspeciais, String emailsBcc, subject, textoBase){
     emailsEspeciais.each{
         def assessMap = it["assessments"];
 
         assessMap.findAll { emails, assessment -> emails.length() > 0 }
                 .each { emails, assessment ->
-            
-            def body = assessment["Observações"] ?: "Sem observações.";
 
-            log.info("A enviar email especial para $emails: ${body + "\n\n" + textoBase}}");
-            new SendMail().send(subject, body + "\n\n" + textoBase, emails);
+                    def body = assessment["Observações"] ?: "Sem observações.";
+
+                    log.info("A enviar email especial para $emails: ${body + "\n\n" + textoBase}}");
+                    new SendMail().send(subject, body + "\n\n" + textoBase, emails);
         }
     };
 }
@@ -1037,11 +1073,11 @@ def enviarSMSEspeciais(numsEspeciais, codigo, textoBase){
         assessMap.findAll { telefones, assessment -> telefones.length() > 0 }
                 .each{ telefones, assessment ->
 
-            def body = buidlStateReport(assessment["Findings"] ,"_marked_New", "<b>NOVAS inconformidades:</b>\n") ?: "Sem observações.";
+                    def body = buidlStateReport(assessment["Findings"] ,"_marked_New", "<b>NOVAS inconformidades:</b>\n") ?: "Sem observações.";
 
-            log.info("A enviar SMS especial para $telefones: ${textoBase + "\n\n" + body}}");
-            new SendSMS().send(codigo, (textoBase + "\n\n" + body).toString(), telefones);
-        }
+                    log.info("A enviar SMS especial para $telefones: ${textoBase + "\n\n" + body}}");
+                    new SendSMS().send(codigo, (textoBase + "\n\n" + body).toString(), telefones);
+                }
     };
 }
 
@@ -1072,21 +1108,21 @@ def getInstancesPaged(idDefinicao, query, from, numInstancias){
     def result = [];
 
     def size = (numInstancias != null
-                ? numInstancias
-                : 500);
+            ? numInstancias
+            : 500);
 
     def resp = rmRest.get(
             "recordm/definitions/search/" + idDefinicao,
             [
-                'q': query.toString(),
-                'from': "" + from,
-                'size': "" + size
+                    'q': query.toString(),
+                    'from': "" + from,
+                    'size': "" + size
             ],
             "");
 
     if(resp !="NOT_OK"){
         JSONObject esResult = new JSONObject(resp);
-        def totalResults = esResult.hits.total.toInteger();
+        def totalResults = esResult.hits.total.value.toInteger();
         def hits = esResult.hits.hits;
         def numResults = hits.length();
 
@@ -1120,6 +1156,9 @@ def recordmJsonToMap(content){
     return mapper.readValue(content,HashMap.class);
 }
 // --------------------------------------------------------------------
+def getFirstValue(map, key) {
+    return map.containsKey(key) ? map[key][0] : null
+}
 
 // ----------------------------------------------------------------------------------------------------
 //  getDefinitionId - Obtem o id de uma definição a partir do Nome da mesma
@@ -1157,19 +1196,21 @@ def _(fieldName){
     return fieldName.toLowerCase().replace(" ", "_");
 }
 // --------------------------------------------------------------------
-def getUserWithGroups(groups, from, numUsers){
+def getUsersWithGroups(groups){
+    return getUsersWithGroups(groups, 0, 50);
+}
+// --------------------------------------------------------------------
+def getUsersWithGroups(groups, from, size){
     def users = [];
 
-    def query = "groups.name:(\"" + groups.join("\" AND \"") + "\")";
-
-    def size = (numUsers != null
-            ? numUsers
-            : 500);
+    def query = "groups.name:(\"${groups.join('" AND "')}\") AND -username:test*";
 
     def resp = umRest.get(
             "userm/search/userm/user",
             [
                     'q': query.toString(),
+                    'sort':'_id',
+                    'ascending':'true',
                     'from': "" + from,
                     'size': "" + size
             ],
@@ -1177,7 +1218,7 @@ def getUserWithGroups(groups, from, numUsers){
 
     if(resp !="NOT_OK"){
         JSONObject esResult = new JSONObject(resp);
-        def totalResults = esResult.hits.total.toInteger();
+        def totalResults = esResult.hits.total.value.toInteger();
         def hits = esResult.hits.hits;
         def numResults = hits.length();
 
@@ -1185,7 +1226,7 @@ def getUserWithGroups(groups, from, numUsers){
             users.addAll(esSourceList(hits));
 
             if(numResults == size && size > 1){
-                result.addAll(getUserWithGroups(groups, from+size, size));
+                result.addAll(getUsersWithGroups(groups, from+size, size));
             }
         }
     }
@@ -1263,21 +1304,23 @@ class SendSMS {
         } else {
             def smsJsonStr = buildSMSJsonStr(subject, body, phone)
 
+            log.info("Sending SMS")
+
             Response response = ClientBuilder.newClient()
-                .target(PLIVO_SEND_SMS_RESOURCE)
-                .request(MediaType.APPLICATION_JSON)
-                .header("Authorization", "Basic " + PLIVO_API_KEY.bytes.encodeBase64().toString())
-                .post(Entity.entity(smsJsonStr, MediaType.APPLICATION_JSON), Response.class)
+                    .target(PLIVO_SEND_SMS_RESOURCE)
+                    .request(MediaType.APPLICATION_JSON)
+                    .header("Authorization", "Basic " + PLIVO_API_KEY.bytes.encodeBase64().toString())
+                    .post(Entity.entity(smsJsonStr, MediaType.APPLICATION_JSON), Response.class)
 
             if (response.getStatus() != Response.Status.ACCEPTED.getStatusCode()) {
                 log.info("There was an error sending the SMS {{status: " + response.getStatus() + ","
-                         + " message: " + response.getEntity(String.class) + ", smsJsonStr: " + smsJsonStr + "}} ")
+                        + " message: " + response.readEntity(String.class) + ", smsJsonStr: " + smsJsonStr + "}} ")
             }
         }
     }
     // --------------------------------------------------------------------
     def buildSMSJsonStr(subject, body, phone){
-      return "{\"src\": \"${SENDER}\",\"dst\": \"${phone}\", \"text\": \"${subject} \n${body.replaceAll('\\*\\*','').replaceAll('<.?b>','')}\"}".toString()
+        return "{\"src\": \"${SENDER}\",\"dst\": \"${phone}\", \"text\": \"${subject} \n${body.replaceAll('\\*\\*','').replaceAll('<.?b>','')}\"}".toString()
     }
     // --------------------------------------------------------------------
 }
