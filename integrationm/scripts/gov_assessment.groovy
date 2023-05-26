@@ -27,8 +27,8 @@ REGEX_VARS_ESPECIAIS = /[;,]?\$([^\$]*)\$[;,]?/
 //   1) nos instantes previstos pela periodicidade do Control (ver ~/COB_APPS/GovernanceGlobal/governance_clock.sh)
 //   2) ou directamente na interface do Control (ver recordm/customUI/js/cob/governance.js)
 // ====================================================================================================
-if(    (message.product == "governance" && message.type == "clock"     && message.action == "clockTick")
-    || (message.product == "governance" && message.type == "controlUI" && message.action == "forceAssessment") ) {
+if(    (msg.product == "governance" && msg.type == "clock"     && msg.action == "clockTick")
+    || (msg.product == "governance" && msg.type == "controlUI" && msg.action == "forceAssessment") ) {
         log.info ("Start Controls evaluations.")
 
         // Obtem lista dos controls ligados
@@ -40,10 +40,10 @@ if(    (message.product == "governance" && message.type == "clock"     && messag
         // Para cada um destes controls :
         controls.each{ control ->
             // Se for uma avaliação pedida na interface fazer skip a todos os controls menos a esse id específico
-            if(message.action == "forceAssessment" && ""+control.id != messageMap.id) return
+            if(msg.action == "forceAssessment" && ""+control.id != messageMap.id) return
 
             // obtem um assessment válido (com a indicação no control de se necessita de ser avaliado agora)
-            def assessment = getAssessmentInstance(control, message.action, pesos)
+            def assessment = getAssessmentInstance(control, msg.action, pesos)
 
             // Se control marcado para avaliação então avalia, actualiza resultado do assessment e cria/actualiza findings
             if( control["_marked_ToEval_"] || control["_marked_CollectDeviceMValues_"] ) {
@@ -928,7 +928,7 @@ def executaAccoesComplementares(control, assessment) {
 
     def body = assessment["Observações"]?:  "Sem observações."
 
-    if ( assessment["_marked_Changed"] || message.action == "forceAssessment")  {
+    if ( assessment["_marked_Changed"] || msg.action == "forceAssessment")  {
         control[_("Acção Complementar")].eachWithIndex { action, idx ->
             def sendNow = true
             if(control[_("Tolerância")][0] == "Prazo após criação") {
