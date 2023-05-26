@@ -181,11 +181,11 @@ def createOrUpdateInstance(definitionName, instance) {
     if(instance.id) {
         // Update mas apenas se tiver mais que 1 campo (ou seja, excluindo o id)
         if(instance.size() > 1) {
-            actionPackManager.applyActionPackWith("recordm", "update", definitionName, "recordmInstanceId:" + instance["id"], instance)
+            recordm.update(definitionName, "recordmInstanceId:" + instance["id"], instance)
         }
     } else {
         // Create
-        actionPackManager.applyActionPackWith("recordm", "insert", definitionName, "", instance)
+        recordm.create(definitionName, instance)
     }
 }
 
