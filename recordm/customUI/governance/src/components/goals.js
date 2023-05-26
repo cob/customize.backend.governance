@@ -460,7 +460,7 @@ e
         let rows = [];
         let _this = this;
         let emptyRow;
-        let iconUrl = "localresource/governance/img/goal" + this.props.level + ".png";
+        let iconUrl = "localresource/governance/dist/img/goal" + this.props.level + ".png";
 
         this.state.goals.forEach(function(goal) {
 
@@ -503,7 +503,7 @@ e
                                         title={this.props.showTotals ? 'Mostrar Pesos' : 'Mostrar Totais'}
                                         onClick={ () => _this.props.onToggleTotalsWeightsClick() }
                                         className="toggle-resultWeight-btn">
-                                        {this.props.showTotals ? <img src="localresource/governance/img/weight.png" /> : '%'}
+                                        {this.props.showTotals ? <img src="localresource/governance/dist/img/weight.png" /> : '%'}
                                 </Button>)
 
         let toggleOnlyUserFindingsHtml = (<Button bsStyle="link"

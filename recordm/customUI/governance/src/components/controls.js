@@ -505,7 +505,7 @@ class Controls extends React.Component{
             rows.push(
                 <Panel  key={control.id} className="governance-control-item">
 
-                    <img src="localresource/governance/img/control.png" className="governance-icon"/>
+                    <img src="localresource/governance/dist/img/control.png" className="governance-icon"/>
 
                      <a onClick={ () => _this.handleShowDetails(control.id)} className={"control-name-link" + ((+control.peso)==0?" zero-weight":"")}>
                      {control["âmbito"]} - {control.nome}
@@ -545,7 +545,7 @@ class Controls extends React.Component{
                                         title={this.props.showTotals ? 'Mostrar Pesos' : 'Mostrar Totais'}
                                         onClick={ () => _this.props.onToggleTotalsWeightsClick() }
                                         className="toggle-resultWeight-btn">
-                                        {this.props.showTotals ? <img src="localresource/governance/img/weight.png" /> : '%'}
+                                        {this.props.showTotals ? <img src="localresource/governance/dist/img/weight.png" /> : '%'}
                                 </Button>)
 
         let toggleOnlyUserFindingsHtml = (<Button bsStyle="link"

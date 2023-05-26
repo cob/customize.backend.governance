@@ -52,7 +52,7 @@ class EvolutionBar extends React.Component{
         let weightHtml;
         if(this.props.weight!= undefined){
             weightHtml =(<div className="evolution-data-weight-wrapper">
-                            <img src="localresource/governance/img/weight.png" />
+                            <img src="localresource/governance/dist/img/weight.png" />
                             <span>{this.props.weight}</span>
                         </div>);
         }
