@@ -27,7 +27,7 @@ REGEX_VARS_ESPECIAIS = /[;,]?\$([^\$]*)\$[;,]?/
 //   2) ou directamente na interface do Control (ver recordm/customUI/js/cob/governance.js)
 // ====================================================================================================
 if(    (msg.product == "governance" && msg.type == "clock"     && msg.action == "clockTick")
-    || (msg.product == "governance" && msg.type == "controlUI" && msg.action == "forceAssessment") ) {
+        || (msg.product == "governance" && msg.type == "controlUI" && msg.action == "forceAssessment") ) {
     log.info ("Start Controls evaluations.")
 
     // Obtem lista dos controls ligados
@@ -1062,7 +1062,7 @@ def enviarEmailsEspeciais(emailsEspeciais, String emailsBcc, subject, textoBase)
 
                     log.info("A enviar email especial para $emails: ${body + "\n\n" + textoBase}}");
                     new SendMail().send(subject, body + "\n\n" + textoBase, emails);
-        }
+                }
     };
 }
 
@@ -1178,15 +1178,48 @@ def getDefinitionId(definitionName){
 //  createOrUpdateInstance
 // ----------------------------------------------------------------------------------------------------
 def createOrUpdateInstance(definitionName, instance) {
+    def updates = cloneAndStripInstanceForRecordmSaving(instance);
+
     if(instance.id) {
         // Update mas apenas se tiver mais que 1 campo (ou seja, excluindo o id)
         if(instance.size() > 1) {
-            recordm.update(definitionName, "recordmInstanceId:" + instance["id"], instance)
+            recordm.update(definitionName, "recordmInstanceId:" + instance["id"], updates)
         }
     } else {
         // Create
-        recordm.create(definitionName, instance)
+        recordm.create(definitionName, updates)
     }
+}
+
+//necessário remover os Boolean da instância para se conseguir gravar no recordm
+def cloneAndStripInstanceForRecordmSaving(instance){
+    def updates = [:]
+    instance.each { k, v ->
+        //log.info("XXXXX KEYk " + k + v)
+        if (v instanceof Boolean) {
+            log.info("Campo removido do update por ser boolean :" + k)
+
+        } else if (k == "Findings") {
+            def _auxFindings = [];
+            v.each { f ->
+                def _auxF=[:]
+                f.each { k1, v1 ->
+                    if (v1 instanceof Boolean) {
+                        log.info("Campo removido do update por ser boolean :" + k1)
+                    } else {
+                        _auxF[k1] = v1
+                    }
+                }
+                _auxFindings.add(_auxF)
+            }
+            updates[k] = _auxFindings
+
+        } else {
+            updates[k] = v
+        }
+    }
+
+    return updates
 }
 
 // ----------------------------------------------------------------------------------------------------
@@ -1256,15 +1289,15 @@ class SendMail {
             def emailJsonStr = buildEmailJsonStr(subject, body, emailTo)
 
             Response response = ClientBuilder.newClient()
-                .target(SENDGRID_SEND_MAIL_RESOURCE)
-                .request(MediaType.APPLICATION_JSON)
-                .header("Authorization", "Bearer $SENDGRID_API_KEY".toString())
-                .post(Entity.entity(emailJsonStr, MediaType.APPLICATION_JSON), Response.class)
-                
+                    .target(SENDGRID_SEND_MAIL_RESOURCE)
+                    .request(MediaType.APPLICATION_JSON)
+                    .header("Authorization", "Bearer $SENDGRID_API_KEY".toString())
+                    .post(Entity.entity(emailJsonStr, MediaType.APPLICATION_JSON), Response.class)
+
 
             if (response.getStatus() != Response.Status.ACCEPTED.getStatusCode()) {
                 log.info("There was an error executing the email action pack {{status: " + response.getStatus() + ","
-                         + " message: " + response.getEntity(String.class) + ", emailJsonStr: " + emailJsonStr + "}} ")
+                        + " message: " + response.getEntity(String.class) + ", emailJsonStr: " + emailJsonStr + "}} ")
             }
         }
     }
@@ -1276,12 +1309,12 @@ class SendMail {
             parsedEmails.push('{"email":"'+email+'"}')
         };
 
-      def escapedBody = text2HTML(body).replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "\\r").replace("\t", "\\t")
-      return "{\"personalizations\": [{\"to\": [" + parsedEmails.join(",") + " ], \"subject\": \"$subject\" } ], \"from\": { \"email\": \"$SENDER\", \"name\": \"$SENDER_NAME\" }, \"content\": [ { \"type\": \"text/html\", \"value\": \"${escapedBody}\" } ] }".toString()
+        def escapedBody = text2HTML(body).replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "\\r").replace("\t", "\\t")
+        return "{\"personalizations\": [{\"to\": [" + parsedEmails.join(",") + " ], \"subject\": \"$subject\" } ], \"from\": { \"email\": \"$SENDER\", \"name\": \"$SENDER_NAME\" }, \"content\": [ { \"type\": \"text/html\", \"value\": \"${escapedBody}\" } ] }".toString()
     }
     // --------------------------------------------------------------------
     def text2HTML(text){
-      return text.replaceAll('\n',"<br>\n").replaceAll(' \\* ',"\t * ").replaceAll('\t',"<span class='Apple-tab-span' style='white-space:pre'>    </span>").replaceAll('\\*\\*',"")
+        return text.replaceAll('\n',"<br>\n").replaceAll(' \\* ',"\t * ").replaceAll('\t',"<span class='Apple-tab-span' style='white-space:pre'>    </span>").replaceAll('\\*\\*',"")
     }
     // --------------------------------------------------------------------
 }
