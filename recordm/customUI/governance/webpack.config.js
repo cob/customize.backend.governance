@@ -6,6 +6,7 @@ module.exports = {
     new CleanWebpackPlugin(['dist']),
     new CopyWebpackPlugin([
       {from: 'src/css',to:'css/'},
+      {from: 'src/font',to:'font/'},
       {from: 'src/img',to:'img/'},
       {from: 'src/dashboard.html', to: 'dashboard.html'}
     ], {}),
