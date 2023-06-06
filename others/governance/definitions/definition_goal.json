@@ -1,0 +1,262 @@
+{
+  "id": null,
+  "name": "Goal",
+  "description": " Governance Element",
+  "duplicable": null,
+  "state": "enabled",
+  "fieldDefinitions": [
+    {
+      "id": null,
+      "name": "Dados do Goal",
+      "required": null,
+      "description": "$group $style[grelha-titulo]",
+      "condition": null,
+      "duplicable": false,
+      "fields": [],
+      "order": 0,
+      "restricted": false,
+      "rootField": true,
+      "defaultValue": null
+    },
+    {
+      "id": null,
+      "name": "Nome",
+      "required": "mandatory",
+      "description": "$instanceLabel",
+      "condition": null,
+      "duplicable": false,
+      "fields": [],
+      "order": 1,
+      "restricted": false,
+      "rootField": true,
+      "defaultValue": null
+    },
+    {
+      "id": null,
+      "name": "Descrição",
+      "required": null,
+      "description": "$markdown",
+      "condition": null,
+      "duplicable": false,
+      "fields": [],
+      "order": 2,
+      "restricted": false,
+      "rootField": true,
+      "defaultValue": null
+    },
+    {
+      "id": null,
+      "name": "Detalhes",
+      "required": null,
+      "description": "$group $style[grelha-titulo]  ",
+      "condition": null,
+      "duplicable": false,
+      "fields": [
+        {
+          "id": null,
+          "name": "Âmbito",
+          "required": null,
+          "description": "$groupEdit $instanceDescription $help[Em geral é a sigla da empresa ou departamento]",
+          "condition": null,
+          "duplicable": false,
+          "fields": [],
+          "order": 4,
+          "restricted": false,
+          "rootField": false,
+          "defaultValue": null
+        },
+        {
+          "id": null,
+          "name": "Nível",
+          "required": "mandatory",
+          "description": "$[1,2,3] $groupEdit $instanceDescription $expanded",
+          "condition": null,
+          "duplicable": false,
+          "fields": [
+            {
+              "id": null,
+              "name": "Nível 1",
+              "required": null,
+              "description": "$ref(Goal,nível:1) $groupEdit ",
+              "condition": "=2",
+              "duplicable": false,
+              "fields": [
+                {
+                  "id": null,
+                  "name": "Nome Goal Nível 1",
+                  "required": null,
+                  "description": "$auto.ref(Nível 1).field(Nome)",
+                  "condition": "!",
+                  "duplicable": false,
+                  "fields": [],
+                  "order": 7,
+                  "restricted": false,
+                  "rootField": false,
+                  "defaultValue": null
+                },
+                {
+                  "id": null,
+                  "name": "Peso Goal Nível 1",
+                  "required": null,
+                  "description": "$auto.ref(Nível 1).field(Peso)",
+                  "condition": "!",
+                  "duplicable": false,
+                  "fields": [],
+                  "order": 8,
+                  "restricted": false,
+                  "rootField": false,
+                  "defaultValue": null
+                }
+              ],
+              "order": 6,
+              "restricted": false,
+              "rootField": false,
+              "defaultValue": null
+            },
+            {
+              "id": null,
+              "name": "Nível 2",
+              "required": null,
+              "description": "$ref(Goal,nível:2) $groupEdit ",
+              "condition": "=3",
+              "duplicable": false,
+              "fields": [
+                {
+                  "id": null,
+                  "name": "Nome Goal Nível 2",
+                  "required": null,
+                  "description": "$auto.ref(Nível 2).field(Nome)",
+                  "condition": "!",
+                  "duplicable": false,
+                  "fields": [],
+                  "order": 10,
+                  "restricted": false,
+                  "rootField": false,
+                  "defaultValue": null
+                },
+                {
+                  "id": null,
+                  "name": "Peso Goal Nível 2",
+                  "required": null,
+                  "description": "$auto.ref(Nível 2).field(Peso)",
+                  "condition": "!",
+                  "duplicable": false,
+                  "fields": [],
+                  "order": 11,
+                  "restricted": false,
+                  "rootField": false,
+                  "defaultValue": null
+                }
+              ],
+              "order": 9,
+              "restricted": false,
+              "rootField": false,
+              "defaultValue": null
+            },
+            {
+              "id": null,
+              "name": "Nome Goal Nível 1",
+              "required": null,
+              "description": "$auto.ref(Nível 2).field(Nome Goal Nível 1)",
+              "condition": "=3",
+              "duplicable": false,
+              "fields": [
+                {
+                  "id": null,
+                  "name": "Id Goal Nível 1",
+                  "required": null,
+                  "description": "$auto.ref(Nível 2).field(Nível 1)",
+                  "condition": null,
+                  "duplicable": false,
+                  "fields": [],
+                  "order": 13,
+                  "restricted": false,
+                  "rootField": false,
+                  "defaultValue": null
+                },
+                {
+                  "id": null,
+                  "name": "Peso Goal Nível 1",
+                  "required": null,
+                  "description": "$auto.ref(Nível 2).field(Peso Goal Nível 1)",
+                  "condition": null,
+                  "duplicable": false,
+                  "fields": [],
+                  "order": 14,
+                  "restricted": false,
+                  "rootField": false,
+                  "defaultValue": null
+                }
+              ],
+              "order": 12,
+              "restricted": false,
+              "rootField": false,
+              "defaultValue": null
+            }
+          ],
+          "order": 5,
+          "restricted": false,
+          "rootField": false,
+          "defaultValue": null
+        },
+        {
+          "id": null,
+          "name": "Peso",
+          "required": "mandatory",
+          "description": "$number $default(1) Peso que este Goal tem no atingimento do Goal acima",
+          "condition": null,
+          "duplicable": false,
+          "fields": [],
+          "order": 15,
+          "restricted": false,
+          "rootField": false,
+          "defaultValue": "1"
+        },
+        {
+          "id": null,
+          "name": "Anexo",
+          "required": null,
+          "description": "$file              ",
+          "condition": null,
+          "duplicable": true,
+          "fields": [],
+          "order": 16,
+          "restricted": false,
+          "rootField": false,
+          "defaultValue": null
+        },
+        {
+          "id": null,
+          "name": "Controls",
+          "required": null,
+          "description": "$link $auto.text(id).join('/recordm/index.html#/definitions/65/q=id_goal_nível_3:',id,' OR id_goal_nível_2:',id,' OR id_goal_nível_1:',id)",
+          "condition": null,
+          "duplicable": false,
+          "fields": [],
+          "order": 17,
+          "restricted": false,
+          "rootField": false,
+          "defaultValue": null
+        },
+        {
+          "id": null,
+          "name": "Copiar Goal",
+          "required": null,
+          "description": "$create(64,Descrição=Descrição,Âmbito=Âmbito,Nível=Nível,Nível 1=Nível 1,Nível 2=Nível 2,Peso=Peso) ",
+          "condition": null,
+          "duplicable": false,
+          "fields": [],
+          "order": 18,
+          "restricted": false,
+          "rootField": false,
+          "defaultValue": null
+        }
+      ],
+      "order": 3,
+      "restricted": false,
+      "rootField": true,
+      "defaultValue": null
+    }
+  ],
+  "version": null
+}
