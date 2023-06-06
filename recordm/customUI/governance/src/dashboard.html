@@ -10,8 +10,10 @@
 </head>
 <body>
     <script>
-
-        var _userOrg = cob.app.getGroups().find(function(g){if(g.startsWith("ORG ")) return g;} );
+        //Vamos usar um novo prefixo "GOV" para os grupos de users que podem ver coisas.
+        //Actualmente isto só funciona se um user tiver 1 e 1 só GOV
+        //Nota: usado em conjunto com o campo "Âmbito" dos Goals e Controls para controlar que goals um user pode ver
+        var _userOrg = cob.app.getGroups().find(function(g){if(g.startsWith("GOV ")) return g;} );
         if(_userOrg) _userOrg  = _userOrg.substr(4);
 
         //confs exemplo
@@ -39,7 +41,7 @@
             */
 
             userOrg: _userOrg,
-            canSeeAll: true //_userOrg == "Internal"
+            canSeeAll: true //_userOrg == "ADMIN"
         }
 
     </script>
