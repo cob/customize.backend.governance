@@ -537,47 +537,6 @@ def prepareEvalInfo(condicaoSucesso, instanceToEval, previousFinding, control) {
         JSONObject esResult = new JSONObject(resp)
         return esResult.hits.total.value
     };
-
-    evalMap["somaGrandezasUltimosDias"] = { campoASomar, pesquisa, numDias  ->
-        def cal = Calendar.getInstance();
-
-        def endYear = cal.get(Calendar.YEAR);
-        def endMonth = cal.get(Calendar.MONTH) + 1;
-
-        //Andar X dias para trás na data
-        cal.add(Calendar.DAY_OF_MONTH, -numDias);
-
-        def startYear = cal.get(Calendar.YEAR);
-        def startMonth = cal.get(Calendar.MONTH) +1;
-
-        def indices = "grandezas-${startYear}-${startMonth},grandezas-${endYear}-${endMonth}".toString();
-
-        return somaValoresES(indices, pesquisa, campoASomar, "date", "now-${numDias}d/d".toString())
-    }
-
-    evalMap["regional"] = { instancia ->
-        def assessTool = control[_("Assessment Tool")][0];
-        def assessDef = getFirstValue(control,_("Definição"));
-
-        def instance = null;
-
-        switch (assessTool) {
-            case "RecordM" :
-                instance = instancia;
-                break;
-
-            case "DeviceM" :
-                if(assessDef != null){
-                    instance = getCpeRecordMInstance(instancia, assessDef);
-                }
-                break
-        }
-
-        return (instance != null
-                ? instance[_("Regional")]?.get(0)?.toUpperCase()
-                : null);
-    };
-
     evalMap["utilizadores"] = { String... groups ->
         List users = getUsersWithGroups(groups);
 
@@ -586,6 +545,12 @@ def prepareEvalInfo(condicaoSucesso, instanceToEval, previousFinding, control) {
                 "telefones": users.collect { it.contact ?: "" }.join(",")
         ];
     };
+
+    //Load custom client functions
+    GovernanceConfig.customAssessmentFunctions.each { fnName, code ->
+        evalMap[fnName] = evaluate(code)
+    }
+
 
     // Código adicionado em String - 'x' é o nome da variavel com o mapa passado em Eval.x()
     def baseCode = '''
@@ -597,12 +562,15 @@ def prepareEvalInfo(condicaoSucesso, instanceToEval, previousFinding, control) {
         def log = x.log
         def pesquisaRegistos = x.pesquisaRegistos
         def contaRegistos = x.contaRegistos
-        def somaGrandezasUltimosDias = x.somaGrandezasUltimosDias
-        def mediaGrandezasUltimosDias = x.mediaGrandezasUltimosDias
-        def regional = x.regional
         def utilizadores = x.utilizadores
         def resultado = [:]
     '''
+
+    //Load custom client functions declarations
+    GovernanceConfig.customAssessmentFunctions.each { fnName, code ->
+        baseCode += "\n        def " + fnName + " = x." + fnName
+    }
+    baseCode+="\n"
 
     def finalReturnCode = '''
         return resultado;
