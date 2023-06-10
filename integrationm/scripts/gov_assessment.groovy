@@ -415,6 +415,7 @@ def addSpecialAssessMap(specVar, control, instanceToEval, resultado, finding, sp
     }
 }
 
+//TOOD jbarata: externalizar isto
 def getCpeRecordMInstance(instanceToEval, definitionName){
     def definitionId = getDefinitionId(definitionName);
     def instance = null;
@@ -548,7 +549,7 @@ def prepareEvalInfo(condicaoSucesso, instanceToEval, previousFinding, control) {
 
     //Load custom client functions
     GovernanceConfig.customAssessmentFunctions.each { fnName, code ->
-        evalMap[fnName] = evaluate(code)
+        evalMap[fnName] = (code instanceof String? evaluate(code): code)
     }
 
 
