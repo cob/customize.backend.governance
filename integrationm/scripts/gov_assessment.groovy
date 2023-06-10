@@ -1164,24 +1164,8 @@ def cloneAndStripInstanceForRecordmSaving(instance){
     def updates = [:]
     instance.each { k, v ->
         //log.info("XXXXX KEYk " + k + v)
-        if (v instanceof Boolean) {
-            log.trace("Campo removido do update por ser boolean :" + k)
-
-        } else if (k == "Findings") {
-            def _auxFindings = [];
-            v.each { f ->
-                def _auxF=[:]
-                f.each { k1, v1 ->
-                    if (v1 instanceof Boolean) {
-                        log.trace("Campo removido do update por ser boolean :" + k1)
-                    } else {
-                        _auxF[k1] = v1
-                    }
-                }
-                _auxFindings.add(_auxF)
-            }
-            updates[k] = _auxFindings
-
+        if (v instanceof Boolean || v instanceof ArrayList || v instanceof Map) {
+            log.trace("Campo removido do update por ser boolean, array ou map :" + k)
         } else {
             updates[k] = v
         }
