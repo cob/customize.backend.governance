@@ -549,7 +549,13 @@ def prepareEvalInfo(condicaoSucesso, instanceToEval, previousFinding, control) {
 
     //Load custom client functions
     GovernanceConfig.customAssessmentFunctions.each { fnName, code ->
-        evalMap[fnName] = (code instanceof String? evaluate(code): code)
+        def customClosure = (code instanceof String ? evaluate(code) : code)
+
+        //The delegate of the closure is set to be the gov_assessment class so we can invoke gov_assessment methods
+        // like `somaValoresES` or `mediaValoresES` there
+        //Read https://groovy-lang.org/closures.html for full info on groovy closures
+        customClosure.delegate = this
+        evalMap[fnName] = customClosure
     }
 
 
