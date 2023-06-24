@@ -415,27 +415,6 @@ def addSpecialAssessMap(specVar, control, instanceToEval, resultado, finding, sp
     }
 }
 
-//TOOD jbarata: externalizar isto
-def getCpeRecordMInstance(instanceToEval, definitionName){
-    def definitionId = getDefinitionId(definitionName);
-    def instance = null;
-
-    switch (definitionName){
-        case "Loja":
-            //instanceToEval.id = DeviceM external Id = RecordM id
-            def query = "id:\"${instanceToEval.id}\""
-            def searchResult = getInstancesPaged(definitionId, query, 0, 1)
-
-            if(searchResult.size() == 1){
-                instance = searchResult.get(0);
-            }
-
-            break;
-    }
-
-    return instance;
-}
-
 def buildAssessmentResultMap(control, findings, objectivoTotal, atingimentoTotal){
     return [
             "Objectivo": "" + objectivoTotal,
@@ -547,6 +526,20 @@ def prepareEvalInfo(condicaoSucesso, instanceToEval, previousFinding, control) {
         ];
     };
 
+    evalMap["getCpeRecordMInstance"] = { instancia ->
+        def definitionId = instanceToEval._definitionInfo.id
+        def instance = null;
+
+        def query = "id:${instanceToEval.cpeExternalId}"
+        def searchResult = getInstancesPaged(definitionId, query, 0, 1)
+
+        if(searchResult.size() == 1){
+            instance = searchResult.get(0);
+        }
+
+        return instance;
+    };
+
     //Load custom client functions
     GovernanceConfig.customAssessmentFunctions.each { fnName, code ->
         def customClosure = (code instanceof String ? evaluate(code) : code)
@@ -570,6 +563,7 @@ def prepareEvalInfo(condicaoSucesso, instanceToEval, previousFinding, control) {
         def pesquisaRegistos = x.pesquisaRegistos
         def contaRegistos = x.contaRegistos
         def utilizadores = x.utilizadores
+        def getCpeRecordMInstance = x.getCpeRecordMInstance
         def resultado = [:]
     '''
 
