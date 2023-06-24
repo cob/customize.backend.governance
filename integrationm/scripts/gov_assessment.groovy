@@ -592,7 +592,7 @@ def somaValoresES(indices, pesquisa, campoSoma, campoTempo, momentoInicio) {
             "\"aggregations\":${aggs}" +
             "}"
 
-    log.info("$indices || $query || $aggs || $esJsonStr");
+    log.debug("$indices || $query || $aggs || $esJsonStr");
 
     Response response = doAggSearch(indices, esJsonStr);
 
@@ -1133,6 +1133,7 @@ def getFirstValue(map, key) {
 // ----------------------------------------------------------------------------------------------------
 //  getDefinitionId - Obtem o id de uma definição a partir do Nome da mesma
 // ----------------------------------------------------------------------------------------------------
+//TODO jbarata fazer uma cache com isto
 def getDefinitionId(definitionName){
     def resp = rmRest.get("recordm/definitions/name/" + definitionName, "");
 
