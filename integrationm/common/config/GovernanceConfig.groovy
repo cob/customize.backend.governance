@@ -15,15 +15,15 @@ class GovernanceConfig {
 
     /**
      * Custom functions to be used inside Controls' Success Condition code.
-     * Each entry is the function name and the closure as a string.
-     * Gov_assessment methods can be invoked inisde these closures.
+     * Each entry is the function name and the closure.
+     * Gov_assessment methods can be invoked inside these closures.
      *
      * Example
      *
          public static Map customAssessmentFunctions = [
-             "customLogFn": '''
-                { msg -> log.info("INSIDE CUSTOM LOG FUNCTION: "+ msg) }
-             '''
+            "customLogFn": { msg ->
+                log.info("INSIDE CUSTOM LOG FUNCTION: " + msg)
+            }
          ];
      */
     public static Map customAssessmentFunctions = [:];
