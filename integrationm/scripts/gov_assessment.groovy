@@ -970,7 +970,7 @@ def executaAccoesComplementares(control, assessment) {
                 }
 
                 if (emails && emails.length() > 0) {
-                    GovernanceConfig.send(subject, body + "\n\n" + textoBase, emails, emailsBcc);
+                    GovernanceConfig.sendMail(subject, body + "\n\n" + textoBase, emails, emailsBcc);
                 }
 
                 mailActionsIdx++;
@@ -1033,7 +1033,7 @@ def enviarEmailsEspeciais(emailsEspeciais, String emailsBcc, subject, textoBase)
                     def body = assessment["Observações"] ?: "Sem observações.";
 
                     log.info("A enviar email especial para $emails: ${body + "\n\n" + textoBase}}");
-                    GovernanceConfig.send(subject, body + "\n\n" + textoBase, emails, emailsBcc);
+                    GovernanceConfig.sendMail(subject, body + "\n\n" + textoBase, emails, emailsBcc);
                 }
     };
 }

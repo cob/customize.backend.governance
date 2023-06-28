@@ -7,6 +7,7 @@ class GovernanceConfig {
     public static final String PLIVO_API_KEY = "XXXXXXXXX";
 
 
+    //For ES searching
     public static final String ES_URL = "http://localhost:9200";
     public static final String COBTOKEN = "XXXXXXXXX";
 
@@ -26,7 +27,7 @@ class GovernanceConfig {
     public static Map customAssessmentFunctions = [:];
 
 
-    //Mailing
+    //For Mail
 
     /* if "usesEmailActionPack = true", we must have `email` action pack configured in
         com.cultofbits.integrationm.service.properties and mail settings configured in
@@ -42,7 +43,7 @@ class GovernanceConfig {
        This send is only to be used when usesEmailActionPack = false and we have a different send mail system.
        lidl for example, uses a curl script
      */
-    static void send(subject, body, emails, emailsBcc) {
+    static void sendMail(subject, body, emails, emailsBcc) {
         if(usesEmailActionPack){
             def _tos = emails.split(",").findAll { it != null } //hack to convert to List
             def _bccs = emailsBcc.split(",").findAll { it != null }
