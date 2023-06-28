@@ -30,6 +30,8 @@ if(    (msg.product == "governance" && msg.type == "clock"     && msg.action == 
         || (msg.product == "governance" && msg.type == "controlUI" && msg.action == "forceAssessment") ) {
     log.info ("Start Controls evaluations.")
 
+    if(GovernanceConfig.usesEmailActionPack) GovernanceConfig.emailActionPack = email;
+
     // Obtem lista dos controls ligados
     def controls = getInstances("Control", "-periodicidade.raw:Off")
 
@@ -967,8 +969,8 @@ def executaAccoesComplementares(control, assessment) {
                     emails = removerVarsEspeciais(emails, emailsEspeciais);
                 }
 
-                if(emails && emails.length() > 0){
-                    new SendMail().send(subject, body + "\n\n" + textoBase , emails)
+                if (emails && emails.length() > 0) {
+                    GovernanceConfig.send(subject, body + "\n\n" + textoBase, emails, emailsBcc);
                 }
 
                 mailActionsIdx++;
@@ -1031,7 +1033,7 @@ def enviarEmailsEspeciais(emailsEspeciais, String emailsBcc, subject, textoBase)
                     def body = assessment["Observações"] ?: "Sem observações.";
 
                     log.info("A enviar email especial para $emails: ${body + "\n\n" + textoBase}}");
-                    new SendMail().send(subject, body + "\n\n" + textoBase, emails);
+                    GovernanceConfig.send(subject, body + "\n\n" + textoBase, emails, emailsBcc);
                 }
     };
 }
@@ -1222,57 +1224,6 @@ def getUsersWithGroups(groups, from, size){
     return users;
 }
 // --------------------------------------------------------------------
-
-// ----------------------------------------------------------------------------------------------------
-// Class SendMail
-// ----------------------------------------------------------------------------------------------------
-class SendMail {
-    def log = LogFactory.getLog("send-mail")
-    def SENDER = "governance@cultofbits.com"
-    def SENDER_NAME = "Sistema de Governância CoB"
-
-    def SENDGRID_SEND_MAIL_RESOURCE = "https://api.sendgrid.com/v3/mail/send"
-    def SENDGRID_API_KEY = GovernanceConfig.SENDGRID_API_KEY
-    // --------------------------------------------------------------------
-    def SendMail() {}
-    // --------------------------------------------------------------------
-    def send(subject, body, emailTo) {
-        if (emailTo == null || emailTo.trim().equals("")) {
-            log.error("Cannot send email without an email address.")
-
-        } else {
-            def emailJsonStr = buildEmailJsonStr(subject, body, emailTo)
-
-            Response response = ClientBuilder.newClient()
-                    .target(SENDGRID_SEND_MAIL_RESOURCE)
-                    .request(MediaType.APPLICATION_JSON)
-                    .header("Authorization", "Bearer $SENDGRID_API_KEY".toString())
-                    .post(Entity.entity(emailJsonStr, MediaType.APPLICATION_JSON), Response.class)
-
-
-            if (response.getStatus() != Response.Status.ACCEPTED.getStatusCode()) {
-                log.info("There was an error executing the email action pack {{status: " + response.getStatus() + ","
-                        + " message: " + response.getEntity(String.class) + ", emailJsonStr: " + emailJsonStr + "}} ")
-            }
-        }
-    }
-    // --------------------------------------------------------------------
-    def buildEmailJsonStr(subject, body, emails){
-        def parsedEmails=[];
-
-        emails.split(/[,;]/).each { email ->
-            parsedEmails.push('{"email":"'+email+'"}')
-        };
-
-        def escapedBody = text2HTML(body).replace("\"", "\\\"").replace("\n", "\\n").replace("\r", "\\r").replace("\t", "\\t")
-        return "{\"personalizations\": [{\"to\": [" + parsedEmails.join(",") + " ], \"subject\": \"$subject\" } ], \"from\": { \"email\": \"$SENDER\", \"name\": \"$SENDER_NAME\" }, \"content\": [ { \"type\": \"text/html\", \"value\": \"${escapedBody}\" } ] }".toString()
-    }
-    // --------------------------------------------------------------------
-    def text2HTML(text){
-        return text.replaceAll('\n',"<br>\n").replaceAll(' \\* ',"\t * ").replaceAll('\t',"<span class='Apple-tab-span' style='white-space:pre'>    </span>").replaceAll('\\*\\*',"")
-    }
-    // --------------------------------------------------------------------
-}
 
 // ----------------------------------------------------------------------------------------------------
 // Class SMS
