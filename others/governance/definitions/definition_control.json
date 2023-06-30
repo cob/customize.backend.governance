@@ -221,7 +221,7 @@
       "id": null,
       "name": "Copiar Control",
       "required": null,
-      "description": "$create(__CONTROLS_DEFINITION_ID__,Nome=Nome,Descrição=Descrição,Goal Nível 3=Goal Nível 3,Peso=Peso,Periodicidade=Periodicidade,Código=Código,Assessment Tool=Assessment Tool,Definição=Definição,Filtro=Filtro,Condição de sucesso=Condição de sucesso,Comando=Comando,Tipo de Assessment=Tipo de Assessment,Valor alvo=Valor alvo,Acção=Acção,Responsável=Responsável,Quando considerar inconformidade=Quando considerar inconformidade,Quantidade repetições=Quantidade repetições,Acção Complementar=Acção Complementar,Processo=Processo,Email Destino=Email Destino,Telemóvel=Telemóvel,Texto=Texto,Tolerância=Tolerância,Prazo=Prazo,Estados a considerar=Estados a considerar)",
+      "description": "$create(__CONTROLS_DEFINITION_ID__,Nome=Nome,Descrição=Descrição,Goal Nível 3=Goal Nível 3,Peso=Peso,Periodicidade=Periodicidade,Código=Código,Assessment Tool=Assessment Tool,Definição=Definição,Filtro=Filtro,Condição de sucesso=Condição de sucesso,Comando=Comando,Tipo de Assessment=Tipo de Assessment,Valor alvo=Valor alvo,Acção=Acção,Responsável=Responsável,Quando considerar inconformidade=Quando considerar inconformidade,Quantidade repetições=Quantidade repetições,Acção Complementar=Acção Complementar,Email Destino=Email Destino,Telemóvel=Telemóvel,Texto=Texto,Tolerância=Tolerância,Prazo=Prazo,Estados a considerar=Estados a considerar)",
       "condition": null,
       "duplicable": false,
       "fields": [],
@@ -532,23 +532,10 @@
           "id": null,
           "name": "Acção Complementar",
           "required": "mandatory",
-          "description": "$[Nenhuma,Enviar Email Resumo alterações,Enviar SMS qd há novas inconformidades,Lançar Processo por inconformidade] $groupEdit $expanded",
+          "description": "$[Nenhuma,Enviar Email Resumo alterações,Enviar SMS qd há novas inconformidades] $groupEdit $expanded",
           "condition": "=Contabilizar e Reportar Inconformidades",
           "duplicable": true,
           "fields": [
-            {
-              "id": null,
-              "name": "Processo",
-              "required": "mandatory",
-              "description": "$[finding] Processo de resposta a lançar para cada falha aos testes do Control ",
-              "condition": "=Lançar Processo por Inconformidade",
-              "duplicable": false,
-              "fields": [],
-              "order": 41,
-              "restricted": false,
-              "rootField": false,
-              "defaultValue": null
-            },
             {
               "id": null,
               "name": "Email Destino",

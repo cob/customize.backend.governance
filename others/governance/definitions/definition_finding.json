@@ -353,19 +353,6 @@
     },
     {
       "id": null,
-      "name": "Tarefas",
-      "required": null,
-      "description": "$tasklist.opts(view:8)",
-      "condition": null,
-      "duplicable": false,
-      "fields": [],
-      "order": 26,
-      "restricted": false,
-      "rootField": true,
-      "defaultValue": null
-    },
-    {
-      "id": null,
       "name": "Informação Acessória",
       "required": null,
       "description": "$group $style[grelha-titulo]",
