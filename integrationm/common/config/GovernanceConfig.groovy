@@ -11,6 +11,7 @@ class GovernanceConfig {
     public static final String ES_URL = "http://localhost:9200";
     public static final String COBTOKEN = "XXXXXXXXX";
 
+    //For controls
     /**
      * Custom functions to be used inside Controls' Success Condition code.
      * Each entry is the function name and the closure.
@@ -51,7 +52,7 @@ class GovernanceConfig {
             emailActionPack.send(subject, body, [from: (SENDER_NAME + "<" + SENDER + ">"), to: _tos, bcc: _bccs])
 
         }else{
-            // else implement own sender. Some clientes for example, use a curl script because they need to use a proxy
+            // else implement own sender. Some clientes, for example, use a curl script because they need to use a proxy
             //utils.CurlEmailSender.send(SENDER, SENDER_NAME, emails, emailsBcc, subject, body, true);
         }
     };
