@@ -221,7 +221,7 @@
       "id": null,
       "name": "Ver Origem do Finding",
       "required": null,
-      "description": "$link $auto.text(Id Definição Origem,Id Asset Origem).join('/recordm/index.html#/definitions/',Id Definição Origem,'/q=id:',Id Asset Origem) $instanceDescription",
+      "description": "$link $auto.text(Id Definição Origem,Id Asset Origem).join('/recordm/index.html#/definitions/',Id Definição Origem,'/q=id:',Id Asset Origem) $instanceDescription $expanded",
       "condition": null,
       "duplicable": false,
       "fields": [

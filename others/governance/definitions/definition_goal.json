@@ -55,7 +55,7 @@
         {
           "id": null,
           "name": "Âmbito",
-          "required": null,
+          "required": "mandatory",
           "description": "$groupEdit $instanceDescription $help[Em geral é a sigla da empresa ou departamento]",
           "condition": null,
           "duplicable": false,

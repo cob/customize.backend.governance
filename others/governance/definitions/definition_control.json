@@ -46,25 +46,25 @@
     },
     {
       "id": null,
-      "name": "Âmbito",
-      "required": "mandatory",
-      "description": "$instanceDescription",
-      "condition": null,
-      "duplicable": false,
-      "fields": [],
-      "order": 3,
-      "restricted": false,
-      "rootField": true,
-      "defaultValue": null
-    },
-    {
-      "id": null,
       "name": "Goal Nível 3",
       "required": "mandatory",
       "description": "$ref(Goal,nível:3) $groupEdit  $style[nome]",
       "condition": null,
       "duplicable": false,
       "fields": [
+        {
+          "id": null,
+          "name": "Âmbito",
+          "required": null,
+          "description": "$auto.ref(Goal Nível 3).field(Âmbito) $instanceDescription",
+          "condition": null,
+          "duplicable": false,
+          "fields": [],
+          "order": 4,
+          "rootField": false,
+          "restricted": false,
+          "defaultValue": null
+        },
         {
           "id": null,
           "name": "Nome Goal Nível 3",
@@ -199,7 +199,7 @@
           "defaultValue": null
         }
       ],
-      "order": 4,
+      "order": 3,
       "restricted": false,
       "rootField": true,
       "defaultValue": null
@@ -403,13 +403,26 @@
     },
     {
       "id": null,
+      "name": "Vista de Assessments no Governance",
+      "required": null,
+      "description": "$help[Nome de uma vista a usar no link de pesquisa de Assessments de um Control no dashboard do Governance] $groupEdit",
+      "condition": null,
+      "duplicable": false,
+      "fields": [],
+      "order": 30,
+      "restricted": false,
+      "rootField": true,
+      "defaultValue": null
+    },
+    {
+      "id": null,
       "name": "Histórico das Avaliações Feitas (ASSESSMENTS)",
       "required": null,
       "description": "$link $auto.text(id).join('/recordm/index.html#/definitions/__ASSESSSMENTS_DEFINITION_ID__/q=id_control:',id) $instanceDescription",
       "condition": null,
       "duplicable": false,
       "fields": [],
-      "order": 30,
+      "order": 31,
       "restricted": false,
       "rootField": true,
       "defaultValue": null
@@ -422,7 +435,7 @@
       "condition": null,
       "duplicable": false,
       "fields": [],
-      "order": 31,
+      "order": 32,
       "restricted": false,
       "rootField": true,
       "defaultValue": null
@@ -439,7 +452,7 @@
           "id": null,
           "name": "Responsável",
           "required": null,
-          "description": "$extRef(userm,/userm/user/search?q={{this}})  Responsável inicial por resolver as inconformidades encontradas",
+          "description": "$extRef(userm,/userm/user/search?q={{this}})  $groupEdit Responsável inicial por resolver as inconformidades encontradas",
           "condition": "=Contabilizar e Reportar Inconformidades",
           "duplicable": false,
           "fields": [
@@ -451,7 +464,7 @@
               "condition": null,
               "duplicable": false,
               "fields": [],
-              "order": 34,
+              "order": 35,
               "restricted": false,
               "rootField": false,
               "defaultValue": null
@@ -464,7 +477,7 @@
               "condition": null,
               "duplicable": false,
               "fields": [],
-              "order": 35,
+              "order": 36,
               "restricted": false,
               "rootField": false,
               "defaultValue": null
@@ -477,13 +490,13 @@
               "condition": null,
               "duplicable": false,
               "fields": [],
-              "order": 36,
+              "order": 37,
               "restricted": false,
               "rootField": false,
               "defaultValue": null
             }
           ],
-          "order": 33,
+          "order": 34,
           "restricted": false,
           "rootField": false,
           "defaultValue": null
@@ -504,13 +517,13 @@
               "condition": "=Após repetição da detecção",
               "duplicable": false,
               "fields": [],
-              "order": 38,
+              "order": 39,
               "restricted": false,
               "rootField": false,
               "defaultValue": null
             }
           ],
-          "order": 37,
+          "order": 38,
           "restricted": false,
           "rootField": false,
           "defaultValue": null
@@ -531,7 +544,7 @@
               "condition": "=Lançar Processo por Inconformidade",
               "duplicable": false,
               "fields": [],
-              "order": 40,
+              "order": 41,
               "restricted": false,
               "rootField": false,
               "defaultValue": null
@@ -539,12 +552,25 @@
             {
               "id": null,
               "name": "Email Destino",
-              "required": "mandatory",
+              "required": null,
               "description": "$groupEdit Pode ser lista de email separada por **,**",
               "condition": "=Enviar Email Resumo alterações",
               "duplicable": false,
               "fields": [],
-              "order": 41,
+              "order": 42,
+              "restricted": false,
+              "rootField": false,
+              "defaultValue": null
+            },
+            {
+              "id": null,
+              "name": "Email Destino BCC",
+              "required": null,
+              "description": "$groupEdit Pode ser lista de email separada por **,**",
+              "condition": "=Enviar Email Resumo alterações",
+              "duplicable": false,
+              "fields": [],
+              "order": 43,
               "restricted": false,
               "rootField": false,
               "defaultValue": null
@@ -557,7 +583,7 @@
               "condition": "=Enviar SMS qd há novas inconformidades",
               "duplicable": false,
               "fields": [],
-              "order": 42,
+              "order": 44,
               "restricted": false,
               "rootField": false,
               "defaultValue": null
@@ -570,7 +596,7 @@
               "condition": "=Enviar Email Resumo alterações,Enviar SMS qd há novas inconformidades",
               "duplicable": false,
               "fields": [],
-              "order": 43,
+              "order": 45,
               "restricted": false,
               "rootField": false,
               "defaultValue": null
@@ -591,7 +617,7 @@
                   "condition": "=Prazo após criação",
                   "duplicable": false,
                   "fields": [],
-                  "order": 45,
+                  "order": 47,
                   "restricted": false,
                   "rootField": false,
                   "defaultValue": null
@@ -604,25 +630,38 @@
                   "condition": "=Prazo após criação",
                   "duplicable": false,
                   "fields": [],
-                  "order": 46,
+                  "order": 48,
                   "restricted": false,
                   "rootField": false,
                   "defaultValue": "Por Tratar e Em Resolução"
                 }
               ],
-              "order": 44,
+              "order": 46,
               "restricted": false,
               "rootField": false,
               "defaultValue": null
             }
           ],
-          "order": 39,
+          "order": 40,
           "restricted": false,
           "rootField": false,
           "defaultValue": null
         }
       ],
-      "order": 32,
+      "order": 33,
+      "restricted": false,
+      "rootField": true,
+      "defaultValue": null
+    },
+    {
+      "id": null,
+      "name": "Vista de Findings no Governance",
+      "required": null,
+      "description": "$help[Nome de uma vista a usar no link de pesquisa de Findings de um Control no dashboard do Governance] $groupEdit",
+      "condition": null,
+      "duplicable": false,
+      "fields": [],
+      "order": 49,
       "restricted": false,
       "rootField": true,
       "defaultValue": null
@@ -635,7 +674,7 @@
       "condition": null,
       "duplicable": false,
       "fields": [],
-      "order": 47,
+      "order": 50,
       "restricted": false,
       "rootField": true,
       "defaultValue": null
@@ -656,7 +695,7 @@
           "condition": null,
           "duplicable": true,
           "fields": [],
-          "order": 49,
+          "order": 52,
           "restricted": false,
           "rootField": false,
           "defaultValue": null
@@ -669,13 +708,13 @@
           "condition": null,
           "duplicable": false,
           "fields": [],
-          "order": 50,
+          "order": 53,
           "restricted": false,
           "rootField": false,
           "defaultValue": null
         }
       ],
-      "order": 48,
+      "order": 51,
       "restricted": false,
       "rootField": true,
       "defaultValue": null
