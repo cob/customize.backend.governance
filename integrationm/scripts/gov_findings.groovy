@@ -1,81 +1,33 @@
-// vim: et sw=4 ts=4
+if (msg.product == "recordm" && msg.type == "Finding" && msg.action == "update") {
 
-import org.apache.commons.logging.*
+    def updates = ["id": "" + msg.instance.id]
 
-log = LogFactory.getLog("GOVERNANCE Finding");
+    if (msg.field("Estado").changed()) {
+        if (msg.value("Estado") == "Em Resolução") {
+            updates << ["Data de início resolução": "" + new Date().time]
 
-// ====================================================================================================
-//  MAIN LOGIC - START
-// ====================================================================================================
-
-if( msg.product == "recordm" && msg.type == "Finding") {
-    if(msg.action == "update" ) {
-        def updates = ["id": ""+msg.instance.id]
-
-        if(estadoMudouParaEmCurso()){
-            updates << ["Data de início resolução" : ""+new Date().time]
-        } else if(estadoMudouParaResolvido()){
-            updates << ["Data de resolução" : ""+new Date().time]
+        } else if (msg.value("Estado") == "Resolvido") {
+            updates << ["Data de resolução": "" + new Date().time]
         }
-
-        createOrUpdateInstance("Finding", updates)
     }
 
-    log.info ("Finished processing Finding ${msg.id}.")
-}
+    createOrUpdateInstance("Finding", updates)
 
-// ====================================================================================================
-//  MAIN LOGIC - END
-// ====================================================================================================
-
-
-// ====================================================================================================
-// MAIN LOGIC SUPPORT METHODS
-// ====================================================================================================
-
-// ----------------------------------------------------------------------------------------------------
-//  estadoMudouParaEmCurso
-// ----------------------------------------------------------------------------------------------------
-def estadoMudouParaEmCurso(){
-    def oldEstado = valorDoCampo(msg.oldInstance.fields, "Estado")
-    def estado = valorDoCampo(msg.instance.fields, "Estado")
-
-    return oldEstado != estado && estado == "Em Resolução";
-}
-
-// ----------------------------------------------------------------------------------------------------
-//  estadoMudouParaResolvido
-// ----------------------------------------------------------------------------------------------------
-def estadoMudouParaResolvido(){
-    def oldEstado = valorDoCampo(msg.oldInstance.fields, "Estado")
-    def estado = valorDoCampo(msg.instance.fields, "Estado")
-
-    return oldEstado != estado && estado == "Resolvido";
+    log.info("Finished processing Finding ${msg.id}.")
 }
 
 // ====================================================================================================
 // GENERIC SUPPORT METHODS
 // ====================================================================================================
 
-
-// ----------------------------------------------------------------------------------------------------
-//  createOrUpdateInstance
-// ----------------------------------------------------------------------------------------------------
 def createOrUpdateInstance(definitionName, instance) {
-    if(instance.id) {
+    if (instance.id) {
         // Update mas apenas se tiver mais que 1 campo (ou seja, excluindo o id)
-        if(instance.size() > 1) {
+        if (instance.size() > 1) {
             recordm.update(definitionName, "recordmInstanceId:" + instance["id"], instance)
         }
     } else {
         // Create
         recordm.create(definitionName, instance)
     }
-}
-
-// ----------------------------------------------------------------------------------------------------
-//  valorDoCampo
-// ----------------------------------------------------------------------------------------------------
-def valorDoCampo(fields, name){
-    return fields.find{it.fieldDefinition.name == name}?.value
 }
