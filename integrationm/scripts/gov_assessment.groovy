@@ -7,10 +7,10 @@ import java.util.concurrent.TimeUnit
 
 import org.apache.commons.logging.LogFactory
 import org.codehaus.jettison.json.*
-import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.ObjectMapper
 
-import java.util.Calendar;
-import javax.ws.rs.client.ClientBuilder;
+import java.util.Calendar
+import javax.ws.rs.client.ClientBuilder
 
 import javax.ws.rs.client.*
 import javax.ws.rs.core.Cookie
@@ -19,7 +19,7 @@ import javax.ws.rs.core.Response
 
 import config.GovernanceConfig
 
-log = LogFactory.getLog("GOVERNANCE Assessment");
+log = LogFactory.getLog("GOVERNANCE Assessment")
 rmRest = actionPacks.get("rmRest")
 umRest = actionPacks.get("umRest")
 now = new Date()
@@ -28,7 +28,7 @@ REGEX_VARS_ESPECIAIS = /[;,]?\$([^\$]*)\$[;,]?/
 
 @Field static cacheOfDefinitions = CacheBuilder.newBuilder()
         .expireAfterWrite(10, TimeUnit.MINUTES)
-        .build();
+        .build()
 
 
 // ====================================================================================================
@@ -40,7 +40,7 @@ if(    (msg.product == "governance" && msg.type == "clock"     && msg.action == 
         || (msg.product == "governance" && msg.type == "controlUI" && msg.action == "forceAssessment") ) {
     log.info ("Start Controls evaluations.")
 
-    if(GovernanceConfig.usesEmailActionPack) GovernanceConfig.emailActionPack = email;
+    if(GovernanceConfig.usesEmailActionPack) GovernanceConfig.emailActionPack = email
 
     // Obtem lista dos controls ligados
     def controls = getInstances("Control", "-periodicidade.raw:Off")
@@ -183,9 +183,9 @@ def getLastValidAssessment(control) {
 
     def limiteInferiorData
     switch (control[_("Periodicidade")][0]) {
-        case "Mensal":  limiteInferiorData = "M"; break;
-        case "Semanal": limiteInferiorData = "w"; break;
-        default:        limiteInferiorData = "d"; break;  // Diário e 15/15m
+        case "Mensal":  limiteInferiorData = "M"; break
+        case "Semanal": limiteInferiorData = "w"; break
+        default:        limiteInferiorData = "d"; break  // Diário e 15/15m
     }
 
     // Obtem offset em horas da timezone para corrigir pesquisa ao ES
@@ -197,7 +197,7 @@ def getLastValidAssessment(control) {
 
     // Obtem registo mais recente (primeiro dos resultados) de assessment válidos no RecordM. data.date:>=now-8h-30m+1h\/d+8h+30m-1h
     // o cálculo é: 'now' menos 'offsetUTC' (para não considerar o dia errado, que provoca engano nas semanas e meses) arredondado ao periodo (d | w | M) e deslocado para as 8h30 (com a devida correcção de 'offsetUTC')
-    def lastValidAssessmentFilter = "${_("Id Control")}.raw:${control.id} AND ${_("Data do Resultado")}.date:>=now-8h-30m+${offsetFromUTC}h\\/${limiteInferiorData}+8h+30m-${offsetFromUTC}h".toString();
+    def lastValidAssessmentFilter = "${_("Id Control")}.raw:${control.id} AND ${_("Data do Resultado")}.date:>=now-8h-30m+${offsetFromUTC}h\\/${limiteInferiorData}+8h+30m-${offsetFromUTC}h".toString()
     return getInstances("Assessment", lastValidAssessmentFilter)[0]
 }
 // ----------------------------------------------------------------------------------------------------
@@ -294,25 +294,25 @@ def assessControl(control){
     def atingimentoTotal  = 0
     def processedFindings = []
 
-    def specialVars = obterVariaveisEspeciaisDoControlo(control);
-    def specialVarAssessments = [:];
+    def specialVars = obterVariaveisEspeciaisDoControlo(control)
+    def specialVarAssessments = [:]
 
     // Realiza a avaliação do control contra cada registo especificado
     evaluationList.each { instanceToEval ->
-        def previousFinding = openFindings[""+instanceToEval.id];
-        def resultado      = evalInstance(control, instanceToEval, previousFinding);
+        def previousFinding = openFindings[""+instanceToEval.id]
+        def resultado      = evalInstance(control, instanceToEval, previousFinding)
         objectivoTotal    += resultado["Objectivo"]
         atingimentoTotal  += resultado["Atingimento"]
 
-        def finding = createOrUpdateFinding(control, openFindings, instanceToEval, resultado);
+        def finding = createOrUpdateFinding(control, openFindings, instanceToEval, resultado)
 
         if(finding != null){
             processedFindings += finding
             assessment["Findings"] += finding
 
             specialVars.each{ specVar ->
-                addSpecialAssessMap(specVar, resultado, finding, specialVarAssessments);
-            };
+                addSpecialAssessMap(specVar, resultado, finding, specialVarAssessments)
+            }
         }
 
         openFindings.remove(""+instanceToEval.id)
@@ -320,11 +320,11 @@ def assessControl(control){
 
     specialVarAssessments.each{ var, assessMap ->
         assessMap.findAll{ it.value["Findings"].size() > 0 }.each{ key, sAssess ->
-            sAssess << buildAssessmentResultMap(sAssess["Findings"], Double.valueOf(sAssess["Objectivo"]), Double.valueOf(sAssess["Atingimento"]));
+            sAssess << buildAssessmentResultMap(sAssess["Findings"], Double.valueOf(sAssess["Objectivo"]), Double.valueOf(sAssess["Atingimento"]))
         }
     }
 
-    assessment << buildAssessmentResultMap(processedFindings, objectivoTotal, atingimentoTotal);
+    assessment << buildAssessmentResultMap(processedFindings, objectivoTotal, atingimentoTotal)
 
     // Para cada finding aberto que não tenha sido processado (por não fazer mais parte da lista de instâncias a avaliar) repor e indicar remoção
     if(!(control[_("Assessment Tool")][0] == "DeviceM" && control["_marked_ToEval_"])){
@@ -335,8 +335,8 @@ def assessControl(control){
         }
     }
 
-    def suspeitos = processedFindings.findAll { !it.containsKey("_marked_Inaltered") && (it.containsKey("Estado") && !it["Estado"].contains("Suspeito")) };
-    def markedNew = processedFindings.findAll { it.containsKey("_marked_New") };
+    def suspeitos = processedFindings.findAll { !it.containsKey("_marked_Inaltered") && (it.containsKey("Estado") && !it["Estado"].contains("Suspeito")) }
+    def markedNew = processedFindings.findAll { it.containsKey("_marked_New") }
 
     // Se houver alterações aos findingss (ie, se há algum que não esteja _marked_Inaltered) então marca o assessment como alterado para: indicar envio do email de alterações e necessidade de actualizar Observações e Data de Resultado
     if( suspeitos.size() != 0 ) {
@@ -364,36 +364,36 @@ def assessControl(control){
         }
     }
 
-    assessment["Assessments Especiais"] = specialVarAssessments;
+    assessment["Assessments Especiais"] = specialVarAssessments
 
     return assessment
 }
 
 static def obterVariaveisEspeciaisDoControlo(control){
-    Set<String> specialVars = new HashSet<>();
+    Set<String> specialVars = new HashSet<>()
 
     ["Telemóvel", "Email Destino"].each{ fieldName ->
-        def value = control.containsKey(_(fieldName))? control[_(fieldName)][0]:null;
+        def value = control.containsKey(_(fieldName))? control[_(fieldName)][0]:null
 
         if(value != null){
             def vars = (value =~ REGEX_VARS_ESPECIAIS)
 
             vars.each{
-                specialVars.add(it[1]); //it[1] = Nome da variável SEM delimitadores (ex: $a$ = a)
-            };
+                specialVars.add(it[1]) //it[1] = Nome da variável SEM delimitadores (ex: $a$ = a)
+            }
         }
     }
 
-    return specialVars;
+    return specialVars
 };
 
 def addSpecialAssessMap(specVar, resultado, finding, specialVarAssessments){
 
-    def valor = resultado[specVar];
+    def valor = resultado[specVar]
 
     if(valor != null){
-        def specAssessMap = specialVarAssessments[specVar] ?: [:];
-        def sa = specAssessMap[valor];
+        def specAssessMap = specialVarAssessments[specVar] ?: [:]
+        def sa = specAssessMap[valor]
 
         if(sa == null){
             sa = [
@@ -401,16 +401,16 @@ def addSpecialAssessMap(specVar, resultado, finding, specialVarAssessments){
                     "Objectivo": Double.valueOf(resultado["Objectivo"] ?: 0),
                     "Atingimento": Double.valueOf(resultado["Atingimento"] ?: 0),
                     "Observações": ""
-            ];
+            ]
 
         } else {
-            sa["Findings"] += finding;
-            sa["Objectivo"] += Double.valueOf(resultado["Objectivo"] ?: 0);
-            sa["Atingimento"] += Double.valueOf(resultado["Atingimento"] ?: 0);
+            sa["Findings"] += finding
+            sa["Objectivo"] += Double.valueOf(resultado["Objectivo"] ?: 0)
+            sa["Atingimento"] += Double.valueOf(resultado["Atingimento"] ?: 0)
         }
 
-        specAssessMap.put(valor, sa);
-        specialVarAssessments.put(specVar, specAssessMap);
+        specAssessMap.put(valor, sa)
+        specialVarAssessments.put(specVar, specAssessMap)
     }
 }
 
@@ -420,13 +420,13 @@ def buildAssessmentResultMap(findings, objectivoTotal, atingimentoTotal){
             "Atingimento": "" + atingimentoTotal,
             "Resultado": "" + ( (atingimentoTotal==0 && objectivoTotal==0) ? 100: Math.round((100 * atingimentoTotal / (objectivoTotal?:1) )*100)/100 ), // % arredondada às décimas
             "Observações":  "" + buildReport(findings)
-    ];
+    ]
 }
 // ----------------------------------------------------------------------------------------------------
 def obterFindingsAbertos(control){
     def existingFindings = [:]
-    def query = "control.raw:${control.id} AND ${_("Estado")}.raw:(Suspeito OR \"Por Tratar\" OR \"Em Resolução\") ".toString();
-    def searchResult =  getInstances("Finding", query);
+    def query = "control.raw:${control.id} AND ${_("Estado")}.raw:(Suspeito OR \"Por Tratar\" OR \"Em Resolução\") ".toString()
+    def searchResult =  getInstances("Finding", query)
     searchResult.each { finding ->
         existingFindings << [
                 (finding[_("Id Asset Origem")][0]) : [
@@ -493,12 +493,12 @@ def prepareEvalInfo(condicaoSucesso, instanceToEval, previousFinding) {
                         'q': ""+pesquisa,
                         'from': "0", 'size': ""+size
                 ],
-                "");
+                "")
 
         if(resp =="NOT_OK"){
             throw new Exception("Não foi possível fazer a pesquisa pretendida ($definicao,$pesquisa).")
         }
-        JSONObject esResult = new JSONObject(resp);
+        JSONObject esResult = new JSONObject(resp)
         return esResult
     }
     evalMap["contaRegistos"] = { nomeDefinicao,pesquisa ->
@@ -508,36 +508,36 @@ def prepareEvalInfo(condicaoSucesso, instanceToEval, previousFinding) {
                         'q': ""+pesquisa,
                         'from': "0", 'size': "0"
                 ],
-                "");
+                "")
 
         if(resp =="NOT_OK"){
             throw new Exception("Não foi possível fazer a pesquisa pretendida ($nomeDefinicao,$pesquisa).")
         }
         JSONObject esResult = new JSONObject(resp)
         return esResult.hits.total.value
-    };
+    }
     evalMap["utilizadores"] = { String... groups ->
-        List users = getUsersWithGroups(groups);
+        List users = getUsersWithGroups(groups)
 
         return [
                 "emails": users.collect { it.email }.join(","),
                 "telefones": users.collect { it.contact ?: "" }.join(",")
-        ];
-    };
+        ]
+    }
 
     evalMap["getCpeRecordMInstance"] = { instancia ->
         def definitionId = instanceToEval._definitionInfo.id
-        def instance = null;
+        def instance = null
 
         def query = "id:${instanceToEval.cpeExternalId}"
         def searchResult = getInstancesPaged(definitionId, query, 0, 1)
 
         if(searchResult.size() == 1){
-            instance = searchResult.get(0);
+            instance = searchResult.get(0)
         }
 
-        return instance;
-    };
+        return instance
+    }
 
     //Load custom client functions
     GovernanceConfig.customAssessmentFunctions.each { fnName, code ->
@@ -577,57 +577,57 @@ def prepareEvalInfo(condicaoSucesso, instanceToEval, previousFinding) {
         return resultado;
     '''
 
-    def parsedEvalCode = parse(condicaoSucesso, instanceToEval, "instancia");
+    def parsedEvalCode = parse(condicaoSucesso, instanceToEval, "instancia")
 
     return [map:evalMap, code: baseCode + parsedEvalCode + finalReturnCode ]
 }
 
 //usado em customAssessmentFunctions
 def somaValoresES(indices, pesquisa, campoSoma, campoTempo, momentoInicio) {
-    def query = getEsQuery(pesquisa, campoTempo, momentoInicio);
-    def aggs =  getEsAgg("field_sum", "sum", campoSoma);
+    def query = getEsQuery(pesquisa, campoTempo, momentoInicio)
+    def aggs =  getEsAgg("field_sum", "sum", campoSoma)
 
     def esJsonStr = "{\"size\":0, " +
             "\"query\":${query}," +
             "\"aggregations\":${aggs}" +
             "}"
 
-    log.debug("$indices || $query || $aggs || $esJsonStr");
+    log.debug("$indices || $query || $aggs || $esJsonStr")
 
-    Response response = doAggSearch(indices, esJsonStr);
+    Response response = doAggSearch(indices, esJsonStr)
 
-    String body = response.readEntity(String.class);
+    String body = response.readEntity(String.class)
 
     if(response.getStatus().intdiv(100) != 2){
-        throw new Exception("Não foi possível fazer a pesquisa pretendida ($indices, $pesquisa, $campoSoma, $campoTempo, $momentoInicio): $body");
+        throw new Exception("Não foi possível fazer a pesquisa pretendida ($indices, $pesquisa, $campoSoma, $campoTempo, $momentoInicio): $body")
     }
 
-    JSONObject esResult = new JSONObject(body);
+    JSONObject esResult = new JSONObject(body)
 
-    return esResult.aggregations.field_sum.value;
+    return esResult.aggregations.field_sum.value
 };
 
 //usado em customAssessmentFunctions
 def mediaValoresES(indices, pesquisa, campoMedia, campoTempo, momentoInicio) {
-    def query = getEsQuery(pesquisa, campoTempo, momentoInicio);
-    def aggs =  getEsAgg("field_avg", "avg", campoMedia);
+    def query = getEsQuery(pesquisa, campoTempo, momentoInicio)
+    def aggs =  getEsAgg("field_avg", "avg", campoMedia)
 
     def esJsonStr = "{\"size\":0, " +
             "\"query\":${query}," +
             "\"aggregations\":${aggs}" +
-            "}";
+            "}"
 
-    def response = doAggSearch(indices, esJsonStr);
+    def response = doAggSearch(indices, esJsonStr)
 
-    String body = response.readEntity(String.class);
+    String body = response.readEntity(String.class)
 
     if(response.getStatus().intdiv(100) != 2){
-        throw new Exception("Não foi possível fazer a pesquisa pretendida ($indices, $pesquisa, $campoMedia, $campoTempo, $momentoInicio): $body");
+        throw new Exception("Não foi possível fazer a pesquisa pretendida ($indices, $pesquisa, $campoMedia, $campoTempo, $momentoInicio): $body")
     }
 
-    JSONObject esResult = new JSONObject(body);
+    JSONObject esResult = new JSONObject(body)
 
-    return esResult.aggregations.field_avg.value;
+    return esResult.aggregations.field_avg.value
 };
 
 def doAggSearch(indices, esJsonStr){
@@ -666,9 +666,9 @@ static def getEsQuery(pesquisa, campoTempo, momentoInicio){
             "}" + //bool
             "}" + //filter
             "}" + //filtered
-            "}");
+            "}")
 
-    return esQuery;
+    return esQuery
 }
 
 static def getEsAgg(name, type, field){
@@ -676,7 +676,7 @@ static def getEsAgg(name, type, field){
             "\"${type}\":{" +
             "\"field\":\"${field}\"" +
             "}" +
-            "}}";
+            "}}"
 }
 
 static def parse(textWithVars, instanceToEval, nomeVarInstancia){
@@ -688,20 +688,20 @@ static def parse(textWithVars, instanceToEval, nomeVarInstancia){
 
     // $Nome Campo$ = "<valor do campo>"
     parsedText = parsedText.replaceAll( /[$](.+?)[$]/ ) { m ->
-        def fieldName = m[1];
-        def esFieldName = _(fieldName);
+        def fieldName = m[1]
+        def esFieldName = _(fieldName)
         def esField = (instanceToEval["${esFieldName}"]
-                ?: instanceToEval["${fieldName}"]);
+                ?: instanceToEval["${fieldName}"])
 
         if(esField == null){
             log.warn("O campo \"${fieldName}\" não existe na instância a avaliar {{instance:${instanceToEval.id}}}")
-            return null;
+            return null
         }
 
-        return esField[0];
-    };
+        return esField[0]
+    }
 
-    return parsedText;
+    return parsedText
 }
 // ----------------------------------------------------------------------------------------------------
 def createOrUpdateFinding(control, openFindings, instanceToEval, resultado) {
@@ -763,10 +763,10 @@ def createOrUpdateFinding(control, openFindings, instanceToEval, resultado) {
             def suspectFindindNotYetToCreate = getFirstValue(control,_("Quando considerar inconformidade"))=="Após repetição da detecção"
             def intervalo
             switch (control[_("Periodicidade")][0]) {
-                case "Mensal":  intervalo = 30*24*60; break;
-                case "Semanal": intervalo = 7*24*60; break;
-                case "Diária":  intervalo = 24*60; break;
-                case "15m":     intervalo = 15; break;
+                case "Mensal":  intervalo = 30*24*60; break
+                case "Semanal": intervalo = 7*24*60; break
+                case "Diária":  intervalo = 24*60; break
+                case "15m":     intervalo = 15; break
             }
 
             def newFinding = [
@@ -868,13 +868,13 @@ def getEvaluationDataDeviceM(control) {
         def taskListObj = new JSONObject('{ "result":'+taskList+'}')
         evalList = []
         for(int index = 0; index < taskListObj.result.length(); index++){
-            def hitJson = taskListObj.result.getJSONObject(index);
+            def hitJson = taskListObj.result.getJSONObject(index)
             /* {commands=R100, state=ok, _definitionInfo={id=36, timeSpent=1, filePreviews=null, uri=http://localhost:40180/confm/requests/2122406/tasks/2122406/tasks/368794552, cpeExternalId=418, id=418, changedFilesInJson=, cpeName=185-Sintra-Agualva, errors=, results=R100=1, cpesJobRequest=2122406, cpe=40, endTimestamp=1502401144176} */
-            def hitMap  = recordmJsonToMap(hitJson.toString());
+            def hitMap  = recordmJsonToMap(hitJson.toString())
             hitMap << ["id" : hitMap.cpeExternalId ]
             hitMap << ["_definitionInfo"    : ["id" : definitionId, "instanceLabel" : [ "name" : ["_label_fake_field_"] ] ] ]
             hitMap << ["_label_fake_field_" : [hitMap.cpeName] ]
-            evalList.add(hitMap);
+            evalList.add(hitMap)
         }
         if(evalList.size() == 0){
             assessmentInfo << [ "Atingimento": "0" ]
@@ -885,7 +885,7 @@ def getEvaluationDataDeviceM(control) {
 
     // Se está marcado para correr executa comando no DeviceM de forma a poder avaliar o resultado na próxima execução (dentro de 15m)
     if(control["_marked_ToEval_"]) {
-        def jobId = execCmdWhere(control[_("Comando")][0],control[_("Filtro")][0]);
+        def jobId = execCmdWhere(control[_("Comando")][0],control[_("Filtro")][0])
         assessmentInfo << ["DeviceM JobID": ""+jobId]
     }
 
@@ -893,24 +893,24 @@ def getEvaluationDataDeviceM(control) {
 }
 // --------------------------------------------------------------------
 def execCmdWhere(cmd,condition){
-    def fields = new HashMap<String, String>();
+    def fields = new HashMap<String, String>()
 
-    fields["condition"] = condition;
-    fields["commands"] = cmd;
+    fields["condition"] = condition
+    fields["commands"] = cmd
 
-    def resp;
+    def resp
     try {
-        resp = actionPacks.get("cmRest").post("/confm/integration/cmd",fields);
+        resp = actionPacks.get("cmRest").post("/confm/integration/cmd",fields)
     } catch (e) {
-        resp = "NOT_OK";
+        resp = "NOT_OK"
     }
 
     if(resp == "NOT_OK"){
         log.error("Error executing commands {{params : " + fields + "}}")
-        return null;
+        return null
     } else {
-        JSONObject job = new JSONObject(resp);
-        return job.getInt("id");
+        JSONObject job = new JSONObject(resp)
+        return job.getInt("id")
     }
 }
 // ----------------------------------------------------------------------------------------------------
@@ -943,10 +943,10 @@ def executaAccoesComplementares(control, assessment) {
                 }
             }
 
-            def textoBase = control.containsKey(_("Texto"))? control[_("Texto")][idx] : "";
+            def textoBase = control.containsKey(_("Texto"))? control[_("Texto")][idx] : ""
 
             if ( sendNow && action == "Enviar Email Resumo alterações" ) {
-                def assessmentsEspeciais = [:];
+                def assessmentsEspeciais = [:]
 
                 assessment["Assessments Especiais"].each{ specVar, map ->
                     specAssess = map.findAll{ key, assess-> assess["_marked_Changed"] }
@@ -954,30 +954,30 @@ def executaAccoesComplementares(control, assessment) {
                     if(specAssess.size() > 0){
                         assessmentsEspeciais.put(specVar, specAssess)
                     }
-                };
+                }
 
-                String emails = control[_("Email Destino")][mailActionsIdx];
-                def emailsEspeciais = obterVarsEspeciais(emails, assessmentsEspeciais);
+                String emails = control[_("Email Destino")][mailActionsIdx]
+                def emailsEspeciais = obterVarsEspeciais(emails, assessmentsEspeciais)
 
-                String emailsBcc = control[_("Email Destino BCC")]!=null? control[_("Email Destino BCC")][mailActionsIdx] :"";
+                String emailsBcc = control[_("Email Destino BCC")]!=null? control[_("Email Destino BCC")][mailActionsIdx] :""
 
                 if(emailsEspeciais.size() > 0){
 
-                    enviarEmailsEspeciais(emailsEspeciais, emailsBcc, subject, textoBase);
+                    enviarEmailsEspeciais(emailsEspeciais, emailsBcc, subject, textoBase)
 
-                    emails = removerVarsEspeciais(emails, emailsEspeciais);
+                    emails = removerVarsEspeciais(emails, emailsEspeciais)
                 }
 
                 if (emails && emails.length() > 0) {
-                    GovernanceConfig.sendMail(subject, body + "\n\n" + textoBase, emails, emailsBcc);
+                    GovernanceConfig.sendMail(subject, body + "\n\n" + textoBase, emails, emailsBcc)
                 }
 
-                mailActionsIdx++;
+                mailActionsIdx++
             }
 
             //Enviar apenas novas inconformidades para poupar caracteres (max 747 nas SMS)
             if ( sendNow && action == "Enviar SMS qd há novas inconformidades" && assessment["_marked_New_Findings"] ) {
-                def assessmentsEspeciais = [:];
+                def assessmentsEspeciais = [:]
 
                 assessment["Assessments Especiais"].each{ specVar, map ->
                     specAssess = map.findAll{ key, assess-> assess["_marked_New_Findings"] }
@@ -985,22 +985,22 @@ def executaAccoesComplementares(control, assessment) {
                     if(specAssess.size() > 0){
                         assessmentsEspeciais.put(specVar, specAssess)
                     }
-                };
+                }
 
-                def codigo = control[_("Código")][0];
-                def numsTel = control[_("Telemóvel")][smsActionsIdx++];
+                def codigo = control[_("Código")][0]
+                def numsTel = control[_("Telemóvel")][smsActionsIdx++]
 
-                def numsEspeciais = obterVarsEspeciais(numsTel, assessmentsEspeciais);
+                def numsEspeciais = obterVarsEspeciais(numsTel, assessmentsEspeciais)
 
                 if(numsEspeciais.size() > 0){
 
-                    enviarSMSEspeciais(numsEspeciais, codigo, textoBase);
+                    enviarSMSEspeciais(numsEspeciais, codigo, textoBase)
 
-                    numsTel = removerVarsEspeciais(numsTel, numsEspeciais);
+                    numsTel = removerVarsEspeciais(numsTel, numsEspeciais)
                 }
 
                 if(numsTel.length() > 0){
-                    body = buidlStateReport(assessment["Findings"] ,"_marked_New", "<b>NOVAS inconformidades:</b>\n") ?: "Sem observações.";
+                    body = buidlStateReport(assessment["Findings"] ,"_marked_New", "<b>NOVAS inconformidades:</b>\n") ?: "Sem observações."
                     new SendSMS().send(codigo, (textoBase + "\n\n" + body).toString(), numsTel)
                 }
             }
@@ -1009,55 +1009,55 @@ def executaAccoesComplementares(control, assessment) {
 }
 
 static def obterVarsEspeciais(vars, assessmentsEspeciais){
-    def varsEspeciais = (vars =~ REGEX_VARS_ESPECIAIS);
+    def varsEspeciais = (vars =~ REGEX_VARS_ESPECIAIS)
 
     return varsEspeciais.collect{
-        def parsed = it[1]; //Nome da variável especial SEM delimitadores (ex: email)
+        def parsed = it[1] //Nome da variável especial SEM delimitadores (ex: email)
 
         return [
                 "raw": it[0] //Nome da variável especial COM delimitadores (ex: $email$)
                 , "parsed": parsed
                 , "assessments": (assessmentsEspeciais[parsed] ?: [:])
         ]
-    };
+    }
 }
 
 def enviarEmailsEspeciais(emailsEspeciais, String emailsBcc, subject, textoBase){
     emailsEspeciais.each{
-        def assessMap = it["assessments"];
+        def assessMap = it["assessments"]
 
         assessMap.findAll { emails, assessment -> emails.length() > 0 }
                 .each { emails, assessment ->
 
-                    def body = assessment["Observações"] ?: "Sem observações.";
+                    def body = assessment["Observações"] ?: "Sem observações."
 
-                    log.info("A enviar email especial para $emails: ${body + "\n\n" + textoBase}}");
-                    GovernanceConfig.sendMail(subject, body + "\n\n" + textoBase, emails, emailsBcc);
+                    log.info("A enviar email especial para $emails: ${body + "\n\n" + textoBase}}")
+                    GovernanceConfig.sendMail(subject, body + "\n\n" + textoBase, emails, emailsBcc)
                 }
-    };
+    }
 }
 
 static def enviarSMSEspeciais(numsEspeciais, codigo, textoBase){
     numsEspeciais.each{
-        def assessMap = it["assessments"];
+        def assessMap = it["assessments"]
 
         assessMap.findAll { telefones, assessment -> telefones.length() > 0 }
                 .each{ telefones, assessment ->
 
-                    def body = buidlStateReport(assessment["Findings"] ,"_marked_New", "<b>NOVAS inconformidades:</b>\n") ?: "Sem observações.";
+                    def body = buidlStateReport(assessment["Findings"] ,"_marked_New", "<b>NOVAS inconformidades:</b>\n") ?: "Sem observações."
 
-                    log.info("A enviar SMS especial para $telefones: ${textoBase + "\n\n" + body}}");
-                    new SendSMS().send(codigo, (textoBase + "\n\n" + body).toString(), telefones);
+                    log.info("A enviar SMS especial para $telefones: ${textoBase + "\n\n" + body}}")
+                    new SendSMS().send(codigo, (textoBase + "\n\n" + body).toString(), telefones)
                 }
-    };
+    }
 }
 
 static def removerVarsEspeciais(vars, varsEspeciais){
     varsEspeciais.each{
-        vars -= it.raw;
+        vars -= it.raw
     }
 
-    return vars;
+    return vars
 }
 
 
@@ -1076,11 +1076,11 @@ def getInstancesById(idDefinicao, query){
 }
 // --------------------------------------------------------------------
 def getInstancesPaged(idDefinicao, query, from, numInstancias){
-    def result = [];
+    def result = []
 
     def size = (numInstancias != null
             ? numInstancias
-            : 500);
+            : 500)
 
     def resp = rmRest.get(
             "recordm/definitions/search/" + idDefinicao,
@@ -1089,42 +1089,42 @@ def getInstancesPaged(idDefinicao, query, from, numInstancias){
                     'from': "" + from,
                     'size': "" + size
             ],
-            "");
+            "")
 
     if(resp !="NOT_OK"){
-        JSONObject esResult = new JSONObject(resp);
-        def totalResults = esResult.hits.total.value.toInteger();
-        def hits = esResult.hits.hits;
-        def numResults = hits.length();
+        JSONObject esResult = new JSONObject(resp)
+        def totalResults = esResult.hits.total.value.toInteger()
+        def hits = esResult.hits.hits
+        def numResults = hits.length()
 
         if( totalResults > 0){
-            result.addAll(esSourceList(hits));
+            result.addAll(esSourceList(hits))
 
             if(numResults == size){
-                result.addAll(getInstancesPaged(idDefinicao, query, from+size, size));
+                result.addAll(getInstancesPaged(idDefinicao, query, from+size, size))
             }
         }
     }
 
-    return result;
+    return result
 }
 // --------------------------------------------------------------------
 def esSourceList(hits){
-    def sourceList = [];
+    def sourceList = []
 
     for(int index = 0; index < hits.length(); index++){
-        def hit = hits.getJSONObject(index);
+        def hit = hits.getJSONObject(index)
 
-        sourceList.add(recordmJsonToMap(hit._source.toString()));
+        sourceList.add(recordmJsonToMap(hit._source.toString()))
     }
 
-    return sourceList;
+    return sourceList
 }
 // --------------------------------------------------------------------
 def recordmJsonToMap(content){
-    ObjectMapper mapper = new ObjectMapper();
+    ObjectMapper mapper = new ObjectMapper()
 
-    return mapper.readValue(content,HashMap.class);
+    return mapper.readValue(content,HashMap.class)
 }
 // --------------------------------------------------------------------
 static def getFirstValue(map, key) {
@@ -1135,14 +1135,14 @@ static def getFirstValue(map, key) {
 //  getDefinitionId - Obtem o id de uma definição a partir do Nome da mesma
 // ----------------------------------------------------------------------------------------------------
 static def _forceGetDefinitionId(definitionName){
-    def resp = rmRest.get("recordm/definitions/name/" + definitionName, "");
+    def resp = rmRest.get("recordm/definitions/name/" + definitionName, "")
 
     if(resp != "NOT_OK"){
-        JSONObject definition = new JSONObject(resp);
+        JSONObject definition = new JSONObject(resp)
 
-        return definition.id;
+        return definition.id
     }
-    return null;
+    return null
 }
 
 static def getDefinitionId(definitionName){
@@ -1153,7 +1153,7 @@ static def getDefinitionId(definitionName){
 //  createOrUpdateInstance
 // ----------------------------------------------------------------------------------------------------
 def createOrUpdateInstance(definitionName, instance) {
-    def updates = cloneAndStripInstanceForRecordmSaving(instance);
+    def updates = cloneAndStripInstanceForRecordmSaving(instance)
 
     if(instance.id) {
         // Update mas apenas se tiver mais que 1 campo (ou seja, excluindo o id)
@@ -1185,17 +1185,17 @@ static def cloneAndStripInstanceForRecordmSaving(instance){
 //  toEsName (nome reduzido para "_")  - Converte um nome de campo RecordM no seu correspondente no ES
 // ----------------------------------------------------------------------------------------------------
 static def _(fieldName){
-    return fieldName.toLowerCase().replace(" ", "_");
+    return fieldName.toLowerCase().replace(" ", "_")
 }
 // --------------------------------------------------------------------
 def getUsersWithGroups(groups){
-    return getUsersWithGroups(groups, 0, 50);
+    return getUsersWithGroups(groups, 0, 50)
 }
 // --------------------------------------------------------------------
 def getUsersWithGroups(groups, from, size){
-    def users = [];
+    def users = []
 
-    def query = "groups.name:(\"${groups.join('" AND "')}\") AND -username:test*";
+    def query = "groups.name:(\"${groups.join('" AND "')}\") AND -username:test*"
 
     def resp = umRest.get(
             "userm/search/userm/user",
@@ -1206,24 +1206,24 @@ def getUsersWithGroups(groups, from, size){
                     'from': "" + from,
                     'size': "" + size
             ],
-            "");
+            "")
 
     if(resp !="NOT_OK"){
-        JSONObject esResult = new JSONObject(resp);
-        def totalResults = esResult.hits.total.value.toInteger();
-        def hits = esResult.hits.hits;
-        def numResults = hits.length();
+        JSONObject esResult = new JSONObject(resp)
+        def totalResults = esResult.hits.total.value.toInteger()
+        def hits = esResult.hits.hits
+        def numResults = hits.length()
 
         if( totalResults > 0){
-            users.addAll(esSourceList(hits));
+            users.addAll(esSourceList(hits))
 
             if(numResults == size && size > 1){
-                result.addAll(getUsersWithGroups(groups, from+size, size));
+                result.addAll(getUsersWithGroups(groups, from+size, size))
             }
         }
     }
 
-    return users;
+    return users
 }
 // --------------------------------------------------------------------
 
