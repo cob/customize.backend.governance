@@ -83,7 +83,7 @@ if(    (msg.product == "governance" && msg.type == "clock"     && msg.action == 
 // ----------------------------------------------------------------------------------------------------
 // obtemMatrizCompletaDePesos - retorna matriz com pesos de cada nível e control
 // ----------------------------------------------------------------------------------------------------
-def obtemMatrizCompletaDePesos(controls){
+static def obtemMatrizCompletaDePesos(controls){
     def pesos = [:]
     def done = [:]
 
@@ -359,7 +359,7 @@ def assessControl(control){
     return assessment
 }
 
-def obterVariaveisEspeciaisDoControlo(control){
+static def obterVariaveisEspeciaisDoControlo(control){
     Set<String> specialVars = new HashSet<>();
 
     ["Telemóvel", "Email Destino"].each{ fieldName ->
@@ -377,7 +377,7 @@ def obterVariaveisEspeciaisDoControlo(control){
     return specialVars;
 };
 
-def obterValorDeVariavelEspecial(control, specialVar){
+static def obterValorDeVariavelEspecial(control, specialVar){
     def val = "";
     def condSucessControl = control[_("Condição de sucesso")][0];
 
@@ -641,7 +641,7 @@ def doAggSearch(indices, esJsonStr){
             .post(Entity.entity(esJsonStr, MediaType.APPLICATION_JSON), Response.class)
 };
 
-def getEsQuery(pesquisa, campoTempo, momentoInicio){
+static def getEsQuery(pesquisa, campoTempo, momentoInicio){
     def esQuery = "{\"bool\":{" +
             "\"must\":{" +
             "\"query_string\":{" +
@@ -672,7 +672,7 @@ def getEsQuery(pesquisa, campoTempo, momentoInicio){
     return esQuery;
 }
 
-def getEsAgg(name, type, field){
+static def getEsAgg(name, type, field){
     return "{\"${name}\":{" +
             "\"${type}\":{" +
             "\"field\":\"${field}\"" +
@@ -680,7 +680,7 @@ def getEsAgg(name, type, field){
             "}}";
 }
 
-def parse(textWithVars, instanceToEval, nomeVarInstancia){
+static def parse(textWithVars, instanceToEval, nomeVarInstancia){
     // $id$ = <id da instancia>
     def parsedText = textWithVars.replace("\$id\$", "" + instanceToEval.id)
 
@@ -801,7 +801,7 @@ def createOrUpdateFinding(control, openFindings, instanceToEval, resultado) {
     return previousFinding
 }
 // --------------------------------------------------------------------
-def buildReport(control,findings) {
+static def buildReport(control, findings) {
     def report = ""
     report += buidlStateReport(findings,"_marked_NewButNoReport","<b>Inconformidades contabilizadas mas não reportadas:</b>\n")
     report += buidlStateReport(findings,"_marked_New",           "<b>NOVAS inconformidades:</b>\n")
@@ -811,7 +811,7 @@ def buildReport(control,findings) {
     return report
 }
 // --------------------------------------------------------------------
-def buidlStateReport(findings,changeType,label) {
+static def buidlStateReport(findings, changeType, label) {
     def report = ""
     def count = 0
     findings.findAll { it[changeType] }.each { finding ->
@@ -915,7 +915,7 @@ def execCmdWhere(cmd,condition){
     }
 }
 // ----------------------------------------------------------------------------------------------------
-def getEvaluationDataManual(control) {
+static def getEvaluationDataManual(control) {
     return ["evalList": [["id":26075],["id":999]] ]
 }
 // ----------------------------------------------------------------------------------------------------
@@ -1009,7 +1009,7 @@ def executaAccoesComplementares(control, assessment) {
     }
 }
 
-def obterVarsEspeciais(vars, assessmentsEspeciais){
+static def obterVarsEspeciais(vars, assessmentsEspeciais){
     def varsEspeciais = (vars =~ REGEX_VARS_ESPECIAIS);
 
     return varsEspeciais.collect{
@@ -1038,7 +1038,7 @@ def enviarEmailsEspeciais(emailsEspeciais, String emailsBcc, subject, textoBase)
     };
 }
 
-def enviarSMSEspeciais(numsEspeciais, codigo, textoBase){
+static def enviarSMSEspeciais(numsEspeciais, codigo, textoBase){
     numsEspeciais.each{
         def assessMap = it["assessments"];
 
@@ -1053,7 +1053,7 @@ def enviarSMSEspeciais(numsEspeciais, codigo, textoBase){
     };
 }
 
-def removerVarsEspeciais(vars, varsEspeciais){
+static def removerVarsEspeciais(vars, varsEspeciais){
     varsEspeciais.each{
         vars -= it.raw;
     }
@@ -1128,7 +1128,7 @@ def recordmJsonToMap(content){
     return mapper.readValue(content,HashMap.class);
 }
 // --------------------------------------------------------------------
-def getFirstValue(map, key) {
+static def getFirstValue(map, key) {
     return map.containsKey(key) ? map[key][0] : null
 }
 
@@ -1165,7 +1165,7 @@ def createOrUpdateInstance(definitionName, instance) {
 }
 
 //necessário remover os Boolean da instância para se conseguir gravar no recordm
-def cloneAndStripInstanceForRecordmSaving(instance){
+static def cloneAndStripInstanceForRecordmSaving(instance){
     def updates = [:]
     instance.each { k, v ->
         //log.info("XXXXX KEYk " + k + v)
@@ -1182,7 +1182,7 @@ def cloneAndStripInstanceForRecordmSaving(instance){
 // ----------------------------------------------------------------------------------------------------
 //  toEsName (nome reduzido para "_")  - Converte um nome de campo RecordM no seu correspondente no ES
 // ----------------------------------------------------------------------------------------------------
-def _(fieldName){
+static def _(fieldName){
     return fieldName.toLowerCase().replace(" ", "_");
 }
 // --------------------------------------------------------------------
