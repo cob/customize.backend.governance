@@ -281,7 +281,7 @@ def assessControl(control){
     switch (control[_("Assessment Tool")][0]) {
         case "RecordM" : evaluationData = getEvaluationDataRecordM(control); break
         case "DeviceM" : evaluationData = getEvaluationDataDeviceM(control); break
-        case "Manual"  : evaluationData = getEvaluationDataManual(control);  break
+        case "Manual"  : evaluationData = getEvaluationDataManual();  break
     }
     def evaluationList = evaluationData.evalList
     assessment << evaluationData.assessmentInfo
@@ -311,7 +311,7 @@ def assessControl(control){
             assessment["Findings"] += finding
 
             specialVars.each{ specVar ->
-                addSpecialAssessMap(specVar, control, instanceToEval, resultado, finding, specialVarAssessments);
+                addSpecialAssessMap(specVar, resultado, finding, specialVarAssessments);
             };
         }
 
@@ -320,11 +320,11 @@ def assessControl(control){
 
     specialVarAssessments.each{ var, assessMap ->
         assessMap.findAll{ it.value["Findings"].size() > 0 }.each{ key, sAssess ->
-            sAssess << buildAssessmentResultMap(control, sAssess["Findings"], Double.valueOf(sAssess["Objectivo"]), Double.valueOf(sAssess["Atingimento"]));
+            sAssess << buildAssessmentResultMap(sAssess["Findings"], Double.valueOf(sAssess["Objectivo"]), Double.valueOf(sAssess["Atingimento"]));
         }
     }
 
-    assessment << buildAssessmentResultMap(control, processedFindings, objectivoTotal, atingimentoTotal);
+    assessment << buildAssessmentResultMap(processedFindings, objectivoTotal, atingimentoTotal);
 
     // Para cada finding aberto que não tenha sido processado (por não fazer mais parte da lista de instâncias a avaliar) repor e indicar remoção
     if(!(control[_("Assessment Tool")][0] == "DeviceM" && control["_marked_ToEval_"])){
@@ -387,20 +387,7 @@ static def obterVariaveisEspeciaisDoControlo(control){
     return specialVars;
 };
 
-static def obterValorDeVariavelEspecial(control, specialVar){
-    def val = "";
-    def condSucessControl = control[_("Condição de sucesso")][0];
-
-    def values = (condSucessControl =~ /["']${specialVar}["']\s*:\s*([^\]]*)/)
-
-    if(values.size() > 0){
-        val = values[0][1].replaceAll(/["']/, "");
-    }
-
-    return val;
-};
-
-def addSpecialAssessMap(specVar, control, instanceToEval, resultado, finding, specialVarAssessments){
+def addSpecialAssessMap(specVar, resultado, finding, specialVarAssessments){
 
     def valor = resultado[specVar];
 
@@ -427,12 +414,12 @@ def addSpecialAssessMap(specVar, control, instanceToEval, resultado, finding, sp
     }
 }
 
-def buildAssessmentResultMap(control, findings, objectivoTotal, atingimentoTotal){
+def buildAssessmentResultMap(findings, objectivoTotal, atingimentoTotal){
     return [
             "Objectivo": "" + objectivoTotal,
             "Atingimento": "" + atingimentoTotal,
             "Resultado": "" + ( (atingimentoTotal==0 && objectivoTotal==0) ? 100: Math.round((100 * atingimentoTotal / (objectivoTotal?:1) )*100)/100 ), // % arredondada às décimas
-            "Observações":  "" + buildReport(control, findings)
+            "Observações":  "" + buildReport(findings)
     ];
 }
 // ----------------------------------------------------------------------------------------------------
@@ -470,7 +457,7 @@ def evalInstance(control, instanceToEval, previousFinding) {
     def output = null
     try {
         // Prepara dados e código adicional a passar para a avaliação de forma a simplificar o código de avaliação
-        def evalInfo = prepareEvalInfo(condicaoSucesso, instanceToEval, previousFinding, control)
+        def evalInfo = prepareEvalInfo(condicaoSucesso, instanceToEval, previousFinding)
 
         // Avalia o código do control, enqiquecido com os código base
         output = Eval.x(evalInfo.map, evalInfo.code)
@@ -492,7 +479,7 @@ def evalInstance(control, instanceToEval, previousFinding) {
     return resultado
 }
 // --------------------------------------------------------------------
-def prepareEvalInfo(condicaoSucesso, instanceToEval, previousFinding, control) {
+def prepareEvalInfo(condicaoSucesso, instanceToEval, previousFinding) {
     def evalMap = [:]
 
     //Aumenta código de avaliação com dados e métodos para simplificar a escrita dos testes
@@ -595,6 +582,7 @@ def prepareEvalInfo(condicaoSucesso, instanceToEval, previousFinding, control) {
     return [map:evalMap, code: baseCode + parsedEvalCode + finalReturnCode ]
 }
 
+//usado em customAssessmentFunctions
 def somaValoresES(indices, pesquisa, campoSoma, campoTempo, momentoInicio) {
     def query = getEsQuery(pesquisa, campoTempo, momentoInicio);
     def aggs =  getEsAgg("field_sum", "sum", campoSoma);
@@ -619,6 +607,7 @@ def somaValoresES(indices, pesquisa, campoSoma, campoTempo, momentoInicio) {
     return esResult.aggregations.field_sum.value;
 };
 
+//usado em customAssessmentFunctions
 def mediaValoresES(indices, pesquisa, campoMedia, campoTempo, momentoInicio) {
     def query = getEsQuery(pesquisa, campoTempo, momentoInicio);
     def aggs =  getEsAgg("field_avg", "avg", campoMedia);
@@ -811,7 +800,7 @@ def createOrUpdateFinding(control, openFindings, instanceToEval, resultado) {
     return previousFinding
 }
 // --------------------------------------------------------------------
-static def buildReport(control, findings) {
+static def buildReport(findings) {
     def report = ""
     report += buidlStateReport(findings,"_marked_NewButNoReport","<b>Inconformidades contabilizadas mas não reportadas:</b>\n")
     report += buidlStateReport(findings,"_marked_New",           "<b>NOVAS inconformidades:</b>\n")
@@ -925,7 +914,7 @@ def execCmdWhere(cmd,condition){
     }
 }
 // ----------------------------------------------------------------------------------------------------
-static def getEvaluationDataManual(control) {
+static def getEvaluationDataManual() {
     return ["evalList": [["id":26075],["id":999]] ]
 }
 // ----------------------------------------------------------------------------------------------------
