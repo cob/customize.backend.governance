@@ -709,7 +709,6 @@ def createOrUpdateFinding(control, openFindings, instanceToEval, resultado) {
     def previousFinding = openFindings[""+instanceToEval.id]
     def previousTestOk  = previousFinding ? previousFinding["Reposição Detectada"] : ""
     def previousState   = previousFinding ? previousFinding["Estado"] : ""
-    def report
 
     if(successFlag){
         if(previousTestOk == "Não"){
@@ -901,7 +900,7 @@ def execCmdWhere(cmd,condition){
     def resp
     try {
         resp = actionPacks.get("cmRest").post("/confm/integration/cmd",fields)
-    } catch (e) {
+    } catch () {
         resp = "NOT_OK"
     }
 
