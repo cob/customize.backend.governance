@@ -1,5 +1,10 @@
 // vim: et sw=4 ts=4
 
+import groovy.transform.Field
+
+import com.google.common.cache.*
+import java.util.concurrent.TimeUnit
+
 import org.apache.commons.logging.LogFactory
 import org.codehaus.jettison.json.*
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -20,6 +25,11 @@ umRest = actionPacks.get("umRest")
 now = new Date()
 
 REGEX_VARS_ESPECIAIS = /[;,]?\$([^\$]*)\$[;,]?/
+
+@Field static cacheOfDefinitions = CacheBuilder.newBuilder()
+        .expireAfterWrite(10, TimeUnit.MINUTES)
+        .build();
+
 
 // ====================================================================================================
 //  MAIN LOGIC - START  -  As Avaliações (Assessments) acontece em 2 circunstâncias:
@@ -1135,8 +1145,7 @@ static def getFirstValue(map, key) {
 // ----------------------------------------------------------------------------------------------------
 //  getDefinitionId - Obtem o id de uma definição a partir do Nome da mesma
 // ----------------------------------------------------------------------------------------------------
-//TODO jbarata fazer uma cache com isto
-def getDefinitionId(definitionName){
+static def _forceGetDefinitionId(definitionName){
     def resp = rmRest.get("recordm/definitions/name/" + definitionName, "");
 
     if(resp != "NOT_OK"){
@@ -1145,6 +1154,10 @@ def getDefinitionId(definitionName){
         return definition.id;
     }
     return null;
+}
+
+static def getDefinitionId(definitionName){
+    return cacheOfDefinitions.get(definitionName, { _forceGetDefinitionId(definitionName) })
 }
 
 // ----------------------------------------------------------------------------------------------------
