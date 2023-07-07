@@ -5,7 +5,6 @@ import groovy.transform.Field
 import com.google.common.cache.*
 import java.util.concurrent.TimeUnit
 
-import org.apache.commons.logging.LogFactory
 import org.codehaus.jettison.json.*
 import com.fasterxml.jackson.databind.ObjectMapper
 
@@ -19,12 +18,11 @@ import javax.ws.rs.core.Response
 
 import config.GovernanceConfig
 
-log = LogFactory.getLog("GOVERNANCE Assessment")
-rmRest = actionPacks.get("rmRest")
-umRest = actionPacks.get("umRest")
-now = new Date()
+@Field rmRest = actionPacks.get("rmRest")
+@Field umRest = actionPacks.get("umRest")
+@Field now = new Date()
 
-REGEX_VARS_ESPECIAIS = /[;,]?\$([^\$]*)\$[;,]?/
+@Field static REGEX_VARS_ESPECIAIS = /[;,]?\$([^\$]*)\$[;,]?/
 
 @Field static cacheOfDefinitions = CacheBuilder.newBuilder()
         .expireAfterWrite(10, TimeUnit.MINUTES)
@@ -900,7 +898,8 @@ def execCmdWhere(cmd,condition){
     def resp
     try {
         resp = actionPacks.get("cmRest").post("/confm/integration/cmd",fields)
-    } catch () {
+    } catch (e) {
+        log.info("ERROR " + e)
         resp = "NOT_OK"
     }
 
@@ -1036,7 +1035,7 @@ def enviarEmailsEspeciais(emailsEspeciais, String emailsBcc, subject, textoBase)
     }
 }
 
-static def enviarSMSEspeciais(numsEspeciais, codigo, textoBase){
+def enviarSMSEspeciais(numsEspeciais, codigo, textoBase){
     numsEspeciais.each{
         def assessMap = it["assessments"]
 
@@ -1133,7 +1132,7 @@ static def getFirstValue(map, key) {
 // ----------------------------------------------------------------------------------------------------
 //  getDefinitionId - Obtem o id de uma definição a partir do Nome da mesma
 // ----------------------------------------------------------------------------------------------------
-static def _forceGetDefinitionId(definitionName){
+def _forceGetDefinitionId(definitionName){
     def resp = rmRest.get("recordm/definitions/name/" + definitionName, "")
 
     if(resp != "NOT_OK"){
@@ -1144,7 +1143,7 @@ static def _forceGetDefinitionId(definitionName){
     return null
 }
 
-static def getDefinitionId(definitionName){
+def getDefinitionId(definitionName){
     return cacheOfDefinitions.get(definitionName, { _forceGetDefinitionId(definitionName) })
 }
 
@@ -1166,7 +1165,7 @@ def createOrUpdateInstance(definitionName, instance) {
 }
 
 //necessário remover os Boolean da instância para se conseguir gravar no recordm
-static def cloneAndStripInstanceForRecordmSaving(instance){
+def cloneAndStripInstanceForRecordmSaving(instance){
     def updates = [:]
     instance.each { k, v ->
         //log.info("XXXXX KEYk " + k + v)
