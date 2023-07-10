@@ -485,35 +485,23 @@ def prepareEvalInfo(condicaoSucesso, instanceToEval, previousFinding) {
     evalMap["previousFinding"]  = previousFinding
     evalMap["log"]              = { msg -> log.info(msg) }
     evalMap["rmRest"]           = rmRest
-    evalMap["pesquisaRegistos"] = { definicao,pesquisa,size ->
-        def resp = rmRest.get("recordm/definitions/search/"+definicao,
-                [
-                        'q': ""+pesquisa,
-                        'from': "0", 'size': ""+size
-                ],
-                "")
 
-        if(resp =="NOT_OK"){
-            throw new Exception("Não foi possível fazer a pesquisa pretendida ($definicao,$pesquisa).")
-        }
-        JSONObject esResult = new JSONObject(resp)
-        return esResult
-    }
-    evalMap["contaRegistos"] = { nomeDefinicao,pesquisa ->
-        def definicao = getDefinitionId(nomeDefinicao)
-        def resp = rmRest.get("recordm/definitions/search/"+definicao,
-                [
-                        'q': ""+pesquisa,
-                        'from': "0", 'size': "0"
-                ],
-                "")
-
-        if(resp =="NOT_OK"){
+    evalMap["pesquisaRegistos"] = { nomeDefinicao,pesquisa,size ->
+        def resp = recordm.search(nomeDefinicao, pesquisa, ["size" : size]);
+        if(!resp.ok()){
             throw new Exception("Não foi possível fazer a pesquisa pretendida ($nomeDefinicao,$pesquisa).")
         }
-        JSONObject esResult = new JSONObject(resp)
-        return esResult.hits.total.value
+        return resp
     }
+
+    evalMap["contaRegistos"] = { nomeDefinicao,pesquisa ->
+        def resp = recordm.search(nomeDefinicao, pesquisa, ["size" : 0]);
+        if(!resp.ok()){
+            throw new Exception("Não foi possível fazer a pesquisa pretendida ($nomeDefinicao,$pesquisa).")
+        }
+        return resp.getTotal()
+    }
+
     evalMap["utilizadores"] = { String... groups ->
         List users = getUsersWithGroups(groups)
 
