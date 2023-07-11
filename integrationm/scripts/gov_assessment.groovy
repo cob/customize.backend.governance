@@ -512,11 +512,11 @@ def prepareEvalInfo(condicaoSucesso, instanceToEval, previousFinding) {
     }
 
     evalMap["getCpeRecordMInstance"] = { instancia ->
-        def definitionId = instanceToEval._definitionInfo.id
+        def definitionName = instanceToEval._definitionInfo.name
         def instance = null
 
         def query = "id:${instanceToEval.cpeExternalId}"
-        def searchResult = getInstancesPaged(definitionId, query, 0, 1)
+        def searchResult = getInstances(definitionName, query)
 
         if(searchResult.size() == 1){
             instance = searchResult.get(0)
@@ -830,7 +830,7 @@ def getEvaluationDataRecordM(control) {
         def filtro = control[_("Filtro")][0]
 
         // Obtem lista de instancias a avaliar
-        evaluationList = getInstancesById(definitionId, filtro)
+        evaluationList = getInstances(definitionName, filtro)
         if(evaluationList.size() == 0){
             assessmentInfo << [ "Atingimento": "0" ]
             assessmentInfo << [ "Observações":"O filtro indicado não devolve INSTÂNCIAS para avaliar" ]
@@ -857,7 +857,7 @@ def getEvaluationDataDeviceM(control) {
             /* {commands=R100, state=ok, _definitionInfo={id=36, timeSpent=1, filePreviews=null, uri=http://localhost:40180/confm/requests/2122406/tasks/2122406/tasks/368794552, cpeExternalId=418, id=418, changedFilesInJson=, cpeName=185-Sintra-Agualva, errors=, results=R100=1, cpesJobRequest=2122406, cpe=40, endTimestamp=1502401144176} */
             def hitMap  = recordmJsonToMap(hitJson.toString())
             hitMap << ["id" : hitMap.cpeExternalId ]
-            hitMap << ["_definitionInfo"    : ["id" : definitionId, "instanceLabel" : [ "name" : ["_label_fake_field_"] ] ] ]
+            hitMap << ["_definitionInfo"    : ["id" : definitionId, "name" : definitionName, "instanceLabel" : [ "name" : ["_label_fake_field_"] ] ] ]
             hitMap << ["_label_fake_field_" : [hitMap.cpeName] ]
             evalList.add(hitMap)
         }
@@ -1054,43 +1054,11 @@ static def removerVarsEspeciais(vars, varsEspeciais){
 //  getInstances - Para um dado Nome de definição e um filtro obtem array com instâncias
 // ----------------------------------------------------------------------------------------------------
 def getInstances(nomeDefinicao, query){
-    return getInstancesById( getDefinitionId(nomeDefinicao), query )
-}
-// --------------------------------------------------------------------
-def getInstancesById(idDefinicao, query){
-    return getInstancesPaged(idDefinicao, query, 0, null)
-}
-// --------------------------------------------------------------------
-def getInstancesPaged(idDefinicao, query, from, numInstancias){
     def result = []
 
-    def size = (numInstancias != null
-            ? numInstancias
-            : 500)
-
-    def resp = rmRest.get(
-            "recordm/definitions/search/" + idDefinicao,
-            [
-                    'q': query.toString(),
-                    'from': "" + from,
-                    'size': "" + size
-            ],
-            "")
-
-    if(resp !="NOT_OK"){
-        JSONObject esResult = new JSONObject(resp)
-        def totalResults = esResult.hits.total.value.toInteger()
-        def hits = esResult.hits.hits
-        def numResults = hits.length()
-
-        if( totalResults > 0){
-            result.addAll(esSourceList(hits))
-
-            if(numResults == size){
-                result.addAll(getInstancesPaged(idDefinicao, query, from+size, size))
-            }
-        }
-    }
+    recordm.stream(nomeDefinicao, query, { hit ->
+        result.add(hit.getRaw()._source)
+    })
 
     return result
 }
