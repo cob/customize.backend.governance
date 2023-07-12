@@ -1139,7 +1139,7 @@ def cloneAndStripInstanceForRecordmSaving(instance){
 //  toEsName (nome reduzido para "_")  - Converte um nome de campo RecordM no seu correspondente no ES
 // ----------------------------------------------------------------------------------------------------
 static def _(fieldName){
-    return fieldName.toLowerCase().replace(" ", "_")
+    return fieldName?.toLowerCase()?.replace(" ", "_")
 }
 // --------------------------------------------------------------------
 def getUsersWithGroups(groups){
