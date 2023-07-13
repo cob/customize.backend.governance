@@ -1143,41 +1143,14 @@ static def _(fieldName){
 }
 // --------------------------------------------------------------------
 def getUsersWithGroups(groups){
-    return getUsersWithGroups(groups, 0, 50)
-}
-// --------------------------------------------------------------------
-def getUsersWithGroups(groups, from, size){
-    def users = []
-
     def query = "groups.name:(\"${groups.join('" AND "')}\") AND -username:test*"
 
-    def resp = umRest.get(
-            "userm/search/userm/user",
-            [
-                    'q': query.toString(),
-                    'sort':'_id',
-                    'ascending':'true',
-                    'from': "" + from,
-                    'size': "" + size
-            ],
-            "")
+    def result = userm.searchUsers(query,[
+            'sort':'_id:asc',
+            'size': "50"
+    ])
 
-    if(resp !="NOT_OK"){
-        JSONObject esResult = new JSONObject(resp)
-        def totalResults = esResult.hits.total.value.toInteger()
-        def hits = esResult.hits.hits
-        def numResults = hits.length()
-
-        if( totalResults > 0){
-            users.addAll(esSourceList(hits))
-
-            if(numResults == size && size > 1){
-                result.addAll(getUsersWithGroups(groups, from+size, size))
-            }
-        }
-    }
-
-    return users
+    return result.getHits()
 }
 // --------------------------------------------------------------------
 

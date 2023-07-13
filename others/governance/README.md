@@ -32,3 +32,25 @@
 * configurar o `integrationm/common/config/GovernanceConfig` com os valores adequados  
 * adicionar conteúdo do `others/governance/crontab` ao crontab do sistema 
   (VERIFICAR se o sendMsg2IM já tem suporte para receber o product no 3 argumento - correr o chef garante isso) 
+ 
+####   Configurar com.cultofbits.integrationm.service.properties
+Configurar actionPacks `recordm,rmRest,email,userm` (necessário ter o integrationM>=14.0.0-SNAPSHOT por caua do userm)
+
+Exemplo:
+````
+action.names=recordm,rmRest,email,userm
+
+action.recordm=recordm
+action.recordm.recordm.base-url=http://localhost:40280
+
+action.userm=userm
+action.userm.userm.base-url=http://localhost:40780
+
+action.rmRest=rest
+action.rmRest.base-url=http://localhost:40280
+action.rmRest.cookie-name=cobtoken
+action.rmRest.cookie-value=XXXXXXXXXXX
+
+action.email=email
+action.email.email.default-sender=no-reply@jbarata.cultofbits.com
+````
