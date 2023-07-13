@@ -19,7 +19,6 @@ import javax.ws.rs.core.Response
 import config.GovernanceConfig
 
 @Field rmRest = actionPacks.get("rmRest")
-@Field umRest = actionPacks.get("umRest")
 @Field now = new Date()
 
 @Field static REGEX_VARS_ESPECIAIS = /[;,]?\$([^\$]*)\$[;,]?/
