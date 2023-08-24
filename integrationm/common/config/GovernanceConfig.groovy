@@ -2,11 +2,6 @@ package config
 
 class GovernanceConfig {
 
-    //for SMS
-    public static final String PLIVO_SEND_SMS_RESOURCE = "https://api.plivo.com/v1/Account/XXXXXXX/Message/"
-    public static final String PLIVO_API_KEY = "XXXXXXXXX";
-
-
     //For ES searching
     public static final String ES_URL = "http://localhost:9200";
     public static final String COBTOKEN = "XXXXXXXXX";
@@ -44,16 +39,47 @@ class GovernanceConfig {
        This send is only to be used when usesEmailActionPack = false and we have a different send mail system.
        lidl for example, uses a curl script
      */
+
     static void sendMail(subject, body, emails, emailsBcc) {
-        if(usesEmailActionPack){
+        if (usesEmailActionPack) {
             def _tos = emails.split(",").findAll { it != null } //hack to convert to List
             def _bccs = emailsBcc.split(",").findAll { it != null }
 
             emailActionPack.send(subject, body, [from: (SENDER_NAME + "<" + SENDER + ">"), to: _tos, bcc: _bccs])
 
-        }else{
+        } else {
             // else implement own sender. Some clientes, for example, use a curl script because they need to use a proxy
             //utils.CurlEmailSender.send(SENDER, SENDER_NAME, emails, emailsBcc, subject, body, true);
+        }
+    };
+
+
+    //For SMS
+
+    /* if "usesSmsActionPack = true", we must have `sms` action pack configured in
+        com.cultofbits.integrationm.service.properties
+     */
+    public final static boolean usesSmsActionPack = true;
+    public static smsActionPack; //will be set to the action pack instance by gov_assessment
+
+    // governance specific twilio phone number for SMSs; if null the general twilio number will be used
+    final static String TWILIO_GOV_PHONE_NUMBER = null;
+
+    /*
+       This send is only to be used when usesSmsActionPack = false and we have a different send sms system.
+       lidl for example, uses a curl script
+     */
+
+    static void sendSms(subject, body, phone) {
+        if (usesSmsActionPack) {
+            if (TWILIO_GOV_PHONE_NUMBER == null) {
+                smsActionPack.send(subject, body, phone)
+            } else {
+                smsActionPack.send(subject, body, phone, ["from": TWILIO_GOV_PHONE_NUMBER])
+            }
+        } else {
+            // else implement own sender. Some clientes, for example, use a curl script because they need to use a proxy
+            //utils.CurlSmsSender.send(subject, body, phone, TWILIO_GOV_PHONE_NUMBER);
         }
     };
 

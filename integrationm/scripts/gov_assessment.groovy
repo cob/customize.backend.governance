@@ -38,6 +38,7 @@ if(    (msg.product == "governance" && msg.type == "clock"     && msg.action == 
     log.info ("Start Controls evaluations.")
 
     if(GovernanceConfig.usesEmailActionPack) GovernanceConfig.emailActionPack = email
+    if(GovernanceConfig.usesSmsActionPack) GovernanceConfig.smsActionPack = sms
 
     // Obtem lista dos controls ligados
     def controls = getInstances("Control", "-periodicidade.raw:Off")
@@ -986,7 +987,16 @@ def executaAccoesComplementares(control, assessment) {
 
                 if(numsTel.length() > 0){
                     body = buidlStateReport(assessment["Findings"] ,"_marked_New", "<b>NOVAS inconformidades:</b>\n") ?: "Sem observações."
-                    new SendSMS().send(codigo, (textoBase + "\n\n" + body).toString(), numsTel)
+
+                    def finalBody = (textoBase + "\n\n" + body).toString()
+
+                    if (numsTel instanceof String) {
+                        GovernanceConfig.sendSms(codigo, finalBody, numsTel)
+                    } else {
+                        numsTel.each { tel ->
+                            GovernanceConfig.sendSms(codigo, finalBody, tel)
+                        }
+                    }
                 }
             }
         }
@@ -1032,7 +1042,16 @@ def enviarSMSEspeciais(numsEspeciais, codigo, textoBase){
                     def body = buidlStateReport(assessment["Findings"] ,"_marked_New", "<b>NOVAS inconformidades:</b>\n") ?: "Sem observações."
 
                     log.info("A enviar SMS especial para $telefones: ${textoBase + "\n\n" + body}}")
-                    new SendSMS().send(codigo, (textoBase + "\n\n" + body).toString(), telefones)
+
+                    def finalBody = (textoBase + "\n\n" + body).toString()
+
+                    if (telefones instanceof String) {
+                        GovernanceConfig.sendSms(codigo, finalBody, telefones)
+                    } else {
+                        telefones.each { tel ->
+                            GovernanceConfig.sendSms(codigo, finalBody, tel)
+                        }
+                    }
                 }
     }
 }
@@ -1150,44 +1169,4 @@ def getUsersWithGroups(groups){
     ])
 
     return result.getHits()
-}
-// --------------------------------------------------------------------
-
-// ----------------------------------------------------------------------------------------------------
-// Class SMS
-// ----------------------------------------------------------------------------------------------------
-class SendSMS {
-    def log = LogFactory.getLog("send-mail")
-    def SENDER = "CoB-Govrnc"
-    def PLIVO_SEND_SMS_RESOURCE = GovernanceConfig.PLIVO_SEND_SMS_RESOURCE
-    def PLIVO_API_KEY = GovernanceConfig.PLIVO_API_KEY
-    // --------------------------------------------------------------------
-    def SendSMS() {}
-    // --------------------------------------------------------------------
-    def send(subject, body, phone) {
-        if (phone == null || phone.trim().equals("")) {
-            log.error("Cannot send SMS without an phone address.")
-
-        } else {
-            def smsJsonStr = buildSMSJsonStr(subject, body, phone)
-
-            log.info("Sending SMS")
-
-            Response response = ClientBuilder.newClient()
-                    .target(PLIVO_SEND_SMS_RESOURCE)
-                    .request(MediaType.APPLICATION_JSON)
-                    .header("Authorization", "Basic " + PLIVO_API_KEY.bytes.encodeBase64().toString())
-                    .post(Entity.entity(smsJsonStr, MediaType.APPLICATION_JSON), Response.class)
-
-            if (response.getStatus() != Response.Status.ACCEPTED.getStatusCode()) {
-                log.info("There was an error sending the SMS {{status: " + response.getStatus() + ","
-                        + " message: " + response.readEntity(String.class) + ", smsJsonStr: " + smsJsonStr + "}} ")
-            }
-        }
-    }
-    // --------------------------------------------------------------------
-    def buildSMSJsonStr(subject, body, phone){
-        return "{\"src\": \"${SENDER}\",\"dst\": \"${phone}\", \"text\": \"${subject} \n${body.replaceAll('\\*\\*','').replaceAll('<.?b>','')}\"}".toString()
-    }
-    // --------------------------------------------------------------------
 }
