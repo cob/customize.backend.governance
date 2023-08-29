@@ -71,15 +71,18 @@ class GovernanceConfig {
      */
 
     static void sendSms(subject, body, phone) {
+        String smsText = subject + "\n\n" + body.replaceAll("\\*\\*", "").replaceAll("<.?b>", "");
+
+        def opts = [:]
+        if (TWILIO_GOV_PHONE_NUMBER != null) {
+            opts.put("from", TWILIO_GOV_PHONE_NUMBER)
+        }
+
         if (usesSmsActionPack) {
-            if (TWILIO_GOV_PHONE_NUMBER == null) {
-                smsActionPack.send(subject, body, phone)
-            } else {
-                smsActionPack.send(subject, body, phone, ["from": TWILIO_GOV_PHONE_NUMBER])
-            }
+            smsActionPack.send(smsText, [phone], opts)
         } else {
             // else implement own sender. Some clientes, for example, use a curl script because they need to use a proxy
-            //utils.CurlSmsSender.send(subject, body, phone, TWILIO_GOV_PHONE_NUMBER);
+            //utils.CurlSmsSender.send(smsText, phone, TWILIO_GOV_PHONE_NUMBER);
         }
     };
 
