@@ -62,8 +62,8 @@ class GovernanceConfig {
     public final static boolean usesSmsActionPack = true;
     public static smsActionPack; //will be set to the action pack instance by gov_assessment
 
-    // governance specific twilio phone number for SMSs; if null the general twilio number will be used
-    final static String TWILIO_GOV_PHONE_NUMBER = null;
+    // governance specific phone number for SMSs; if null a general configured number will be used
+    final static String GOV_PHONE_NUMBER = null;
 
     /*
        This send is only to be used when usesSmsActionPack = false and we have a different send sms system.
@@ -73,16 +73,16 @@ class GovernanceConfig {
     static void sendSms(subject, body, phone) {
         String smsText = subject + "\n\n" + body.replaceAll("\\*\\*", "").replaceAll("<.?b>", "");
 
-        def opts = [:]
-        if (TWILIO_GOV_PHONE_NUMBER != null) {
-            opts.put("from", TWILIO_GOV_PHONE_NUMBER)
-        }
-
         if (usesSmsActionPack) {
+            def opts = [:]
+            if (GOV_PHONE_NUMBER != null) {
+                opts.put("from", GOV_PHONE_NUMBER)
+            }
+
             smsActionPack.send(smsText, [phone], opts)
         } else {
             // else implement own sender. Some clientes, for example, use a curl script because they need to use a proxy
-            //utils.CurlSmsSender.send(smsText, phone, TWILIO_GOV_PHONE_NUMBER);
+            //utils.CurlSmsSender.send(smsText, phone, GOV_PHONE_NUMBER);
         }
     };
 
