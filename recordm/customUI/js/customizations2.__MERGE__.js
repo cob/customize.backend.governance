@@ -1,1 +1,1 @@
-import("./customizations/governance-controls.js");
+import "./customizations/governance-controls.js";
