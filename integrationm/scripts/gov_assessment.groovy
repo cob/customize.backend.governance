@@ -613,7 +613,7 @@ def mediaValoresES(indices, pesquisa, campoMedia, campoTempo, momentoInicio) {
 
     JSONObject esResult = new JSONObject(body)
 
-    return esResult.aggregations.field_avg.value
+    return esResult.aggregations.field_avg.isNull("value") ? null : esResult.aggregations.field_avg.value
 };
 
 def doAggSearch(indices, esJsonStr){
@@ -665,7 +665,7 @@ static def getEsAgg(name, type, field){
             "}}"
 }
 
-static def parse(textWithVars, instanceToEval, nomeVarInstancia){
+def parse(textWithVars, instanceToEval, nomeVarInstancia){
     // $id$ = <id da instancia>
     def parsedText = textWithVars.replace("\$id\$", "" + instanceToEval.id)
 
@@ -853,13 +853,20 @@ def getEvaluationDataDeviceM(control) {
         def taskListObj = new JSONObject('{ "result":'+taskList+'}')
         evalList = []
         for(int index = 0; index < taskListObj.result.length(); index++){
-            def hitJson = taskListObj.result.getJSONObject(index)
-            /* {commands=R100, state=ok, _definitionInfo={id=36, timeSpent=1, filePreviews=null, uri=http://localhost:40180/confm/requests/2122406/tasks/2122406/tasks/368794552, cpeExternalId=418, id=418, changedFilesInJson=, cpeName=185-Sintra-Agualva, errors=, results=R100=1, cpesJobRequest=2122406, cpe=40, endTimestamp=1502401144176} */
-            def hitMap  = recordmJsonToMap(hitJson.toString())
-            hitMap << ["id" : hitMap.cpeExternalId ]
-            hitMap << ["_definitionInfo"    : ["id" : definitionId, "name" : definitionName, "instanceLabel" : [ "name" : ["_label_fake_field_"] ] ] ]
-            hitMap << ["_label_fake_field_" : [hitMap.cpeName] ]
-            evalList.add(hitMap)
+            try {
+                def hitJson = taskListObj.result.getJSONObject(index)
+                /* {commands=R100, state=ok, _definitionInfo={id=36, timeSpent=1, filePreviews=null, uri=http://localhost:40180/confm/requests/2122406/tasks/2122406/tasks/368794552, cpeExternalId=418, id=418, changedFilesInJson=, cpeName=185-Sintra-Agualva, errors=, results=R100=1, cpesJobRequest=2122406, cpe=40, endTimestamp=1502401144176} */
+                def hitMap  = recordmJsonToMap(hitJson.toString())
+                hitMap << ["id" : hitMap.cpeExternalId ]
+                hitMap << ["_definitionInfo"    : ["id" : definitionId, "name" : definitionName, "instanceLabel" : [ "name" : ["_label_fake_field_"] ] ] ]
+                hitMap << ["_label_fake_field_" : [hitMap.cpeName] ]
+                evalList.add(hitMap)
+            } catch (e) {
+                //someday jbarata: Algumas vezes dá o erro:
+                // Error processing script gov_assessment.groovy: No signature of method: java.lang.String.getJSONObject()
+                // is ap plicable for argument types: (java.lang.Integer) values: [0]
+                log.info("ERROR " + e)
+            }
         }
         if(evalList.size() == 0){
             assessmentInfo << [ "Atingimento": "0" ]
