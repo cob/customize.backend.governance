@@ -59,41 +59,41 @@ if ((msg.product == "governance" && msg.type == "clock" && msg.action == "clockT
     controls.each { control ->
         // If one control evaluation fails, we catch the error, log it and continue to the next controls.
         //try {
-            // Se for uma avaliação pedida na interface fazer skip a todos os controls menos a esse id específico
-            if (msg.action == "forceAssessment" && control.id != msg.id) return
-            if (msg.action == "forceQuestions" && control.id != msg.id) return
+        // Se for uma avaliação pedida na interface fazer skip a todos os controls menos a esse id específico
+        if (msg.action == "forceAssessment" && control.id != msg.id) return
+        if (msg.action == "forceQuestions" && control.id != msg.id) return
 
-            // obtem um assessment válido (com a indicação no control de se necessita de ser avaliado agora)
-            def assessment = getAssessmentInstance(control, msg.action, pesos)
-
-
-            // Se control marcado para avaliação então avalia, actualiza resultado do assessment e cria/actualiza findings
-            if (control["_marked_ToEval_"] || control["_marked_CollectDeviceMValues_"] || control["_marked_assessmentId_"]) {
-                log.info("Evaluate Control and gather Assessment info ${control[_("Nome")]} ...")
-
-                //Avalia control e complementa dados do assessment com os resultados !!
-                assessment << assessControl(control)
+        // obtem um assessment válido (com a indicação no control de se necessita de ser avaliado agora)
+        def assessment = getAssessmentInstance(control, msg.action, pesos)
 
 
-                //Processa acções complementares: envia Emails e SMSs
-                executaAccoesComplementares(control, assessment)
+        // Se control marcado para avaliação então avalia, actualiza resultado do assessment e cria/actualiza findings
+        if (control["_marked_ToEval_"] || control["_marked_CollectDeviceMValues_"] || control["_marked_assessmentId_"]) {
+            log.info("Evaluate Control and gather Assessment info ${control[_("Nome")]} ...")
 
-                // Se não for necessário actualizar dados remove campo de Data e Observações para não haver alterações na instância desnecessárias
-                if (control["_marked_OnlyUpdateDataIfChanged"] && !assessment["_marked_Changed"]) {
-                    assessment.remove("Data do Resultado")
-                    assessment.remove("Observações")
-                }
-            } else {
-                log.info("Just create (or update if exists) the daily Assessment info ${control[_("Nome")]} ...")
+            //Avalia control e complementa dados do assessment com os resultados !!
+            assessment << assessControl(control)
+
+
+            //Processa acções complementares: envia Emails e SMSs
+            executaAccoesComplementares(control, assessment)
+
+            // Se não for necessário actualizar dados remove campo de Data e Observações para não haver alterações na instância desnecessárias
+            if (control["_marked_OnlyUpdateDataIfChanged"] && !assessment["_marked_Changed"]) {
+                assessment.remove("Data do Resultado")
+                assessment.remove("Observações")
             }
+        } else {
+            log.info("Just create (or update if exists) the daily Assessment info ${control[_("Nome")]} ...")
+        }
 
-            // cria ou actualiza instância de Assessment
-            def new_assessment = createOrUpdateInstance("Assessment", assessment)
+        // cria ou actualiza instância de Assessment
+        def new_assessment = createOrUpdateInstance("Assessment", assessment)
 
-            // Logic for questionarios manuais criation and updates
-            if (control[_("Assessment Tool")][0].equals("Manual")) {
-                manualFormsCreationVerifications(control, new_assessment, msg.action)
-            }
+        // Logic for questionarios manuais criation and updates
+        if (control[_("Assessment Tool")][0].equals("Manual")) {
+            manualFormsCreationVerifications(control, new_assessment, msg.action)
+        }
         //} catch (e) {
         //    log.info("Error assessing control with ID ${control.id}. Error: " + e)
         //}
@@ -209,6 +209,7 @@ def manualFormsCreationVerifications(control, new_assessment, runType) {
 
         if (canCreate || (runType == "forceQuestions")) {
 
+            // Rever esta ordem dos IFs
             if (control["_marked_assessmentId_"] || control["_marked_ToEval_"]) {
                 createManualForms(control, new_assessment_id ? new_assessment_id : control["_marked_assessmentId_"])
             } else if (new_assessment_id && !hasPreviousDayAssessment) {
@@ -398,14 +399,8 @@ def getAssessmentInstance(control, runType, pesos) {
 // ----------------------------------------------------------------------------------------------------
 def getLastValidAssessment(control) {
     def assessment = [:]
-
-    def limiteInferiorData
-    switch (control[_("Periodicidade")][0]) {
-        case "Mensal": limiteInferiorData = "M"; break
-        case "Semanal": limiteInferiorData = "w"; break
-        case "Anual": limiteInferiorData = "y"; break
-        default: limiteInferiorData = "d"; break  // Diário e 15/15m
-    }
+    def dayOfWeek = now.getAt(Calendar.DAY_OF_WEEK)
+    def dayOfMonth = now.getAt(Calendar.DAY_OF_MONTH)
 
     // Obtem offset em horas da timezone para corrigir pesquisa ao ES
     def cal = Calendar.instance
@@ -414,9 +409,31 @@ def getLastValidAssessment(control) {
     long msFromEpochGmt = date.getTime() - ((8 * 60) + 30) * 60 * 1000 //Só muda o cálculo às 8h30
     int offsetFromUTC = tz.getOffset(msFromEpochGmt) / 3600000
 
-    // Obtem registo mais recente (primeiro dos resultados) de assessment válidos no RecordM. data.date:>=now-8h-30m+1h\/d+8h+30m-1h
-    // o cálculo é: 'now' menos 'offsetUTC' (para não considerar o dia errado, que provoca engano nas semanas e meses) arredondado ao periodo (d | w | M) e deslocado para as 8h30 (com a devida correcção de 'offsetUTC')
-    def lastValidAssessmentFilter = "${_("Id Control")}.raw:${control.id} AND ${_("Data do Resultado")}.date:>=now-8h-30m+${offsetFromUTC}h\\/${limiteInferiorData}+8h+30m-${offsetFromUTC}h".toString()
+    def limiteInferiorData
+    def subtracaoPeriodo = "" //utilizado para subtrair o periodo correspondente ao periodo do controlo - se a avaliaçao nao corresponder a 2ªf
+    switch (control[_("Periodicidade")][0]) {
+        case "Mensal":
+            limiteInferiorData = "M";
+            if (dayOfMonth != 1) { subtracaoPeriodo = "-1M" }
+            break
+        case "Semanal":
+            limiteInferiorData = "w";
+            if (dayOfWeek != 1) { subtracaoPeriodo = "-1w" }
+            break
+        case "Anual": limiteInferiorData = "y";  break
+        default: limiteInferiorData = "d"; break  // Diário e 15/15m
+    }
+
+    /* Old query:
+     Obtem registo mais recente (primeiro dos resultados) de assessment válidos no RecordM. data.date:>=now-8h-30m+1h\/d+8h+30m-1h
+     o cálculo é: 'now' menos 'offsetUTC' (para não considerar o dia errado, que provoca engano nas semanas e meses) arredondado ao periodo (d | w | M) e deslocado para as 8h30 (com a devida correcção de 'offsetUTC')
+
+     Updated query
+     mantem-se toda a logica, com a adiçao de suporte de subtracao de um periodo correspondente à periodicidade do controlo.
+     isto é necessario para quando os controlos nao sao avaliados às segundas feiras ou no primeiro dia dos meses.
+     data.date:>=now-8h-30m+1h[subtracaoPeriodo]\/w+8h+30m-1h -> data.date:>=now-8h-30m+1h[-1w]\/w+8h+30m-1h
+    */
+    def lastValidAssessmentFilter = "${_("Id Control")}.raw:${control.id} AND ${_("Data do Resultado")}.date:>=now-8h-30m+${offsetFromUTC}h${subtracaoPeriodo}\\/${limiteInferiorData}+8h+30m-${offsetFromUTC}h".toString()
     return getInstances("Assessment", lastValidAssessmentFilter)[0]
 }
 // ----------------------------------------------------------------------------------------------------
@@ -1234,6 +1251,7 @@ def getEvaluationDataManual(control) {
     evaluationList = getInstances(DEF_MANUAL_FORM, questionarios_query) //assessment:${assessment_id}
     if (evaluationList.size() == 0) {
         assessmentInfo << ["Atingimento": "0"]
+        assessmentInfo << ["Objectivo": "0"]
         assessmentInfo << ["Observações": "O filtro indicado não devolve QUESTIONARIOS manuais para avaliar"]
     }
 
