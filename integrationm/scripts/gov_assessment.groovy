@@ -348,6 +348,68 @@ def obtemMatrizCompletaDePesos(controls) {
     return pesos
 }
 
+// Extension / new version of previous method to support dynamic weights.
+// May be redundant. WIP.
+def obtemMatrizCompletaDePesosDynamic(controls) {
+    def pesos = [:]
+    def done = [:]
+
+    controls.each { control ->
+        // Control
+        def c = control.id
+        float pC = (control[_("Peso")][0]).toInteger() ?: 0.00001
+        // Goal IDs and Weights
+        def g1, g2, g3
+        def p1, p2, p3
+
+        // ATM of writing, lvl1 always exists
+        g1 = control[_("Id Goal Nível 1")][0]
+        p1 = (control[_("Peso Goal Nível 1")][0]).toInteger() ?: 0.00001
+        if (!done[g1]) {
+            done[g1] = true
+            pesos["global"] = pesos["global"] ? pesos["global"] + p1 : p1
+        }
+
+        // Se existir um lvl2
+        if ( control[_("Nome Goal Nível 2")] ) {
+            g2 = control[_("Id Goal Nível 2")][0]
+            p2 = (control[_("Peso Goal Nível 2")][0]).toInteger() ?: 0.00001
+            if (!done[g2]) {
+                done[g2] = true
+                pesos[g1] = pesos[g1] ? pesos[g1] + p2 : p2
+            }
+        }
+
+        // atm, por defeito da def, o lvl3 existe smp tmb e PODE ser igual ao lvl1 se corresponder
+        // ao goal escolhido.
+        g3 = control[_("Id Goal Nível 3")][0]
+        p3 = (control[_("Peso Goal Nível 3")][0]).toInteger() ?: 0.00001
+        if (g1 != g3) {
+            if (!done[g3]) {
+                done[g3] = true
+                // se existiu um lvl2, queremos ter isso em conta. senao vamos usar os pesos do lvl1
+                pesos[g2 ?: g1] = pesos[g2 ?: g1] ? pesos[g2 ?: g1] + p3 : p3
+
+            }
+        }
+
+        // Contar com peso final do controlo
+        if (!done[c]) {
+            done[c] = true
+            // se existe um g3 != g1, entao é o ultimo goal cujos pesos queremos contar
+            if (g1 != g3) {
+                pesos[g3] = pesos[g3] ? pesos[g3] + pC : pC
+            } else {
+                // caso contrario queremos o ultimo goal: g1 ou g2 dependendo do nivel
+                pesos[g3] = pesos[g2 ?: g1] ? pesos[g2 ?: g1] + pC : pC
+            }
+
+        }
+
+    }
+    return pesos
+}
+
 // ----------------------------------------------------------------------------------------------------
 //  getAssessmentInstance - obtem assessment valido actual e cria se não existir. Marca se for para avaliar.
 // ----------------------------------------------------------------------------------------------------
@@ -396,6 +458,92 @@ def getAssessmentInstance(control, runType, pesos) {
 
     return assessment
 }
+
+// New version of previous method for dynamic weight handling. WIP
+def getAssessmentInstanceDynamicWeights(control, runType, pesos) {
+    // Obtem último assessment ainda válido feito para este control
+    def lastValidAssessment = getLastValidAssessment(control)
+
+    // Avalia existência, datas, periodicidade para decidir se se copia dados do assessment ou se se cria um novo
+    def assessment = copyOrCreateAssessment(control, lastValidAssessment, runType)
+
+    def goals = []
+    def weights = []
+    def processed = [:]
+
+    def peso_control = control[_("Peso")][0]
+
+    // Completa preenchimento dos dados do assessment
+    assessment << ["Control": "" + control[_("Nome")][0]]
+    assessment << ["Id Control": "" + control.id]
+    assessment << ["Âmbito": "" + control[_("Âmbito")][0] ?: ""]
+
+    assessment << ["Goal Nível 1": "" + control[_("Nome Goal Nível 1")]?.get(0) ?: ""]
+    assessment << ["Id Goal Nível 1": "" + control[_("Id Goal Nível 1")]?.get(0) ?: ""]
+
+    assessment << ["Goal Nível 2": "" + control[_("Nome Goal Nível 2")]?.get(0) ?: ""]
+    assessment << ["Id Goal Nível 2": "" + control[_("Id Goal Nível 2")]?.get(0) ?: ""]
+
+    assessment << ["Goal Nível 3": "" + control[_("Nome Goal Nível 3")]?.get(0) ?: ""]
+    assessment << ["Id Goal Nível 3": "" + control[_("Id Goal Nível 3")]?.get(0) ?: ""]
+
+
+    def goal_key = "Id Goal Nível "
+    def weight_key = "Peso Goal Nível "
+
+    // LOOP para obter goals and weights. Atualmente mega overcomplicated por causa da definiçao.
+    // ---
+    // We go over each goal we find in our Control, and we store its ID and respective weight.
+    // currently we need to perform checks for repeated goals if we use a non-level 3 goal,
+    // which will appear multiple times due to a currently inflexible definition.
+    for(int i = 1; i <=3; i++) {
+            // if control has "id goal nivel X"
+            if ( control[_(goal_key+i)] ) {
+                def goal_id = control[_(goal_key+i)][0].toInteger()
+                // check if we've processed this model (verification described in the comment above the loop)
+                if ( !processed[goal_id] ) {
+                    processed[goal_id] = true
+                    goals << control[_(goal_key+i)][0]
+                    // if control has "peso goal nivel X"
+                    if ( control[_(weight_key+i)] ) {
+                        weights << control[_(weight_key+i)][0]
+                    }
+                }
+            }
+    }
+
+    // LOOP para calcular o peso relativo de cada nivel
+    def pLevels = []
+    def totalWeight = pesos["global"] ?: 1
+    // Percorrer todos os goals presentes
+    for (int i = 0; i < goals.size(); i++) {
+        def weight = weights[i] ?: 0 // default to 0 if weight not provided
+        if (i == 0) {
+            pLevels << (weight.toInteger() * 100 / totalWeight) // equivalent to peso["global"]
+        } else {
+            def parentGoal = goals[i - 1]
+            def parentWeight = pesos["${parentGoal}"] ?: 1
+            pLevels << (weight.toInteger() * 100 / parentWeight)
+        }
+    }
+
+
+    // Calcula o peso global (nao tem em conta peso do controlo)
+    float pglobal = 1
+    for (int pLevel : pLevels) {
+        pglobal *= pLevel / 100
+    }
+    // logica para contar com o peso do controlo
+    peso_control = peso_control ? peso_control.toInteger() * 100 / pesos["" + goals[goals.size()-1]] : 0
+    pglobal *= peso_control
+
+    pglobal = pglobal ?: 0.001
+    // Atribui peso global relativo ao control. A relação com qq outro control estará assim regulada. - dividido por 100*100*100 para compensar as multiplicações
+    assessment << ["Peso Global": "" + pglobal]
+
+    return assessment
+}
+
 // ----------------------------------------------------------------------------------------------------
 def getLastValidAssessment(control) {
     def assessment = [:]
