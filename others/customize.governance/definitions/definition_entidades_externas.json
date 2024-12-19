@@ -511,31 +511,6 @@
             "restricted": false,
             "rootField": true,
             "defaultValue": null
-        },
-        {
-            "id": null,
-            "name": "Sigla Empresa",
-            "required": null,
-            "description": "$editForGroup(System)",
-            "configuration": {
-                "description": null,
-                "keys": {
-                    "EditForGroup": {
-                        "args": [
-                            "System"
-                        ]
-                    }
-                },
-                "extensions": {}
-            },
-            "condition": null,
-            "visibilityCondition": null,
-            "duplicable": false,
-            "fields": [],
-            "order": 20,
-            "restricted": false,
-            "rootField": true,
-            "defaultValue": null
         }
     ],
     "version": null

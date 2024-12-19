@@ -110,53 +110,6 @@
             "fields": [
                 {
                     "id": null,
-                    "name": "Âmbito",
-                    "required": null,
-                    "description": "auto.ref(Goal Nível 3).field(Sigla) $instanceDescription $readonly Deprecated",
-                    "configuration": {
-                        "description": "auto.ref(Goal Nível 3).field(Sigla) Deprecated",
-                        "keys": {
-                            "InstanceDescription": {}
-                        },
-                        "extensions": {
-                            "$readonly": {}
-                        }
-                    },
-                    "condition": null,
-                    "visibilityCondition": null,
-                    "duplicable": false,
-                    "fields": [
-                        {
-                            "id": null,
-                            "name": "Empresa",
-                            "required": null,
-                            "description": "auto.ref(Goal Nível 3).field(Empresa) $instanceDescription $readonly Deprecated",
-                            "configuration": {
-                                "description": "auto.ref(Goal Nível 3).field(Empresa) Deprecated",
-                                "keys": {
-                                    "InstanceDescription": {}
-                                },
-                                "extensions": {
-                                    "$readonly": {}
-                                }
-                            },
-                            "condition": null,
-                            "visibilityCondition": null,
-                            "duplicable": false,
-                            "fields": [],
-                            "order": 5,
-                            "restricted": false,
-                            "rootField": false,
-                            "defaultValue": null
-                        }
-                    ],
-                    "order": 4,
-                    "restricted": false,
-                    "rootField": false,
-                    "defaultValue": null
-                },
-                {
-                    "id": null,
                     "name": "Nome Goal Nível 3",
                     "required": null,
                     "description": "$auto.ref(Goal Nível 3).field(Nome)",
@@ -197,7 +150,7 @@
                             "visibilityCondition": null,
                             "duplicable": false,
                             "fields": [],
-                            "order": 7,
+                            "order": 5,
                             "restricted": false,
                             "rootField": false,
                             "defaultValue": null
@@ -223,13 +176,13 @@
                             "visibilityCondition": null,
                             "duplicable": false,
                             "fields": [],
-                            "order": 8,
+                            "order": 6,
                             "restricted": false,
                             "rootField": false,
                             "defaultValue": null
                         }
                     ],
-                    "order": 6,
+                    "order": 4,
                     "restricted": false,
                     "rootField": false,
                     "defaultValue": null
@@ -276,7 +229,7 @@
                             "visibilityCondition": null,
                             "duplicable": false,
                             "fields": [],
-                            "order": 10,
+                            "order": 8,
                             "restricted": false,
                             "rootField": false,
                             "defaultValue": null
@@ -302,13 +255,13 @@
                             "visibilityCondition": null,
                             "duplicable": false,
                             "fields": [],
-                            "order": 11,
+                            "order": 9,
                             "restricted": false,
                             "rootField": false,
                             "defaultValue": null
                         }
                     ],
-                    "order": 9,
+                    "order": 7,
                     "restricted": false,
                     "rootField": false,
                     "defaultValue": null
@@ -355,7 +308,7 @@
                             "visibilityCondition": null,
                             "duplicable": false,
                             "fields": [],
-                            "order": 13,
+                            "order": 11,
                             "restricted": false,
                             "rootField": false,
                             "defaultValue": null
@@ -381,13 +334,13 @@
                             "visibilityCondition": null,
                             "duplicable": false,
                             "fields": [],
-                            "order": 14,
+                            "order": 12,
                             "restricted": false,
                             "rootField": false,
                             "defaultValue": null
                         }
                     ],
-                    "order": 12,
+                    "order": 10,
                     "restricted": false,
                     "rootField": false,
                     "defaultValue": null
@@ -421,7 +374,7 @@
                     "visibilityCondition": null,
                     "duplicable": false,
                     "fields": [],
-                    "order": 15,
+                    "order": 13,
                     "restricted": false,
                     "rootField": false,
                     "defaultValue": null
@@ -452,7 +405,7 @@
             "visibilityCondition": null,
             "duplicable": false,
             "fields": [],
-            "order": 16,
+            "order": 14,
             "restricted": false,
             "rootField": true,
             "defaultValue": null
@@ -502,7 +455,7 @@
             "visibilityCondition": null,
             "duplicable": false,
             "fields": [],
-            "order": 17,
+            "order": 15,
             "restricted": false,
             "rootField": true,
             "defaultValue": null
@@ -529,7 +482,7 @@
             "visibilityCondition": null,
             "duplicable": false,
             "fields": [],
-            "order": 18,
+            "order": 16,
             "restricted": false,
             "rootField": true,
             "defaultValue": null
@@ -611,7 +564,7 @@
                     },
                     "duplicable": false,
                     "fields": [],
-                    "order": 20,
+                    "order": 18,
                     "restricted": false,
                     "rootField": false,
                     "defaultValue": "Segunda"
@@ -654,7 +607,7 @@
                     },
                     "duplicable": false,
                     "fields": [],
-                    "order": 21,
+                    "order": 19,
                     "restricted": false,
                     "rootField": false,
                     "defaultValue": "1"
@@ -706,13 +659,13 @@
                     },
                     "duplicable": false,
                     "fields": [],
-                    "order": 22,
+                    "order": 20,
                     "restricted": false,
                     "rootField": false,
                     "defaultValue": "Janeiro"
                 }
             ],
-            "order": 19,
+            "order": 17,
             "restricted": false,
             "rootField": true,
             "defaultValue": null
@@ -737,7 +690,7 @@
             "visibilityCondition": null,
             "duplicable": false,
             "fields": [],
-            "order": 23,
+            "order": 21,
             "restricted": false,
             "rootField": true,
             "defaultValue": null
@@ -792,7 +745,7 @@
                     },
                     "duplicable": false,
                     "fields": [],
-                    "order": 25,
+                    "order": 23,
                     "restricted": false,
                     "rootField": false,
                     "defaultValue": null
@@ -822,7 +775,7 @@
                     },
                     "duplicable": false,
                     "fields": [],
-                    "order": 26,
+                    "order": 24,
                     "restricted": false,
                     "rootField": false,
                     "defaultValue": null
@@ -856,7 +809,7 @@
                     },
                     "duplicable": false,
                     "fields": [],
-                    "order": 27,
+                    "order": 25,
                     "restricted": false,
                     "rootField": false,
                     "defaultValue": null
@@ -886,7 +839,7 @@
                     },
                     "duplicable": false,
                     "fields": [],
-                    "order": 28,
+                    "order": 26,
                     "restricted": false,
                     "rootField": false,
                     "defaultValue": null
@@ -920,7 +873,7 @@
                     },
                     "duplicable": false,
                     "fields": [],
-                    "order": 29,
+                    "order": 27,
                     "restricted": false,
                     "rootField": false,
                     "defaultValue": null
@@ -954,7 +907,7 @@
                     },
                     "duplicable": false,
                     "fields": [],
-                    "order": 30,
+                    "order": 28,
                     "restricted": false,
                     "rootField": false,
                     "defaultValue": null
@@ -981,7 +934,7 @@
                     },
                     "duplicable": false,
                     "fields": [],
-                    "order": 31,
+                    "order": 29,
                     "restricted": false,
                     "rootField": false,
                     "defaultValue": null
@@ -1008,7 +961,7 @@
                     },
                     "duplicable": false,
                     "fields": [],
-                    "order": 32,
+                    "order": 30,
                     "restricted": false,
                     "rootField": false,
                     "defaultValue": null
@@ -1037,7 +990,7 @@
                     },
                     "duplicable": false,
                     "fields": [],
-                    "order": 33,
+                    "order": 31,
                     "restricted": false,
                     "rootField": false,
                     "defaultValue": null
@@ -1106,13 +1059,13 @@
                             },
                             "duplicable": false,
                             "fields": [],
-                            "order": 35,
+                            "order": 33,
                             "restricted": false,
                             "rootField": false,
                             "defaultValue": null
                         }
                     ],
-                    "order": 34,
+                    "order": 32,
                     "restricted": false,
                     "rootField": false,
                     "defaultValue": null
@@ -1177,19 +1130,19 @@
                             },
                             "duplicable": false,
                             "fields": [],
-                            "order": 37,
+                            "order": 35,
                             "restricted": false,
                             "rootField": false,
                             "defaultValue": null
                         }
                     ],
-                    "order": 36,
+                    "order": 34,
                     "restricted": false,
                     "rootField": false,
                     "defaultValue": null
                 }
             ],
-            "order": 24,
+            "order": 22,
             "restricted": false,
             "rootField": true,
             "defaultValue": null
@@ -1216,7 +1169,7 @@
             "visibilityCondition": null,
             "duplicable": false,
             "fields": [],
-            "order": 38,
+            "order": 36,
             "restricted": false,
             "rootField": true,
             "defaultValue": null
@@ -1246,7 +1199,7 @@
             "visibilityCondition": null,
             "duplicable": false,
             "fields": [],
-            "order": 39,
+            "order": 37,
             "restricted": false,
             "rootField": true,
             "defaultValue": null
@@ -1273,7 +1226,7 @@
             "visibilityCondition": null,
             "duplicable": false,
             "fields": [],
-            "order": 40,
+            "order": 38,
             "restricted": false,
             "rootField": true,
             "defaultValue": null
@@ -1357,7 +1310,7 @@
                             "visibilityCondition": null,
                             "duplicable": false,
                             "fields": [],
-                            "order": 43,
+                            "order": 41,
                             "restricted": false,
                             "rootField": false,
                             "defaultValue": null
@@ -1383,7 +1336,7 @@
                             "visibilityCondition": null,
                             "duplicable": false,
                             "fields": [],
-                            "order": 44,
+                            "order": 42,
                             "restricted": false,
                             "rootField": false,
                             "defaultValue": null
@@ -1409,13 +1362,13 @@
                             "visibilityCondition": null,
                             "duplicable": false,
                             "fields": [],
-                            "order": 45,
+                            "order": 43,
                             "restricted": false,
                             "rootField": false,
                             "defaultValue": null
                         }
                     ],
-                    "order": 42,
+                    "order": 40,
                     "restricted": false,
                     "rootField": false,
                     "defaultValue": null
@@ -1483,13 +1436,13 @@
                             },
                             "duplicable": false,
                             "fields": [],
-                            "order": 47,
+                            "order": 45,
                             "restricted": false,
                             "rootField": false,
                             "defaultValue": null
                         }
                     ],
-                    "order": 46,
+                    "order": 44,
                     "restricted": false,
                     "rootField": false,
                     "defaultValue": null
@@ -1554,7 +1507,7 @@
                             },
                             "duplicable": false,
                             "fields": [],
-                            "order": 49,
+                            "order": 47,
                             "restricted": false,
                             "rootField": false,
                             "defaultValue": null
@@ -1583,7 +1536,7 @@
                             },
                             "duplicable": false,
                             "fields": [],
-                            "order": 50,
+                            "order": 48,
                             "restricted": false,
                             "rootField": false,
                             "defaultValue": null
@@ -1612,7 +1565,7 @@
                             },
                             "duplicable": false,
                             "fields": [],
-                            "order": 51,
+                            "order": 49,
                             "restricted": false,
                             "rootField": false,
                             "defaultValue": null
@@ -1643,7 +1596,7 @@
                             },
                             "duplicable": false,
                             "fields": [],
-                            "order": 52,
+                            "order": 50,
                             "restricted": false,
                             "rootField": false,
                             "defaultValue": null
@@ -1705,7 +1658,7 @@
                                     },
                                     "duplicable": false,
                                     "fields": [],
-                                    "order": 54,
+                                    "order": 52,
                                     "restricted": false,
                                     "rootField": false,
                                     "defaultValue": null
@@ -1740,25 +1693,25 @@
                                     },
                                     "duplicable": false,
                                     "fields": [],
-                                    "order": 55,
+                                    "order": 53,
                                     "restricted": false,
                                     "rootField": false,
                                     "defaultValue": "Por Tratar e Em Resolução"
                                 }
                             ],
-                            "order": 53,
+                            "order": 51,
                             "restricted": false,
                             "rootField": false,
                             "defaultValue": null
                         }
                     ],
-                    "order": 48,
+                    "order": 46,
                     "restricted": false,
                     "rootField": false,
                     "defaultValue": null
                 }
             ],
-            "order": 41,
+            "order": 39,
             "restricted": false,
             "rootField": true,
             "defaultValue": null
@@ -1785,7 +1738,7 @@
             "visibilityCondition": null,
             "duplicable": false,
             "fields": [],
-            "order": 56,
+            "order": 54,
             "restricted": false,
             "rootField": true,
             "defaultValue": null
@@ -1815,7 +1768,7 @@
             "visibilityCondition": null,
             "duplicable": false,
             "fields": [],
-            "order": 57,
+            "order": 55,
             "restricted": false,
             "rootField": true,
             "defaultValue": null
@@ -1858,7 +1811,7 @@
                     "visibilityCondition": null,
                     "duplicable": true,
                     "fields": [],
-                    "order": 59,
+                    "order": 57,
                     "restricted": false,
                     "rootField": false,
                     "defaultValue": null
@@ -1883,13 +1836,13 @@
                     "visibilityCondition": null,
                     "duplicable": false,
                     "fields": [],
-                    "order": 60,
+                    "order": 58,
                     "restricted": false,
                     "rootField": false,
                     "defaultValue": null
                 }
             ],
-            "order": 58,
+            "order": 56,
             "restricted": false,
             "rootField": true,
             "defaultValue": null

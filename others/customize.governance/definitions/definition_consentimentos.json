@@ -264,7 +264,7 @@
             "order": 8,
             "restricted": false,
             "rootField": true,
-            "defaultValue": "1734609615380"
+            "defaultValue": "1734630185740"
         },
         {
             "id": null,
@@ -283,37 +283,6 @@
             "duplicable": false,
             "fields": [],
             "order": 9,
-            "restricted": false,
-            "rootField": true,
-            "defaultValue": null
-        },
-        {
-            "id": null,
-            "name": "Sigla Empresa",
-            "required": null,
-            "description": "$style[hide] $editForGroup(System)",
-            "configuration": {
-                "description": null,
-                "keys": {
-                    "EditForGroup": {
-                        "args": [
-                            "System"
-                        ]
-                    }
-                },
-                "extensions": {
-                    "$style": {
-                        "args": [
-                            "hide"
-                        ]
-                    }
-                }
-            },
-            "condition": null,
-            "visibilityCondition": null,
-            "duplicable": false,
-            "fields": [],
-            "order": 10,
             "restricted": false,
             "rootField": true,
             "defaultValue": null

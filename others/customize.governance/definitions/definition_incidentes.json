@@ -118,7 +118,7 @@
             "order": 3,
             "restricted": false,
             "rootField": true,
-            "defaultValue": "1734609683286"
+            "defaultValue": "1734630225942"
         },
         {
             "id": null,
@@ -453,7 +453,7 @@
                                             "order": 15,
                                             "restricted": false,
                                             "rootField": false,
-                                            "defaultValue": "1734609683286"
+                                            "defaultValue": "1734630225942"
                                         },
                                         {
                                             "id": null,
@@ -640,7 +640,7 @@
                                             "order": 21,
                                             "restricted": false,
                                             "rootField": false,
-                                            "defaultValue": "1734609683286"
+                                            "defaultValue": "1734630225942"
                                         },
                                         {
                                             "id": null,
@@ -787,37 +787,6 @@
             "duplicable": true,
             "fields": [],
             "order": 26,
-            "restricted": false,
-            "rootField": true,
-            "defaultValue": null
-        },
-        {
-            "id": null,
-            "name": "Sigla Empresa",
-            "required": null,
-            "description": "$style[hide] $editForGroup(System)",
-            "configuration": {
-                "description": null,
-                "keys": {
-                    "EditForGroup": {
-                        "args": [
-                            "System"
-                        ]
-                    }
-                },
-                "extensions": {
-                    "$style": {
-                        "args": [
-                            "hide"
-                        ]
-                    }
-                }
-            },
-            "condition": null,
-            "visibilityCondition": null,
-            "duplicable": false,
-            "fields": [],
-            "order": 27,
             "restricted": false,
             "rootField": true,
             "defaultValue": null

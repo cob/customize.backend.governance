@@ -4501,64 +4501,6 @@
             "restricted": false,
             "rootField": true,
             "defaultValue": null
-        },
-        {
-            "id": null,
-            "name": "&nbsp;",
-            "required": null,
-            "description": "$group $style[grelha-titulo]",
-            "configuration": {
-                "description": null,
-                "keys": {
-                    "Group": {}
-                },
-                "extensions": {
-                    "$style": {
-                        "args": [
-                            "grelha-titulo"
-                        ]
-                    }
-                }
-            },
-            "condition": null,
-            "visibilityCondition": null,
-            "duplicable": false,
-            "fields": [],
-            "order": 136,
-            "restricted": false,
-            "rootField": true,
-            "defaultValue": null
-        },
-        {
-            "id": null,
-            "name": "Sigla Empresa",
-            "required": null,
-            "description": "$style[hide] $editForGroup(System)",
-            "configuration": {
-                "description": null,
-                "keys": {
-                    "EditForGroup": {
-                        "args": [
-                            "System"
-                        ]
-                    }
-                },
-                "extensions": {
-                    "$style": {
-                        "args": [
-                            "hide"
-                        ]
-                    }
-                }
-            },
-            "condition": null,
-            "visibilityCondition": null,
-            "duplicable": false,
-            "fields": [],
-            "order": 137,
-            "restricted": false,
-            "rootField": true,
-            "defaultValue": null
         }
     ],
     "version": null
