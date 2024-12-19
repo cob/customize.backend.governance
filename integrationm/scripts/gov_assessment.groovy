@@ -305,7 +305,7 @@ def obtemMatrizCompletaDePesos(controls) {
     def pesos = [:]
     def done = [:]
 
-    controls.each { control ->
+    controls.each{ control ->
 
         def g1 = control[_("Id Goal Nível 1")][0]
         def g2 = control[_("Id Goal Nível 2")][0]
@@ -318,20 +318,20 @@ def obtemMatrizCompletaDePesos(controls) {
         float p3 = (control[_("Peso Goal Nível 3")][0]).toInteger() ?: 0.00001
         float pC = (control[_("Peso")][0]).toInteger() ?: 0.00001
 
-        if (!done[g1]) {
-            done[g1] = true
+        if(!done[g1]) {
+            done[g1]=true
             pesos["global"] = pesos["global"] ? pesos["global"] + p1 : p1
         }
-        if (!done[g2]) {
-            done[g2] = true
+        if(!done[g2]) {
+            done[g2]=true
             pesos[g1] = pesos[g1] ? pesos[g1] + p2 : p2
         }
-        if (!done[g3]) {
-            done[g3] = true
+        if(!done[g3]) {
+            done[g3]=true
             pesos[g2] = pesos[g2] ? pesos[g2] + p3 : p3
         }
-        if (!done[c]) {
-            done[c] = true
+        if(!done[c]) {
+            done[c]=true
             pesos[g3] = pesos[g3] ? pesos[g3] + pC : pC
         }
     }
@@ -403,10 +403,10 @@ def obtemMatrizCompletaDePesosDynamic(controls) {
 // ----------------------------------------------------------------------------------------------------
 //  getAssessmentInstance - obtem assessment valido actual e cria se não existir. Marca se for para avaliar.
 // ----------------------------------------------------------------------------------------------------
-def getAssessmentInstance(control, runType, pesos) {
+def getAssessmentInstance(control,runType, pesos) {
 
     // Obtem último assessment ainda válido feito para este control
-    def lastValidAssessment = getLastValidAssessment(control)
+    def lastValidAssessment =  getLastValidAssessment(control)
 
     // Avalia existência, datas, periodicidade para decidir se se copia dados do assessment ou se se cria um novo
     def assessment = copyOrCreateAssessment(control, lastValidAssessment, runType)
@@ -421,18 +421,18 @@ def getAssessmentInstance(control, runType, pesos) {
     def p4 = control[_("Peso")][0]
 
     // Completa preenchimento dos dados do assessment
-    assessment << ["Control": "" + control[_("Nome")][0]]
-    assessment << ["Id Control": "" + control.id]
-    assessment << ["Âmbito": "" + control[_("Âmbito")][0] ?: ""]
+    assessment << ["Control": ""        + control[_("Nome")][0]]
+    assessment << ["Id Control": ""     + control.id]
+    assessment << ["Âmbito": ""         + control[_("Âmbito")][0] ?: ""]
 
-    assessment << ["Goal Nível 1": "" + control[_("Nome Goal Nível 1")][0]]
-    assessment << ["Id Goal Nível 1": "" + g1]
+    assessment << ["Goal Nível 1":    "" + control[_("Nome Goal Nível 1")][0]]
+    assessment << ["Id Goal Nível 1": "" + g1 ]
 
-    assessment << ["Goal Nível 2": "" + control[_("Nome Goal Nível 2")][0]]
-    assessment << ["Id Goal Nível 2": "" + g2]
+    assessment << ["Goal Nível 2":    "" + control[_("Nome Goal Nível 2")][0]]
+    assessment << ["Id Goal Nível 2": "" + g2 ]
 
-    assessment << ["Goal Nível 3": "" + control[_("Nome Goal Nível 3")][0]]
-    assessment << ["Id Goal Nível 3": "" + g3]
+    assessment << ["Goal Nível 3":    "" + control[_("Nome Goal Nível 3")][0]]
+    assessment << ["Id Goal Nível 3": "" + g3 ]
 
     // Calcula peso relativo de cada nível (usando o total de pesos por nível guardado na matriz) - multiplica por 100 para não provocar arredondamentos imprevistos
     p1 = p1 ? p1.toInteger() * 100 / pesos["global"] : 0
@@ -464,9 +464,9 @@ def getAssessmentInstanceDynamicWeights(control, runType, pesos) {
     def peso_control = control[_("Peso")][0]
 
     // Completa preenchimento dos dados do assessment
-    assessment << ["Control": "" + control[_("Nome")][0]]
-    assessment << ["Id Control": "" + control.id]
-    assessment << ["Âmbito": "" + control[_("Âmbito")][0] ?: ""]
+    assessment << ["Control": ""        + control[_("Nome")][0]]
+    assessment << ["Id Control": ""     + control.id]
+    assessment << ["Âmbito": ""         + control[_("Âmbito")][0] ?: ""]
 
     assessment << ["Goal Nível 1": "" + control[_("Nome Goal Nível 1")]?.get(0) ?: ""]
     assessment << ["Id Goal Nível 1": "" + control[_("Id Goal Nível 1")]?.get(0) ?: ""]
@@ -529,7 +529,7 @@ def getAssessmentInstanceDynamicWeights(control, runType, pesos) {
 
     pglobal = pglobal ?: 0.001
     // Atribui peso global relativo ao control. A relação com qq outro control estará assim regulada. - dividido por 100*100*100 para compensar as multiplicações
-    assessment << ["Peso Global": "" + pglobal]
+    assessment << ["Peso Global": "" + pglobal ]
 
     return assessment
 }
@@ -578,9 +578,9 @@ def getLastValidAssessment(control) {
 def copyOrCreateAssessment(control, lastValidAssessment, runType) {
     def assessment = [:]
     def periodicidade = control[_("Periodicidade")][0]
-    def today = new Date(new Date(now.time).time - new Date((8 * 60 + 30) * 60000).time).clearTime()
+    def today = new Date(new Date(now.time).time - new Date((8*60+30)*60000).time).clearTime()
     today.set(hourOfDay: 8, minute: 30)
-    today = "" + today.time
+    today = ""+today.time
 
     // Get target days
     def targetDayWeek = 2
@@ -608,8 +608,8 @@ def copyOrCreateAssessment(control, lastValidAssessment, runType) {
             assessment << ["id": "" + lastValidAssessment.id]
 
             // Verifica se há comandos devicem com resultados por avaliar
-            if (control[_("Assessment Tool")][0] == "DeviceM") {
-                if (getFirstValue(lastValidAssessment, _("DeviceM JobID")) != null) {
+            if( control[_("Assessment Tool")][0] == "DeviceM") {
+                if( getFirstValue(lastValidAssessment, _("DeviceM JobID")) != null) {
                     control << ["_marked_CollectDeviceMValues_": lastValidAssessment[_("DeviceM JobID")][0]]
                 }
             }
@@ -621,11 +621,11 @@ def copyOrCreateAssessment(control, lastValidAssessment, runType) {
         // Necessario para poder atualizar pointers de novos questionarios manuais
         control['_marked_previousAssessmentId_'] = lastValidAssessment.id
 
-        assessment << ["Objectivo": "" + getFirstValue(lastValidAssessment, _("Objectivo")) ?: ""]
-        assessment << ["Resultado": "" + getFirstValue(lastValidAssessment, _("Resultado")) ?: ""]
-        assessment << ["Atingimento": "" + getFirstValue(lastValidAssessment, _("Atingimento")) ?: ""]
+        assessment << ["Objectivo":         "" + getFirstValue(lastValidAssessment, _("Objectivo")) ?: ""]
+        assessment << ["Resultado":         "" + getFirstValue(lastValidAssessment, _("Resultado")) ?: ""]
+        assessment << ["Atingimento":       "" + getFirstValue(lastValidAssessment, _("Atingimento")) ?: ""]
         assessment << ["Data do Resultado": "" + getFirstValue(lastValidAssessment, _("Data do Resultado")) ?: ""]
-        assessment << ["Observações": "" + getFirstValue(lastValidAssessment, _("Observações")) ?: ""]
+        assessment << ["Observações":       "" + getFirstValue(lastValidAssessment, _("Observações")) ?: ""]
 
         // Decompõe o clock tick (arrendondado aos 15m certos)
         def quarterHour = now.getAt(Calendar.MINUTE).intdiv(15)
@@ -635,11 +635,11 @@ def copyOrCreateAssessment(control, lastValidAssessment, runType) {
         def currMonth = now.getAt(Calendar.MONTH)
 
         // Se há um assessment válido só será para reavaliar se:
-        if ((runType == "forceAssessment")  // Avaliação pedida explicitamente na interface
+        if( (runType == "forceAssessment")  // Avaliação pedida explicitamente na interface
                 ||
-                (periodicidade == "15m")  // Periodicidade menor que o dia (corre sempre pois é a unidade minima de tempo)
+                (periodicidade == "15m" )  // Periodicidade menor que o dia (corre sempre pois é a unidade minima de tempo)
                 ||
-                (hourOfDay == 8 && quarterHour == 2) // Se for o início do dia (definido como 8h30) e:
+                (hourOfDay == 8 && quarterHour == 2)  // Se for o início do dia (definido como 8h30) e:
                 && (
                 periodicidade == "Diária"   // Ou for diário
                         ||
@@ -660,7 +660,7 @@ def copyOrCreateAssessment(control, lastValidAssessment, runType) {
             control << ["_marked_ToEval_": true]
             assessment << ["Data do Resultado": "" + now.time]
             // Se não é novo marca para apenas actualizar a data se a avaliação mudar
-            if (assessment["id"]) control << ["_marked_OnlyUpdateDataIfChanged": true]
+            if(assessment["id"]) control << ["_marked_OnlyUpdateDataIfChanged": true]
         }
     } else {
         assessment << ["Data": today]
@@ -686,11 +686,10 @@ def copyOrCreateAssessment(control, lastValidAssessment, runType) {
     return assessment
 }
 
-
 // ----------------------------------------------------------------------------------------------------
 //  assessControl - executa o assessmentTool
 // ----------------------------------------------------------------------------------------------------
-def assessControl(control) {
+def assessControl(control){
     def assessment = [
             "Findings": []
     ]
@@ -701,21 +700,19 @@ def assessControl(control) {
     //Obtem lista de elementos a avaliar
     def evaluationData
     switch (control[_("Assessment Tool")][0]) {
-        case "RecordM": evaluationData = getEvaluationDataRecordM(control); break
-        case "DeviceM": evaluationData = getEvaluationDataDeviceM(control); break
-        case "Manual": evaluationData = getEvaluationDataManual(control); break
+        case "RecordM" : evaluationData = getEvaluationDataRecordM(control); break
+        case "DeviceM" : evaluationData = getEvaluationDataDeviceM(control); break
+        case "Manual"  : evaluationData = getEvaluationDataManual(control); break
     }
     def evaluationList = evaluationData.evalList
     assessment << evaluationData.assessmentInfo
 
     //Se a resposta já tem o valor de atingimento a zero é porque foi encontrado alguma inconformidade e já trás o erro obtido
-    if (assessment["Atingimento"] == "0") {
-        return assessment
-    }
+    if (assessment["Atingimento"] == "0") { return assessment }
 
     // Inicializa resultados
-    def objectivoTotal = 0
-    def atingimentoTotal = 0
+    def objectivoTotal    = 0
+    def atingimentoTotal  = 0
     def processedFindings = []
 
     def specialVars = obterVariaveisEspeciaisDoControlo(control)
@@ -723,27 +720,27 @@ def assessControl(control) {
 
     // Realiza a avaliação do control contra cada registo especificado
     evaluationList.each { instanceToEval ->
-        def previousFinding = openFindings["" + instanceToEval.id]
-        def resultado = evalInstance(control, instanceToEval, previousFinding)
-        objectivoTotal += resultado["Objectivo"]
-        atingimentoTotal += resultado["Atingimento"]
+        def previousFinding = openFindings[""+instanceToEval.id]
+        def resultado      = evalInstance(control, instanceToEval, previousFinding)
+        objectivoTotal    += resultado["Objectivo"]
+        atingimentoTotal  += resultado["Atingimento"]
 
         def finding = createOrUpdateFinding(control, openFindings, instanceToEval, resultado)
 
-        if (finding != null) {
+        if(finding != null){
             processedFindings += finding
             assessment["Findings"] += finding
 
-            specialVars.each { specVar ->
+            specialVars.each{ specVar ->
                 addSpecialAssessMap(specVar, resultado, finding, specialVarAssessments)
             }
         }
 
-        openFindings.remove("" + instanceToEval.id)
+        openFindings.remove(""+instanceToEval.id)
     }
 
-    specialVarAssessments.each { var, assessMap ->
-        assessMap.findAll { it.value["Findings"].size() > 0 }.each { key, sAssess ->
+    specialVarAssessments.each{ var, assessMap ->
+        assessMap.findAll{ it.value["Findings"].size() > 0 }.each{ key, sAssess ->
             sAssess << buildAssessmentResultMap(sAssess["Findings"], Double.valueOf(sAssess["Objectivo"]), Double.valueOf(sAssess["Atingimento"]))
         }
     }
@@ -751,10 +748,10 @@ def assessControl(control) {
     assessment << buildAssessmentResultMap(processedFindings, objectivoTotal, atingimentoTotal)
 
     // Para cada finding aberto que não tenha sido processado (por não fazer mais parte da lista de instâncias a avaliar) repor e indicar remoção
-    if (!(control[_("Assessment Tool")][0] == "DeviceM" && control["_marked_ToEval_"])) {
+    if(!(control[_("Assessment Tool")][0] == "DeviceM" && control["_marked_ToEval_"])){
         openFindings.each { finding ->
-            def resultado = ["Objectivo": "mock_value", "Atingimento": "mock_value", "Observações": "Instance removed from evaluation filter"]
-            def instanceToEval = ["id": finding.key]
+            def resultado = ["Objectivo":"mock_value", "Atingimento":"mock_value", "Observações":"Instance removed from evaluation filter"]
+            def instanceToEval = ["id" : finding.key]
             processedFindings += createOrUpdateFinding(control, openFindings, instanceToEval, resultado) ?: []
         }
     }
@@ -763,24 +760,24 @@ def assessControl(control) {
     def markedNew = processedFindings.findAll { it.containsKey("_marked_New") }
 
     // Se houver alterações aos findingss (ie, se há algum que não esteja _marked_Inaltered) então marca o assessment como alterado para: indicar envio do email de alterações e necessidade de actualizar Observações e Data de Resultado
-    if (suspeitos.size() != 0) {
-        assessment << ["_marked_Changed": true]
+    if(suspeitos.size() != 0 ) {
+        assessment << ["_marked_Changed":    true]
 
-        suspeitos.each { finding ->
-            specialVarAssessments.each { var, assessMap ->
-                assessMap.findAll { it.value["Findings"].contains(finding) }.each { key, sAssess ->
+        suspeitos.each{finding ->
+            specialVarAssessments.each{ var, assessMap ->
+                assessMap.findAll{ it.value["Findings"].contains(finding) }.each{key, sAssess ->
                     sAssess["_marked_Changed"] = true
                 }
             }
         }
 
 //TODO: se pelo menos uma action com atraso no aviso, então adiciona campo ao assessment com todos os findings
-        if (markedNew.size() != 0) {
-            assessment << ["_marked_New_Findings": true]
+        if(markedNew.size() != 0 ) {
+            assessment << ["_marked_New_Findings":    true]
 
-            markedNew.each { finding ->
-                specialVarAssessments.each { var, assessList ->
-                    assessList.findAll { it.value["Findings"].contains(finding) }.each { key, sAssess ->
+            markedNew.each{finding ->
+                specialVarAssessments.each{ var, assessList ->
+                    assessList.findAll{ it.value["Findings"].contains(finding) }.each{key, sAssess ->
                         sAssess["_marked_New_Findings"] = true
                     }
                 }
@@ -793,16 +790,16 @@ def assessControl(control) {
     return assessment
 }
 
-static def obterVariaveisEspeciaisDoControlo(control) {
+static def obterVariaveisEspeciaisDoControlo(control){
     Set<String> specialVars = new HashSet<>()
 
-    ["Telemóvel", "Email Destino"].each { fieldName ->
-        def value = control.containsKey(_(fieldName)) ? control[_(fieldName)][0] : null
+    ["Telemóvel", "Email Destino"].each{ fieldName ->
+        def value = control.containsKey(_(fieldName))? control[_(fieldName)][0]:null
 
-        if (value != null) {
+        if(value != null){
             def vars = (value =~ REGEX_VARS_ESPECIAIS)
 
-            vars.each {
+            vars.each{
                 specialVars.add(it[1]) //it[1] = Nome da variável SEM delimitadores (ex: $a$ = a)
             }
         }
@@ -811,15 +808,15 @@ static def obterVariaveisEspeciaisDoControlo(control) {
     return specialVars
 };
 
-def addSpecialAssessMap(specVar, resultado, finding, specialVarAssessments) {
+def addSpecialAssessMap(specVar, resultado, finding, specialVarAssessments){
 
     def valor = resultado[specVar]
 
-    if (valor != null) {
+    if(valor != null){
         def specAssessMap = specialVarAssessments[specVar] ?: [:]
         def sa = specAssessMap[valor]
 
-        if (sa == null) {
+        if(sa == null){
             sa = [
                     "Findings"   : [finding],
                     "Objectivo"  : Double.valueOf(resultado["Objectivo"] ?: 0),
@@ -914,8 +911,8 @@ def evalInstance(control, instanceToEval, previousFinding) {
 
     // Assume de cada avaliação vale 1 para o objectivo e que, à partida, o teste vai passar
     def resultado = [:]
-    resultado << ["Objectivo": 1]
-    resultado << ["Atingimento": 1]
+    resultado << ["Objectivo"   : 1 ]
+    resultado << ["Atingimento" : 1 ]
 
     def output = null
     try {
@@ -946,22 +943,22 @@ def prepareEvalInfo(condicaoSucesso, instanceToEval, previousFinding) {
     def evalMap = [:]
 
     //Aumenta código de avaliação com dados e métodos para simplificar a escrita dos testes
-    evalMap["instancia"] = instanceToEval
-    evalMap["previousFinding"] = previousFinding
-    evalMap["log"] = { msg -> log.info(msg) }
-    evalMap["rmRest"] = rmRest
+    evalMap["instancia"]        = instanceToEval
+    evalMap["previousFinding"]  = previousFinding
+    evalMap["log"]              = { msg -> log.info(msg) }
+    evalMap["rmRest"]           = rmRest
 
-    evalMap["pesquisaRegistos"] = { nomeDefinicao, pesquisa, size ->
+    evalMap["pesquisaRegistos"] = { nomeDefinicao,pesquisa,size ->
         def resp = recordm.search(nomeDefinicao, pesquisa, ["size": size]);
-        if (!resp.ok()) {
+        if(!resp.ok()){
             throw new Exception("Não foi possível fazer a pesquisa pretendida ($nomeDefinicao,$pesquisa).")
         }
         return resp
     }
 
-    evalMap["contaRegistos"] = { nomeDefinicao, pesquisa ->
+    evalMap["contaRegistos"] = { nomeDefinicao,pesquisa ->
         def resp = recordm.search(nomeDefinicao, pesquisa, ["size": 0]);
-        if (!resp.ok()) {
+        if(!resp.ok()){
             throw new Exception("Não foi possível fazer a pesquisa pretendida ($nomeDefinicao,$pesquisa).")
         }
         return resp.getTotal()
@@ -983,7 +980,7 @@ def prepareEvalInfo(condicaoSucesso, instanceToEval, previousFinding) {
         def query = "id:${instanceToEval.cpeExternalId}"
         def searchResult = getInstances(definitionName, query)
 
-        if (searchResult.size() == 1) {
+        if(searchResult.size() == 1){
             instance = searchResult.get(0)
         }
 
@@ -1022,7 +1019,7 @@ def prepareEvalInfo(condicaoSucesso, instanceToEval, previousFinding) {
     GovernanceConfig.customAssessmentFunctions.each { fnName, code ->
         baseCode += "\n        def " + fnName + " = x." + fnName
     }
-    baseCode += "\n"
+    baseCode+="\n"
 
     def finalReturnCode = '''
         return resultado;
@@ -1030,7 +1027,7 @@ def prepareEvalInfo(condicaoSucesso, instanceToEval, previousFinding) {
 
     def parsedEvalCode = parse(condicaoSucesso, instanceToEval, "instancia")
 
-    return [map: evalMap, code: baseCode + parsedEvalCode + finalReturnCode]
+    return [map:evalMap, code: baseCode + parsedEvalCode + finalReturnCode ]
 }
 
 //usado em customAssessmentFunctions
@@ -1049,7 +1046,7 @@ def somaValoresES(indices, pesquisa, campoSoma, campoTempo, momentoInicio) {
 
     String body = response.readEntity(String.class)
 
-    if (response.getStatus().intdiv(100) != 2) {
+    if(response.getStatus().intdiv(100) != 2){
         throw new Exception("Não foi possível fazer a pesquisa pretendida ($indices, $pesquisa, $campoSoma, $campoTempo, $momentoInicio): $body")
     }
 
@@ -1061,7 +1058,7 @@ def somaValoresES(indices, pesquisa, campoSoma, campoTempo, momentoInicio) {
 //usado em customAssessmentFunctions
 def mediaValoresES(indices, pesquisa, campoMedia, campoTempo, momentoInicio) {
     def query = getEsQuery(pesquisa, campoTempo, momentoInicio)
-    def aggs = getEsAgg("field_avg", "avg", campoMedia)
+    def aggs =  getEsAgg("field_avg", "avg", campoMedia)
 
     def esJsonStr = "{\"size\":0, " +
             "\"query\":${query}," +
@@ -1072,7 +1069,7 @@ def mediaValoresES(indices, pesquisa, campoMedia, campoTempo, momentoInicio) {
 
     String body = response.readEntity(String.class)
 
-    if (response.getStatus().intdiv(100) != 2) {
+    if(response.getStatus().intdiv(100) != 2){
         throw new Exception("Não foi possível fazer a pesquisa pretendida ($indices, $pesquisa, $campoMedia, $campoTempo, $momentoInicio): $body")
     }
 
@@ -1081,7 +1078,7 @@ def mediaValoresES(indices, pesquisa, campoMedia, campoTempo, momentoInicio) {
     return esResult.aggregations.field_avg.isNull("value") ? null : esResult.aggregations.field_avg.value
 };
 
-def doAggSearch(indices, esJsonStr) {
+def doAggSearch(indices, esJsonStr){
     //uses integrationm token
     return ClientBuilder.newClient()
             .target(GovernanceConfig.ES_URL)
@@ -1091,7 +1088,7 @@ def doAggSearch(indices, esJsonStr) {
             .post(Entity.entity(esJsonStr, MediaType.APPLICATION_JSON), Response.class)
 };
 
-static def getEsQuery(pesquisa, campoTempo, momentoInicio) {
+static def getEsQuery(pesquisa, campoTempo, momentoInicio){
     def esQuery = "{\"bool\":{" +
             "\"must\":{" +
             "\"query_string\":{" +
@@ -1104,7 +1101,7 @@ static def getEsQuery(pesquisa, campoTempo, momentoInicio) {
             "\"must_not\": []," +
             "\"must\":["
 
-    if (campoTempo && momentoInicio) {
+    if(campoTempo && momentoInicio){
         esQuery += "{\"range\":{" +
                 "\"${campoTempo}\": {" +
                 "\"gte\":\"${momentoInicio}\"" +
@@ -1130,21 +1127,21 @@ static def getEsAgg(name, type, field) {
             "}}"
 }
 
-def parse(textWithVars, instanceToEval, nomeVarInstancia) {
+def parse(textWithVars, instanceToEval, nomeVarInstancia){
     // $id$ = <id da instancia>
     def parsedText = textWithVars.replace("\$id\$", "" + instanceToEval.id)
 
     // _[Nome Campo]_ = instancia["<Nome do campo>"][0]
-    parsedText = parsedText.replaceAll(/_\[([^\]]*?)\]_/) { m -> "(${nomeVarInstancia}.containsKey(\"${_(m[1])}\") ? ${nomeVarInstancia}[\"${_(m[1])}\"][0] : null)" }
+    parsedText = parsedText.replaceAll( /_\[([^\]]*?)\]_/ ) { m -> "(${nomeVarInstancia}.containsKey(\"${_(m[1])}\") ? ${nomeVarInstancia}[\"${_(m[1])}\"][0] : null)" }
 
     // $Nome Campo$ = "<valor do campo>"
-    parsedText = parsedText.replaceAll(/[$](.+?)[$]/) { m ->
+    parsedText = parsedText.replaceAll( /[$](.+?)[$]/ ) { m ->
         def fieldName = m[1]
         def esFieldName = _(fieldName)
         def esField = (instanceToEval["${esFieldName}"]
                 ?: instanceToEval["${fieldName}"])
 
-        if (esField == null) {
+        if(esField == null){
             log.warn("O campo \"${fieldName}\" não existe na instância a avaliar {{instance:${instanceToEval.id}}}")
             return null
         }
@@ -1161,47 +1158,47 @@ def createOrUpdateFinding(control, openFindings, instanceToEval, resultado) {
     def previousTestOk = previousFinding ? previousFinding["Reposição Detectada"] : ""
     def previousState = previousFinding ? previousFinding["Estado"] : ""
 
-    if (successFlag) {
+    if(successFlag){
         if (previousTestOk == "Não") {
-            if (previousState == "Suspeito") {
+            if(previousState == "Suspeito"){
                 previousFinding["Estado"] = "Suspeito Cancelado"
             } else {
                 previousFinding["_marked_ChangedToOK"] = true
             }
             previousFinding["Data de reposição"] = "" + now.time
             previousFinding["Reposição Detectada"] = "Sim"
-            previousFinding["Observações"] = previousFinding["Observações"] ?: ""
+            previousFinding["Observações"] = previousFinding["Observações"]?:""
 
-            if (resultado["Observações"]) previousFinding["Observações"] = resultado["Observações"]
+            if(resultado["Observações"]) previousFinding["Observações"] = resultado["Observações"]
 
             createOrUpdateInstance("Finding", previousFinding)
-        } else if (previousTestOk == "Sim") {
+        } else if( previousTestOk == "Sim" ) {
             previousFinding["_marked_Inaltered"] = true
         }
         // Caso contrário não é necessário fazer nada pois irá retornar o finding existente (se existia) ou então retorna null pois não havia finding (está tudo ok e já estava tudo ok)
     } else {
         // Se havia finding anterior com indicação de 'resposto' então repõe indicação de inconformidade
-        if (previousTestOk == "Sim") {
+        if(previousTestOk == "Sim") {
             previousFinding["Reposição Detectada"] = "Não"
 
-            if (resultado["Observações"]) previousFinding["Observações"] = resultado["Observações"]
+            if(resultado["Observações"]) previousFinding["Observações"] = resultado["Observações"]
 
             createOrUpdateInstance("Finding", previousFinding)
             previousFinding["_marked_ChangedToNOK"] = true
 
             // Caso houvesse finding anterior só é necessário actualizar o Finding se observação mudou. De qualquer forma retorna o anterior finding para reportar
-        } else if (previousTestOk == "Não") {
-            if (previousState == "Suspeito") {
-                if (Long.valueOf(previousFinding["_limite_suspeita_"]) < now.time) {
+        } else if( previousTestOk == "Não" ) {
+            if(previousState == "Suspeito") {
+                if(Long.valueOf(previousFinding["_limite_suspeita_"]) < now.time) {
                     previousFinding["Estado"] = "Por Tratar"
-                    previousFinding["Observações"] = resultado["Observações"] ?: ""
+                    previousFinding["Observações"] = resultado["Observações"]?:""
                     createOrUpdateInstance("Finding", previousFinding)
                     previousFinding["_marked_New"] = true
                 }
             } else {
-                if (resultado["Observações"] && resultado["Observações"].trim() != previousFinding["Observações"]) {
-                    if (previousFinding["Observações"] != resultado["Observações"]) {
-                        previousFinding["Observações"] = resultado["Observações"] ?: ""
+                if(resultado["Observações"] && resultado["Observações"].trim() != previousFinding["Observações"]) {
+                    if(previousFinding["Observações"] != resultado["Observações"]) {
+                        previousFinding["Observações"] = resultado["Observações"]?:""
                         createOrUpdateInstance("Finding", previousFinding)
                     }
                 }
@@ -1210,13 +1207,13 @@ def createOrUpdateFinding(control, openFindings, instanceToEval, resultado) {
 
             // Caso contrário não havia um finding e então cria um novo
         } else {
-            def suspectFindindNotYetToCreate = getFirstValue(control, _("Quando considerar inconformidade")) == "Após repetição da detecção"
+            def suspectFindindNotYetToCreate = getFirstValue(control,_("Quando considerar inconformidade"))=="Após repetição da detecção"
             def intervalo
             switch (control[_("Periodicidade")][0]) {
-                case "Mensal": intervalo = 30 * 24 * 60; break
-                case "Semanal": intervalo = 7 * 24 * 60; break
-                case "Diária": intervalo = 24 * 60; break
-                case "15m": intervalo = 15; break
+                case "Mensal":  intervalo = 30*24*60; break
+                case "Semanal": intervalo = 7*24*60; break
+                case "Diária":  intervalo = 24*60; break
+                case "15m":     intervalo = 15; break
             }
 
             def newFinding = [
@@ -1241,13 +1238,13 @@ def createOrUpdateFinding(control, openFindings, instanceToEval, resultado) {
 
             newFinding["Observações"] = resultado["Observações"] ?: (newFinding["Label Asset Origem"] ?: "id:" + instanceToEval.id) + " - " + control[_("Código")][0]
 
-            if (getFirstValue(control, _("Acção")) == "Contabilizar e Reportar Inconformidades") {
+            if(getFirstValue(control,_("Acção"))=="Contabilizar e Reportar Inconformidades") {
                 createOrUpdateInstance("Finding", newFinding)
             }
 
             previousFinding = newFinding //to return
-            if (suspectFindindNotYetToCreate == false) {
-                if (getFirstValue(control, _("Acção")) == "Contabilizar e Reportar Inconformidades") {
+            if(suspectFindindNotYetToCreate == false) {
+                if(getFirstValue(control,_("Acção"))=="Contabilizar e Reportar Inconformidades") {
                     previousFinding["_marked_New"] = true
                 } else {
                     previousFinding["_marked_NewButNoReport"] = true
@@ -1260,11 +1257,11 @@ def createOrUpdateFinding(control, openFindings, instanceToEval, resultado) {
 // --------------------------------------------------------------------
 static def buildReport(findings) {
     def report = ""
-    report += buidlStateReport(findings, "_marked_NewButNoReport", "<b>Inconformidades contabilizadas mas não reportadas:</b>\n")
-    report += buidlStateReport(findings, "_marked_New", "<b>NOVAS inconformidades:</b>\n")
-    report += buidlStateReport(findings, "_marked_ChangedToNOK", "<b>Inconformidades reabertas:</b>\n")
-    report += buidlStateReport(findings, "_marked_ChangedToOK", "<b>Inconformidades aparentemente já não verificadas:</b>\n")
-    report += buidlStateReport(findings, "_marked_Inaltered", "<b>Inconformidades INALTERADAS:</b>\n")
+    report += buidlStateReport(findings,"_marked_NewButNoReport","<b>Inconformidades contabilizadas mas não reportadas:</b>\n")
+    report += buidlStateReport(findings,"_marked_New",           "<b>NOVAS inconformidades:</b>\n")
+    report += buidlStateReport(findings,"_marked_ChangedToNOK",  "<b>Inconformidades reabertas:</b>\n")
+    report += buidlStateReport(findings,"_marked_ChangedToOK",   "<b>Inconformidades aparentemente já não verificadas:</b>\n")
+    report += buidlStateReport(findings,"_marked_Inaltered",     "<b>Inconformidades INALTERADAS:</b>\n")
     return report
 }
 // --------------------------------------------------------------------
@@ -1272,18 +1269,18 @@ static def buidlStateReport(findings, changeType, label) {
     def report = ""
     def count = 0
     findings.findAll { it[changeType] }.each { finding ->
-        if (count == 0) report += label
-        if (count++ < 10) {
+        if(count == 0) report += label
+        if(count++ < 10) {
             report += " * "
-            if (changeType.indexOf("_marked_New") == -1) report += "${finding["Estado"]}"
-            if (changeType == "_marked_ChangedToOK" || changeType == "_marked_Inaltered" && finding["Reposição Detectada"] == "Sim") report += "/REPOSTO"
-            if (changeType.indexOf("_marked_New") == -1) report += " | "
+            if( changeType.indexOf("_marked_New") == -1) report += "${finding["Estado"]}"
+            if( changeType == "_marked_ChangedToOK" || changeType == "_marked_Inaltered" && finding["Reposição Detectada"] == "Sim") report += "/REPOSTO"
+            if( changeType.indexOf("_marked_New") == -1) report += " | "
             report += finding["Observações"] ? finding["Observações"] : finding["Label Asset Origem"]
             report += "\n"
         }
     }
-    if (count > 10) report += " * mais ${count - 10} registos\n\n"
-    if (count > 0) report += "\n"
+    if(count > 10) report += " * mais ${count-10} registos\n\n"
+    if(count > 0)  report += "\n"
     return report
 }
 
@@ -1297,19 +1294,19 @@ def getEvaluationDataRecordM(control) {
     def definitionName = control[_("Definição")][0]
     def definitionId = getDefinitionId(definitionName)
     if (definitionId == null) {
-        assessmentInfo << ["Atingimento": "0"]
-        assessmentInfo << ["Observações": "Erro na avaliação: Não é possível executar o AssessTool porque a Definição indicada (" + definitionName + ") não existe"]
+        assessmentInfo << [ "Atingimento": "0" ]
+        assessmentInfo << [ "Observações": "Erro na avaliação: Não é possível executar o AssessTool porque a Definição indicada ("+definitionName+") não existe" ]
     } else {
         def filtro = control[_("Filtro")][0]
 
         // Obtem lista de instancias a avaliar
         evaluationList = getInstances(definitionName, filtro)
         if (evaluationList.size() == 0) {
-            assessmentInfo << ["Atingimento": "0"]
-            assessmentInfo << ["Observações": "O filtro indicado não devolve INSTÂNCIAS para avaliar"]
+            assessmentInfo << [ "Atingimento": "0" ]
+            assessmentInfo << [ "Observações": "O filtro indicado não devolve INSTÂNCIAS para avaliar" ]
         }
     }
-    return ["evalList": evaluationList, "assessmentInfo": assessmentInfo]
+    return ["evalList":evaluationList,"assessmentInfo": assessmentInfo]
 }
 // --------------------------------------------------------------------
 def getEvaluationDataDeviceM(control) {
@@ -1317,22 +1314,22 @@ def getEvaluationDataDeviceM(control) {
     def assessmentInfo = [:]
 
     // Se já há um comando executado obtêm os resultados para avaliar o resultado
-    if (control["_marked_CollectDeviceMValues_"]) {
+    if(control["_marked_CollectDeviceMValues_"]) {
         def definitionName = control[_("Definição")][0]
         def definitionId = getDefinitionId(definitionName)
 
         def jobId = control["_marked_CollectDeviceMValues_"]
-        def taskList = actionPacks.get("cmRest").get("/confm/requests/" + jobId + "/tasks")
-        def taskListObj = new JSONObject('{ "result":' + taskList + '}')
+        def taskList = actionPacks.get("cmRest").get("/confm/requests/"+ jobId +"/tasks")
+        def taskListObj = new JSONObject('{ "result":'+taskList+'}')
         evalList = []
-        for (int index = 0; index < taskListObj.result.length(); index++) {
+        for(int index = 0; index < taskListObj.result.length(); index++){
             try {
                 def hitJson = taskListObj.result.getJSONObject(index)
                 /* {commands=R100, state=ok, _definitionInfo={id=36, timeSpent=1, filePreviews=null, uri=http://localhost:40180/confm/requests/2122406/tasks/2122406/tasks/368794552, cpeExternalId=418, id=418, changedFilesInJson=, cpeName=185-Sintra-Agualva, errors=, results=R100=1, cpesJobRequest=2122406, cpe=40, endTimestamp=1502401144176} */
-                def hitMap = recordmJsonToMap(hitJson.toString())
-                hitMap << ["id": hitMap.cpeExternalId]
-                hitMap << ["_definitionInfo": ["id": definitionId, "name": definitionName, "instanceLabel": ["name": ["_label_fake_field_"]]]]
-                hitMap << ["_label_fake_field_": [hitMap.cpeName]]
+                def hitMap  = recordmJsonToMap(hitJson.toString())
+                hitMap << ["id" : hitMap.cpeExternalId ]
+                hitMap << ["_definitionInfo"    : ["id" : definitionId, "name" : definitionName, "instanceLabel" : [ "name" : ["_label_fake_field_"] ] ] ]
+                hitMap << ["_label_fake_field_" : [hitMap.cpeName]]
                 evalList.add(hitMap)
             } catch (e) {
                 //someday jbarata: Algumas vezes dá o erro:
@@ -1341,23 +1338,23 @@ def getEvaluationDataDeviceM(control) {
                 log.info("ERROR " + e)
             }
         }
-        if (evalList.size() == 0) {
-            assessmentInfo << ["Atingimento": "0"]
-            assessmentInfo << ["Observações": "O filtro indicado não devolveu EQUIPAMENTOS para avaliar"]
+        if(evalList.size() == 0){
+            assessmentInfo << [ "Atingimento": "0" ]
+            assessmentInfo << [ "Observações":"O filtro indicado não devolveu EQUIPAMENTOS para avaliar" ]
         }
         assessmentInfo << ["DeviceM JobID": ""]
     }
 
     // Se está marcado para correr executa comando no DeviceM de forma a poder avaliar o resultado na próxima execução (dentro de 15m)
-    if (control["_marked_ToEval_"]) {
+    if(control["_marked_ToEval_"]) {
         def jobId = execCmdWhere(control[_("Comando")][0], control[_("Filtro")][0])
-        assessmentInfo << ["DeviceM JobID": "" + jobId]
+        assessmentInfo << ["DeviceM JobID": ""+jobId]
     }
 
-    return ["evalList": evalList, "assessmentInfo": assessmentInfo]
+    return ["evalList":evalList, "assessmentInfo":assessmentInfo]
 }
 // --------------------------------------------------------------------
-def execCmdWhere(cmd, condition) {
+def execCmdWhere(cmd,condition){
     def fields = new HashMap<String, String>()
 
     fields["condition"] = condition
@@ -1365,13 +1362,13 @@ def execCmdWhere(cmd, condition) {
 
     def resp
     try {
-        resp = actionPacks.get("cmRest").post("/confm/integration/cmd", fields)
+        resp = actionPacks.get("cmRest").post("/confm/integration/cmd",fields)
     } catch (e) {
         log.info("ERROR " + e)
         resp = "NOT_OK"
     }
 
-    if (resp == "NOT_OK") {
+    if (resp == "NOT_OK"){
         log.error("Error executing commands {{params : " + fields + "}}")
         return null
     } else {
@@ -1409,29 +1406,29 @@ def executaAccoesComplementares(control, assessment) {
 
     def subject = "Resultado avaliação de ${control[_("Nome")]}".toString()
 
-    def body = assessment["Observações"] ?: "Sem observações."
+    def body = assessment["Observações"]?: "Sem observações."
 
-    if (assessment["_marked_Changed"] || msg.action == "forceAssessment") {
+    if ( assessment["_marked_Changed"] || msg.action == "forceAssessment")  {
         control[_("Acção Complementar")].eachWithIndex { action, idx ->
             def sendNow = true
-            if (getFirstValue(control, _("Tolerância")) == "Prazo após criação") {
+            if (getFirstValue(control,_("Tolerância")) == "Prazo após criação") {
                 //TODO: Calacular se prazo já foi atingido
-                if (getFirstValue(control, _("Prazo")) > now.time) {
+                if (getFirstValue(control,_("Prazo")) > now.time) {
                     sendNow = false
                     //calcular findings a incluir
                     //TODO
                 }
             }
 
-            def textoBase = control.containsKey(_("Texto")) ? control[_("Texto")][idx] : ""
+            def textoBase = control.containsKey(_("Texto"))? control[_("Texto")][idx] : ""
 
-            if (sendNow && action == "Enviar Email Resumo alterações") {
+            if ( sendNow && action == "Enviar Email Resumo alterações" ) {
                 def assessmentsEspeciais = [:]
 
-                assessment["Assessments Especiais"].each { specVar, map ->
-                    specAssess = map.findAll { key, assess -> assess["_marked_Changed"] }
+                assessment["Assessments Especiais"].each{ specVar, map ->
+                    specAssess = map.findAll{ key, assess-> assess["_marked_Changed"] }
 
-                    if (specAssess.size() > 0) {
+                    if (specAssess.size() > 0){
                         assessmentsEspeciais.put(specVar, specAssess)
                     }
                 }
@@ -1439,9 +1436,9 @@ def executaAccoesComplementares(control, assessment) {
                 String emails = control[_("Email Destino")][mailActionsIdx]
                 def emailsEspeciais = obterVarsEspeciais(emails, assessmentsEspeciais)
 
-                String emailsBcc = control[_("Email Destino BCC")] != null ? control[_("Email Destino BCC")][mailActionsIdx] : ""
+                String emailsBcc = control[_("Email Destino BCC")]!=null? control[_("Email Destino BCC")][mailActionsIdx] :""
 
-                if (emailsEspeciais.size() > 0) {
+                if(emailsEspeciais.size() > 0){
 
                     enviarEmailsEspeciais(emailsEspeciais, emailsBcc, subject, textoBase)
 
@@ -1456,13 +1453,13 @@ def executaAccoesComplementares(control, assessment) {
             }
 
             //Enviar apenas novas inconformidades para poupar caracteres (max 747 nas SMS)
-            if (sendNow && action == "Enviar SMS qd há novas inconformidades" && assessment["_marked_New_Findings"]) {
+            if ( sendNow && action == "Enviar SMS qd há novas inconformidades" && assessment["_marked_New_Findings"] ) {
                 def assessmentsEspeciais = [:]
 
-                assessment["Assessments Especiais"].each { specVar, map ->
-                    specAssess = map.findAll { key, assess -> assess["_marked_New_Findings"] }
+                assessment["Assessments Especiais"].each{ specVar, map ->
+                    specAssess = map.findAll{ key, assess-> assess["_marked_New_Findings"] }
 
-                    if (specAssess.size() > 0) {
+                    if(specAssess.size() > 0){
                         assessmentsEspeciais.put(specVar, specAssess)
                     }
                 }
@@ -1472,7 +1469,7 @@ def executaAccoesComplementares(control, assessment) {
 
                 def numsEspeciais = obterVarsEspeciais(numsTel, assessmentsEspeciais)
 
-                if (numsEspeciais.size() > 0) {
+                if(numsEspeciais.size() > 0){
 
                     enviarSMSEspeciais(numsEspeciais, codigo, textoBase)
 
@@ -1480,7 +1477,7 @@ def executaAccoesComplementares(control, assessment) {
                 }
 
                 if (numsTel.length() > 0) {
-                    body = buidlStateReport(assessment["Findings"], "_marked_New", "<b>NOVAS inconformidades:</b>\n") ?: "Sem observações."
+                    body = buidlStateReport(assessment["Findings"] ,"_marked_New", "<b>NOVAS inconformidades:</b>\n") ?: "Sem observações."
 
                     def finalBody = (textoBase + "\n\n" + body).toString()
 
@@ -1497,22 +1494,22 @@ def executaAccoesComplementares(control, assessment) {
     }
 }
 
-static def obterVarsEspeciais(vars, assessmentsEspeciais) {
+static def obterVarsEspeciais(vars, assessmentsEspeciais){
     def varsEspeciais = (vars =~ REGEX_VARS_ESPECIAIS)
 
-    return varsEspeciais.collect {
+    return varsEspeciais.collect{
         def parsed = it[1] //Nome da variável especial SEM delimitadores (ex: email)
 
         return [
-                "raw"          : it[0] //Nome da variável especial COM delimitadores (ex: $email$)
-                , "parsed"     : parsed
+                "raw": it[0] //Nome da variável especial COM delimitadores (ex: $email$)
+                , "parsed": parsed
                 , "assessments": (assessmentsEspeciais[parsed] ?: [:])
         ]
     }
 }
 
 def enviarEmailsEspeciais(emailsEspeciais, String emailsBcc, subject, textoBase) {
-    emailsEspeciais.each {
+    emailsEspeciais.each{
         def assessMap = it["assessments"]
 
         assessMap.findAll { emails, assessment -> emails.length() > 0 }
@@ -1526,12 +1523,12 @@ def enviarEmailsEspeciais(emailsEspeciais, String emailsBcc, subject, textoBase)
     }
 }
 
-def enviarSMSEspeciais(numsEspeciais, codigo, textoBase) {
-    numsEspeciais.each {
+def enviarSMSEspeciais(numsEspeciais, codigo, textoBase){
+    numsEspeciais.each{
         def assessMap = it["assessments"]
 
         assessMap.findAll { telefones, assessment -> telefones.length() > 0 }
-                .each { telefones, assessment ->
+                .each{ telefones, assessment ->
 
                     def body = buidlStateReport(assessment["Findings"], "_marked_New", "<b>NOVAS inconformidades:</b>\n") ?: "Sem observações."
 
@@ -1550,8 +1547,8 @@ def enviarSMSEspeciais(numsEspeciais, codigo, textoBase) {
     }
 }
 
-static def removerVarsEspeciais(vars, varsEspeciais) {
-    varsEspeciais.each {
+static def removerVarsEspeciais(vars, varsEspeciais){
+    varsEspeciais.each{
         vars -= it.raw
     }
 
@@ -1565,7 +1562,7 @@ static def removerVarsEspeciais(vars, varsEspeciais) {
 // ----------------------------------------------------------------------------------------------------
 //  getInstances - Para um dado Nome de definição e um filtro obtem array com instâncias
 // ----------------------------------------------------------------------------------------------------
-def getInstances(nomeDefinicao, query) {
+def getInstances(nomeDefinicao, query){
     def result = []
 
     recordm.stream(nomeDefinicao, query, { hit ->
@@ -1575,10 +1572,10 @@ def getInstances(nomeDefinicao, query) {
     return result
 }
 // --------------------------------------------------------------------
-def esSourceList(hits) {
+def esSourceList(hits){
     def sourceList = []
 
-    for (int index = 0; index < hits.length(); index++) {
+    for(int index = 0; index < hits.length(); index++){
         def hit = hits.getJSONObject(index)
 
         sourceList.add(recordmJsonToMap(hit._source.toString()))
@@ -1587,7 +1584,7 @@ def esSourceList(hits) {
     return sourceList
 }
 // --------------------------------------------------------------------
-def recordmJsonToMap(content) {
+def recordmJsonToMap(content){
     ObjectMapper mapper = new ObjectMapper()
 
     return mapper.readValue(content, HashMap.class)
@@ -1600,10 +1597,10 @@ static def getFirstValue(map, key) {
 // ----------------------------------------------------------------------------------------------------
 //  getDefinitionId - Obtem o id de uma definição a partir do Nome da mesma
 // ----------------------------------------------------------------------------------------------------
-def _forceGetDefinitionId(definitionName) {
+def _forceGetDefinitionId(definitionName){
     def resp = rmRest.get("recordm/definitions/name/" + definitionName, "")
 
-    if (resp != "NOT_OK") {
+    if(resp != "NOT_OK"){
         JSONObject definition = new JSONObject(resp)
 
         return definition.id
@@ -1611,7 +1608,7 @@ def _forceGetDefinitionId(definitionName) {
     return null
 }
 
-def getDefinitionId(definitionName) {
+def getDefinitionId(definitionName){
     return cacheOfDefinitions.get(definitionName, { _forceGetDefinitionId(definitionName) })
 }
 
@@ -1621,9 +1618,9 @@ def getDefinitionId(definitionName) {
 def createOrUpdateInstance(definitionName, instance) {
     def updates = cloneAndStripInstanceForRecordmSaving(instance)
 
-    if (instance.id) {
+    if(instance.id) {
         // Update mas apenas se tiver mais que 1 campo (ou seja, excluindo o id)
-        if (instance.size() > 1) {
+        if(instance.size() > 1) {
             return recordm.update(definitionName, "recordmInstanceId:" + instance["id"], updates).getBody()
         }
     } else {
@@ -1633,7 +1630,7 @@ def createOrUpdateInstance(definitionName, instance) {
 }
 
 //necessário remover os Boolean da instância para se conseguir gravar no recordm
-def cloneAndStripInstanceForRecordmSaving(instance) {
+def cloneAndStripInstanceForRecordmSaving(instance){
     def updates = [:]
     instance.each { k, v ->
         //log.info("XXXXX KEYk " + k + v)
@@ -1650,15 +1647,15 @@ def cloneAndStripInstanceForRecordmSaving(instance) {
 // ----------------------------------------------------------------------------------------------------
 //  toEsName (nome reduzido para "_")  - Converte um nome de campo RecordM no seu correspondente no ES
 // ----------------------------------------------------------------------------------------------------
-static def _(fieldName) {
+static def _(fieldName){
     return fieldName?.toLowerCase()?.replace(" ", "_")
 }
 // --------------------------------------------------------------------
-def getUsersWithGroups(groups) {
+def getUsersWithGroups(groups){
     def query = "groups.name:(\"${groups.join('" AND "')}\") AND -username:test*"
 
-    def result = userm.searchUsers(query, [
-            'sort': '_id:asc',
+    def result = userm.searchUsers(query,[
+            'sort':'_id:asc',
             'size': "50"
     ])
 
