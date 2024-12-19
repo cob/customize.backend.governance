@@ -1,0 +1,323 @@
+{
+    "id": null,
+    "name": "Consentimentos",
+    "description": "@GOV",
+    "duplicable": null,
+    "state": "enabled",
+    "fieldDefinitions": [
+        {
+            "id": null,
+            "name": "Titular dos Dados",
+            "required": null,
+            "description": "Email, Nome, CC, etc $instanceLabel",
+            "configuration": {
+                "description": "Email, Nome, CC, etc",
+                "keys": {
+                    "InstanceLabel": {}
+                },
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 0,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Atividade Consentida",
+            "required": null,
+            "description": "$ref(Atividades v2,*) $instanceDescription $expanded",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "InstanceDescription": {},
+                    "Reference": {
+                        "args": {
+                            "query": "*",
+                            "definition": "Atividades v2"
+                        }
+                    },
+                    "Expanded": {
+                        "args": {}
+                    }
+                },
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [
+                {
+                    "id": null,
+                    "name": "Username Responsável",
+                    "required": null,
+                    "description": "$auto.ref(Atividade Consentida).field(Username Responsável) Username Responsável Atividade",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "AutoRefField": {
+                                "args": {
+                                    "source_field": "Atividade Consentida",
+                                    "field_name": "Username Responsável"
+                                }
+                            }
+                        },
+                        "extensions": {}
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 2,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "ID Legislação",
+                    "required": null,
+                    "description": "$auto.ref(Atividade Consentida).field(Legislação que permite esta atividade) $expanded $style[hide]",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "AutoRefField": {
+                                "args": {
+                                    "source_field": "Atividade Consentida",
+                                    "field_name": "Legislação que permite esta atividade"
+                                }
+                            },
+                            "Expanded": {
+                                "args": {}
+                            }
+                        },
+                        "extensions": {
+                            "$style": {
+                                "args": [
+                                    "hide"
+                                ]
+                            }
+                        }
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 3,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Legislação que permite esta atividade",
+                    "required": null,
+                    "description": "$auto.ref(Atividade Consentida).field(Legislação) $expanded",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "AutoRefField": {
+                                "args": {
+                                    "source_field": "Atividade Consentida",
+                                    "field_name": "Legislação"
+                                }
+                            },
+                            "Expanded": {
+                                "args": {}
+                            }
+                        },
+                        "extensions": {}
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 4,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Prazo de conservação dos dados",
+                    "required": null,
+                    "description": "$auto.ref(Atividade Consentida).field(Prazo de conservação dos dados) ",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "AutoRefField": {
+                                "args": {
+                                    "source_field": "Atividade Consentida",
+                                    "field_name": "Prazo de conservação dos dados"
+                                }
+                            }
+                        },
+                        "extensions": {}
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 5,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Texto do Consentimento",
+                    "required": null,
+                    "description": "$auto.ref(Atividade Consentida).field(Texto do consentimento)  $text ",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "AutoRefField": {
+                                "args": {
+                                    "source_field": "Atividade Consentida",
+                                    "field_name": "Texto do consentimento"
+                                }
+                            }
+                        },
+                        "extensions": {
+                            "$text": {}
+                        }
+                    },
+                    "condition": "ID Legislação=79259",
+                    "visibilityCondition": {
+                        "type": "Equal",
+                        "value": [
+                            "79259"
+                        ],
+                        "matcher": {
+                            "type": "Name",
+                            "name": "ID Legislação"
+                        }
+                    },
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 6,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                }
+            ],
+            "order": 1,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Estado do Consentimento",
+            "required": null,
+            "description": "$[Válido,Revogado,Caducado] $instanceDescription",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "InstanceDescription": {},
+                    "Select": {
+                        "args": [
+                            "Válido",
+                            "Revogado",
+                            "Caducado"
+                        ],
+                        "default": null
+                    }
+                },
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 7,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Data do Consentimento",
+            "required": null,
+            "description": "$datetime $default(now) $instanceDescription",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Default": {
+                        "args": {
+                            "value": "now"
+                        }
+                    },
+                    "InstanceDescription": {},
+                    "DateTime": {}
+                },
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 8,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": "1734609615380"
+        },
+        {
+            "id": null,
+            "name": "Validade do Consentimento",
+            "required": null,
+            "description": "$datetime",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "DateTime": {}
+                },
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 9,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Sigla Empresa",
+            "required": null,
+            "description": "$style[hide] $editForGroup(System)",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "EditForGroup": {
+                        "args": [
+                            "System"
+                        ]
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "hide"
+                        ]
+                    }
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 10,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        }
+    ],
+    "version": null
+}

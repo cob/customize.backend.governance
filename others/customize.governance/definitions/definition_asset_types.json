@@ -1,0 +1,2963 @@
+{
+    "id": null,
+    "name": "Asset Types",
+    "description": "@GOV",
+    "duplicable": null,
+    "state": "enabled",
+    "fieldDefinitions": [
+        {
+            "id": null,
+            "name": "Asset Type Information",
+            "required": null,
+            "description": "$group $style[group]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Group": {}
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "group"
+                        ]
+                    }
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 0,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Âmbito",
+            "required": null,
+            "description": "$style[hide] $editForGroup(System) $groupEdit",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "EditForGroup": {
+                        "args": [
+                            "System"
+                        ]
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "hide"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 1,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Type",
+            "required": "mandatory",
+            "description": "$instanceLabel ",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "InstanceLabel": {}
+                },
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 2,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Identifier Field",
+            "required": null,
+            "description": "$instanceDescription Unique identifier field to use for assets of this type",
+            "configuration": {
+                "description": "Unique identifier field to use for assets of this type",
+                "keys": {
+                    "InstanceDescription": {}
+                },
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 3,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Description",
+            "required": null,
+            "description": "$text $instanceDescription",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "InstanceDescription": {}
+                },
+                "extensions": {
+                    "$text": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 4,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Inventory Requirements",
+            "required": null,
+            "description": "$group $style[group]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Group": {}
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "group"
+                        ]
+                    }
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 5,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "General Requirements",
+            "required": null,
+            "description": "$group $style[group]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Group": {}
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "group"
+                        ]
+                    }
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 6,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Localization",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 7,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Model",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 8,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Brand",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 9,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Asset tag",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 10,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Serial number",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 11,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "PO number",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 12,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Personal Equipment",
+            "required": null,
+            "description": "$group $style[group]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Group": {}
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "group"
+                        ]
+                    }
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 13,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "User ID",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 14,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Username",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 15,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Email Address",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 16,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Device Assignment Date",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 17,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Current Phone Number",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 18,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "IMEI",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 19,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Servers and Networks",
+            "required": null,
+            "description": "$group $style[group]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Group": {}
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "group"
+                        ]
+                    }
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 20,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Hostname",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 21,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "DNS Name",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 22,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "IP Address",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}}) $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 23,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "MAC Address",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 24,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "WiFi MAC",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 25,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "OS",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 26,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Site",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 27,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "CPU",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 28,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Memory",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 29,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Disk Space GB",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 30,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Rack Localization",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 31,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Rack Unit",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 32,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Rack Island",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}}) $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 33,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Datacenter",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 34,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Cluster",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 35,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Software and Applications",
+            "required": null,
+            "description": "$group $style[group]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Group": {}
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "group"
+                        ]
+                    }
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 36,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Product Version",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 37,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Application ID",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 38,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "App Server",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 39,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Server DB",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 40,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Solution Category",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 41,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Business Solution ID",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}}) $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 42,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Product ID",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 43,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Product Type",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 44,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Backups",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 45,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Miscellaneous",
+            "required": null,
+            "description": "$group $style[group]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Group": {}
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "group"
+                        ]
+                    }
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 46,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Status",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 47,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Maintenance Window",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 48,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Territorial Scope",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 49,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Business Department",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 50,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "End of Support",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 51,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "End of Life",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 52,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Personal Data",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 53,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "TO REMOVE",
+            "required": null,
+            "description": "$group $style[group]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Group": {}
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "group"
+                        ]
+                    }
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 54,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Object Type",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 55,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Object Type Detail",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 56,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "IOS (Network)",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 57,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "RAM Capacity MB",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 58,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Owner Team",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 59,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Compatibility",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 60,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Host CPU",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 61,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Host Memory",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}}) $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 62,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Environment",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}}) $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 63,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "CPU Cores",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 64,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "CPU Sockets",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}}) $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 65,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "VMWare Tools Version Status",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 66,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "VMWare Tools Version",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 67,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Provisioned Space",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 68,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Used Space",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 69,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "VersionN",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}}) $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 70,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "TNSName",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 71,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "VM Folder",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 72,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Onboard Management IP",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 73,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Onboard Management Hostname",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 74,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Onboard Management MAC Address",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 75,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "BSO",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 76,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "BPO",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}}) $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 77,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "BSE GLO",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 78,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "BPE GLO",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 79,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "BSE LOC",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 80,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "BPE LOC",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 81,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "BPO LOC",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 82,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "BSO LOC",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 83,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "VVZ",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 84,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "LIC",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 85,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "TOMs",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 86,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "PRA",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 87,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Security Concept",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 88,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Monit NAGIOS",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 89,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Solution overview IT4YOU",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 90,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Virtual Hardware Version",
+            "required": null,
+            "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})  $groupEdit $style[responsible]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "responsible"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 91,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        }
+    ],
+    "version": null
+}

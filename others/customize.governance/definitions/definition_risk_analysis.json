@@ -1,0 +1,762 @@
+{
+    "id": null,
+    "name": "Risk Analysis",
+    "description": "@GOV Defines a Risk Analysis",
+    "duplicable": null,
+    "state": "enabled",
+    "fieldDefinitions": [
+        {
+            "id": null,
+            "name": "Detalhes",
+            "required": null,
+            "description": "$group $style[grelha-titulo-risk]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Group": {}
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "grelha-titulo-risk"
+                        ]
+                    }
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 0,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Risk",
+            "required": "mandatory",
+            "description": "$ref(Risk, *)",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Reference": {
+                        "args": {
+                            "query": "*",
+                            "definition": "Risk"
+                        }
+                    }
+                },
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [
+                {
+                    "id": null,
+                    "name": "Nome",
+                    "required": null,
+                    "description": "$auto.ref(Risk).field(Nome) $instanceLabel",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "InstanceLabel": {},
+                            "AutoRefField": {
+                                "args": {
+                                    "source_field": "Risk",
+                                    "field_name": "Nome"
+                                }
+                            }
+                        },
+                        "extensions": {}
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 2,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Descrição",
+                    "required": null,
+                    "description": "$auto.ref(Risk).field(Descrição)",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "AutoRefField": {
+                                "args": {
+                                    "source_field": "Risk",
+                                    "field_name": "Descrição"
+                                }
+                            }
+                        },
+                        "extensions": {}
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 3,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                }
+            ],
+            "order": 1,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Estado",
+            "required": null,
+            "description": "$[*Em Avaliação,Averiguar Tratamento,Finalizado] $instanceDescription",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "InstanceDescription": {},
+                    "Select": {
+                        "args": [
+                            "Em Avaliação",
+                            "Averiguar Tratamento",
+                            "Finalizado"
+                        ],
+                        "default": "Em Avaliação"
+                    }
+                },
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 4,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": "Em Avaliação"
+        },
+        {
+            "id": null,
+            "name": "Avaliação Risco",
+            "required": null,
+            "description": "$group $style[grelha-titulo-risk] $expanded",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Group": {},
+                    "Expanded": {
+                        "args": {}
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "grelha-titulo-risk"
+                        ]
+                    }
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [
+                {
+                    "id": null,
+                    "name": "Impacto na Produtividade",
+                    "required": null,
+                    "description": "$number(0) $var.total.prod $help[Classificar de 1 a 5] $instanceDescription",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "InstanceDescription": {},
+                            "Number": {
+                                "args": {
+                                    "decimal_places": "0"
+                                }
+                            },
+                            "Help": {
+                                "args": [
+                                    "Classificar de 1 a 5"
+                                ]
+                            }
+                        },
+                        "extensions": {
+                            "$var.total.prod": {}
+                        }
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 6,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Impacto no Custo da Resposta",
+                    "required": null,
+                    "description": "$number(0) $var.total.resposta $help[Classificar de 1 a 5] $instanceDescription 1 - Impacto Menor <br> 5 - Impacto Maior",
+                    "configuration": {
+                        "description": "1 - Impacto Menor <br> 5 - Impacto Maior",
+                        "keys": {
+                            "InstanceDescription": {},
+                            "Number": {
+                                "args": {
+                                    "decimal_places": "0"
+                                }
+                            },
+                            "Help": {
+                                "args": [
+                                    "Classificar de 1 a 5"
+                                ]
+                            }
+                        },
+                        "extensions": {
+                            "$var.total.resposta": {}
+                        }
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 7,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Impacto Legal",
+                    "required": null,
+                    "description": "$number(0) $var.total.legal $help[Classificar de 1 a 5] $instanceDescription",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "InstanceDescription": {},
+                            "Number": {
+                                "args": {
+                                    "decimal_places": "0"
+                                }
+                            },
+                            "Help": {
+                                "args": [
+                                    "Classificar de 1 a 5"
+                                ]
+                            }
+                        },
+                        "extensions": {
+                            "$var.total.legal": {}
+                        }
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 8,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Soma Impacto",
+                    "required": null,
+                    "description": "$number(0) $calc.sum(var.total) $style[hide] $var.impact",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "Number": {
+                                "args": {
+                                    "decimal_places": "0"
+                                }
+                            }
+                        },
+                        "extensions": {
+                            "$calc.sum": {
+                                "args": [
+                                    "var.total"
+                                ]
+                            },
+                            "$style": {
+                                "args": [
+                                    "hide"
+                                ]
+                            },
+                            "$var.impact": {}
+                        }
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 9,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Média Impacto",
+                    "required": null,
+                    "description": " $number(0) $calc.divide(var.impact, 3) $var.calcimpacto $style[hide]",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "Number": {
+                                "args": {
+                                    "decimal_places": "0"
+                                }
+                            }
+                        },
+                        "extensions": {
+                            "$calc.divide": {
+                                "args": [
+                                    "var.impact",
+                                    "3"
+                                ]
+                            },
+                            "$var.calcimpacto": {},
+                            "$style": {
+                                "args": [
+                                    "hide"
+                                ]
+                            }
+                        }
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 10,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Probabilidade",
+                    "required": null,
+                    "description": "$number(0) $default(3) $var.probabilidade $help[Classificar de 1 a 5] $instanceDescription 1 - Menos Provável <br> 5 - Mais Provável",
+                    "configuration": {
+                        "description": "1 - Menos Provável <br> 5 - Mais Provável",
+                        "keys": {
+                            "Default": {
+                                "args": {
+                                    "value": "3"
+                                }
+                            },
+                            "InstanceDescription": {},
+                            "Number": {
+                                "args": {
+                                    "decimal_places": "0"
+                                }
+                            },
+                            "Help": {
+                                "args": [
+                                    "Classificar de 1 a 5"
+                                ]
+                            }
+                        },
+                        "extensions": {
+                            "$var.probabilidade": {}
+                        }
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 11,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": "3"
+                },
+                {
+                    "id": null,
+                    "name": "Raciocínio para a Probabilidade",
+                    "required": null,
+                    "description": "$markdown",
+                    "configuration": {
+                        "description": null,
+                        "keys": {},
+                        "extensions": {
+                            "$markdown": {}
+                        }
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 12,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Classificação Risco",
+                    "required": null,
+                    "description": "$number(0) $calc.multiply(var.probabilidade,var.calcimpacto) $instanceDescription",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "InstanceDescription": {},
+                            "Number": {
+                                "args": {
+                                    "decimal_places": "0"
+                                }
+                            }
+                        },
+                        "extensions": {
+                            "$calc.multiply": {
+                                "args": [
+                                    "var.probabilidade",
+                                    "var.calcimpacto"
+                                ]
+                            }
+                        }
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 13,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                }
+            ],
+            "order": 5,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Informação Tratamento",
+            "required": null,
+            "description": "$group $style[grelha-titulo-risk] $expanded",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Group": {},
+                    "Expanded": {
+                        "args": {}
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "grelha-titulo-risk"
+                        ]
+                    }
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [
+                {
+                    "id": null,
+                    "name": "Tratamento",
+                    "required": null,
+                    "description": "$[Mitigar,Aceitar,Transferir]",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "Select": {
+                                "args": [
+                                    "Mitigar",
+                                    "Aceitar",
+                                    "Transferir"
+                                ],
+                                "default": null
+                            }
+                        },
+                        "extensions": {}
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 15,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Mitigação",
+                    "required": null,
+                    "description": "$group $style[grelha-titulo-risk]",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "Group": {}
+                        },
+                        "extensions": {
+                            "$style": {
+                                "args": [
+                                    "grelha-titulo-risk"
+                                ]
+                            }
+                        }
+                    },
+                    "condition": "Tratamento=Mitigar",
+                    "visibilityCondition": {
+                        "type": "Equal",
+                        "value": [
+                            "Mitigar"
+                        ],
+                        "matcher": {
+                            "type": "Name",
+                            "name": "Tratamento"
+                        }
+                    },
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 16,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Plano de Mitigação",
+                    "required": null,
+                    "description": "$markdown",
+                    "configuration": {
+                        "description": null,
+                        "keys": {},
+                        "extensions": {
+                            "$markdown": {}
+                        }
+                    },
+                    "condition": "Tratamento=Mitigar",
+                    "visibilityCondition": {
+                        "type": "Equal",
+                        "value": [
+                            "Mitigar"
+                        ],
+                        "matcher": {
+                            "type": "Name",
+                            "name": "Tratamento"
+                        }
+                    },
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 17,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Data Limite Implementação",
+                    "required": null,
+                    "description": "$date $instanceDescription $help[Data limite para implementação.]",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "InstanceDescription": {},
+                            "Date": {},
+                            "Help": {
+                                "args": [
+                                    "Data limite para implementação."
+                                ]
+                            }
+                        },
+                        "extensions": {}
+                    },
+                    "condition": "Tratamento=Mitigar",
+                    "visibilityCondition": {
+                        "type": "Equal",
+                        "value": [
+                            "Mitigar"
+                        ],
+                        "matcher": {
+                            "type": "Name",
+                            "name": "Tratamento"
+                        }
+                    },
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 18,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Responsável Implementação",
+                    "required": null,
+                    "description": null,
+                    "configuration": {
+                        "description": null,
+                        "keys": {},
+                        "extensions": {}
+                    },
+                    "condition": "Tratamento=Mitigar",
+                    "visibilityCondition": {
+                        "type": "Equal",
+                        "value": [
+                            "Mitigar"
+                        ],
+                        "matcher": {
+                            "type": "Name",
+                            "name": "Tratamento"
+                        }
+                    },
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 19,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                }
+            ],
+            "order": 14,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Notas Finais",
+            "required": null,
+            "description": "$group $style[grelha-titulo-risk] $expanded",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Group": {},
+                    "Expanded": {
+                        "args": {}
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "grelha-titulo-risk"
+                        ]
+                    }
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 20,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Conclusão Análise",
+            "required": null,
+            "description": "$[Ultrapassado,Requer Extensão,*N.A] $expanded",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Select": {
+                        "args": [
+                            "Ultrapassado",
+                            "Requer Extensão",
+                            "N.A"
+                        ],
+                        "default": "N.A"
+                    },
+                    "Expanded": {
+                        "args": {}
+                    }
+                },
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 21,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": "N.A"
+        },
+        {
+            "id": null,
+            "name": "Data Análise",
+            "required": null,
+            "description": "$date $default(now) $instanceDescription",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Default": {
+                        "args": {
+                            "value": "now"
+                        }
+                    },
+                    "InstanceDescription": {},
+                    "Date": {}
+                },
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 22,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": "1734609702363"
+        },
+        {
+            "id": null,
+            "name": "Data Próxima Análise",
+            "required": null,
+            "description": "$date",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Date": {}
+                },
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 23,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Notas Análise",
+            "required": null,
+            "description": "$text",
+            "configuration": {
+                "description": null,
+                "keys": {},
+                "extensions": {
+                    "$text": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 24,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        }
+    ],
+    "version": null
+}

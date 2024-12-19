@@ -1,0 +1,827 @@
+{
+    "id": null,
+    "name": "Incidentes",
+    "description": "@GOV",
+    "duplicable": null,
+    "state": "enabled",
+    "fieldDefinitions": [
+        {
+            "id": null,
+            "name": "Identificação do incidente",
+            "required": null,
+            "description": "$group",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Group": {}
+                },
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 0,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Identificação da atividade",
+            "required": null,
+            "description": "$ref(Atividades v2,*) $instanceDescription $help[Identificação da atividade de processamento de dados pessoais.]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "InstanceDescription": {},
+                    "Reference": {
+                        "args": {
+                            "query": "*",
+                            "definition": "Atividades v2"
+                        }
+                    },
+                    "Help": {
+                        "args": [
+                            "Identificação da atividade de processamento de dados pessoais."
+                        ]
+                    }
+                },
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 1,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Descrição do incidente",
+            "required": "mandatory",
+            "description": "$markdown $instanceDescription $help[A descrição do incidente poderá reponder às seguintes perguntas para ajudar a estruturar o texto: \"o quê?\", \"quem?\", \"quando?\", \"onde?\", \"como?\", \"por quê?\"]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "InstanceDescription": {},
+                    "Help": {
+                        "args": [
+                            "A descrição do incidente poderá reponder às seguintes perguntas para ajudar a estruturar o texto: \"o quê?\"",
+                            "\"quem?\"",
+                            "\"quando?\"",
+                            "\"onde?\"",
+                            "\"como?\"",
+                            "\"por quê?\""
+                        ]
+                    }
+                },
+                "extensions": {
+                    "$markdown": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 2,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Data do registo do incidente",
+            "required": "mandatory",
+            "description": "$datetime $default(now) $readonly $instanceDescription",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Default": {
+                        "args": {
+                            "value": "now"
+                        }
+                    },
+                    "InstanceDescription": {},
+                    "DateTime": {}
+                },
+                "extensions": {
+                    "$readonly": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 3,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": "1734609683286"
+        },
+        {
+            "id": null,
+            "name": "Registo efetuado por",
+            "required": null,
+            "description": "$ref(Colaborador GOV,*) $instanceDescription",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "InstanceDescription": {},
+                    "Reference": {
+                        "args": {
+                            "query": "*",
+                            "definition": "Colaborador GOV"
+                        }
+                    }
+                },
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [
+                {
+                    "id": null,
+                    "name": "Username responsável",
+                    "required": null,
+                    "description": "$auto.ref(Registo efetuado por).field(Username)",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "AutoRefField": {
+                                "args": {
+                                    "source_field": "Registo efetuado por",
+                                    "field_name": "Username"
+                                }
+                            }
+                        },
+                        "extensions": {}
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 5,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                }
+            ],
+            "order": 4,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Dados da Análise",
+            "required": null,
+            "description": "$group",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Group": {}
+                },
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 6,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Estado",
+            "required": null,
+            "description": "$[*Novo,Em apreciação,Pedido de esclarecimentos,Em investigação,Tratado] $instanceDescription",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "InstanceDescription": {},
+                    "Select": {
+                        "args": [
+                            "Novo",
+                            "Em apreciação",
+                            "Pedido de esclarecimentos",
+                            "Em investigação",
+                            "Tratado"
+                        ],
+                        "default": "Novo"
+                    }
+                },
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 7,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": "Novo"
+        },
+        {
+            "id": null,
+            "name": "Afeta Dados Sensíveis",
+            "required": "mandatory",
+            "description": "$[Sim,Não]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Select": {
+                        "args": [
+                            "Sim",
+                            "Não"
+                        ],
+                        "default": null
+                    }
+                },
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 8,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Observações",
+            "required": null,
+            "description": "$markdown",
+            "configuration": {
+                "description": null,
+                "keys": {},
+                "extensions": {
+                    "$markdown": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 9,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Risco identificado",
+            "required": null,
+            "description": "$[Baixo,Elevado]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Select": {
+                        "args": [
+                            "Baixo",
+                            "Elevado"
+                        ],
+                        "default": null
+                    }
+                },
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [
+                {
+                    "id": null,
+                    "name": "Comunicação do incidente",
+                    "required": null,
+                    "description": "$group",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "Group": {}
+                        },
+                        "extensions": {}
+                    },
+                    "condition": "=Elevado",
+                    "visibilityCondition": {
+                        "type": "Equal",
+                        "value": [
+                            "Elevado"
+                        ],
+                        "matcher": {
+                            "type": "Parent"
+                        }
+                    },
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 11,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "DPO - comunicação do incidente",
+                    "required": null,
+                    "description": "$[Sim,Não] $radio $help[O DPO poderá estar <strong>\"obrigado\"</strong> a notificar a <strong>Autoridade de Controlo - CNPD</strong> dos incidentes associados às atividades de risco elevado, no período máximo de <strong>72 horas</strong>.] O DPO deverá confirmar se está <strong style=\"color:red\">obrigado</strong> a informar este incidente à Autoridade de Controlo - CNPD.",
+                    "configuration": {
+                        "description": "O DPO deverá confirmar se está <strong style=\"color:red\">obrigado</strong> a informar este incidente à Autoridade de Controlo - CNPD.",
+                        "keys": {
+                            "Select": {
+                                "args": [
+                                    "Sim",
+                                    "Não"
+                                ],
+                                "default": null
+                            },
+                            "Help": {
+                                "args": [
+                                    "O DPO poderá estar <strong>\"obrigado\"</strong> a notificar a <strong>Autoridade de Controlo - CNPD</strong> dos incidentes associados às atividades de risco elevado",
+                                    "no período máximo de <strong>72 horas</strong>."
+                                ]
+                            }
+                        },
+                        "extensions": {
+                            "$radio": {}
+                        }
+                    },
+                    "condition": "=Elevado",
+                    "visibilityCondition": {
+                        "type": "Equal",
+                        "value": [
+                            "Elevado"
+                        ],
+                        "matcher": {
+                            "type": "Parent"
+                        }
+                    },
+                    "duplicable": false,
+                    "fields": [
+                        {
+                            "id": null,
+                            "name": "Incidente notificado à CNPD?",
+                            "required": null,
+                            "description": "$[Sim,Não] $radio $expanded $help[Inserir detalhes da notificação. Consultar o  Art. 33.º (3)]",
+                            "configuration": {
+                                "description": null,
+                                "keys": {
+                                    "Select": {
+                                        "args": [
+                                            "Sim",
+                                            "Não"
+                                        ],
+                                        "default": null
+                                    },
+                                    "Expanded": {
+                                        "args": {}
+                                    },
+                                    "Help": {
+                                        "args": [
+                                            "Inserir detalhes da notificação. Consultar o  Art. 33.º (3)"
+                                        ]
+                                    }
+                                },
+                                "extensions": {
+                                    "$radio": {}
+                                }
+                            },
+                            "condition": "=Sim",
+                            "visibilityCondition": {
+                                "type": "Equal",
+                                "value": [
+                                    "Sim"
+                                ],
+                                "matcher": {
+                                    "type": "Parent"
+                                }
+                            },
+                            "duplicable": false,
+                            "fields": [
+                                {
+                                    "id": null,
+                                    "name": "Informação comunicada à CNPD",
+                                    "required": null,
+                                    "description": "$expanded",
+                                    "configuration": {
+                                        "description": null,
+                                        "keys": {
+                                            "Expanded": {
+                                                "args": {}
+                                            }
+                                        },
+                                        "extensions": {}
+                                    },
+                                    "condition": "=Sim",
+                                    "visibilityCondition": {
+                                        "type": "Equal",
+                                        "value": [
+                                            "Sim"
+                                        ],
+                                        "matcher": {
+                                            "type": "Parent"
+                                        }
+                                    },
+                                    "duplicable": true,
+                                    "fields": [
+                                        {
+                                            "id": null,
+                                            "name": "Data e hora da comunicação",
+                                            "required": null,
+                                            "description": "$datetime $default(now)",
+                                            "configuration": {
+                                                "description": null,
+                                                "keys": {
+                                                    "Default": {
+                                                        "args": {
+                                                            "value": "now"
+                                                        }
+                                                    },
+                                                    "DateTime": {}
+                                                },
+                                                "extensions": {}
+                                            },
+                                            "condition": null,
+                                            "visibilityCondition": null,
+                                            "duplicable": false,
+                                            "fields": [],
+                                            "order": 15,
+                                            "restricted": false,
+                                            "rootField": false,
+                                            "defaultValue": "1734609683286"
+                                        },
+                                        {
+                                            "id": null,
+                                            "name": "Documento da comunicação",
+                                            "required": null,
+                                            "description": "$file $help[Anexar o(s) documento(s) enviados à CNPD.]",
+                                            "configuration": {
+                                                "description": null,
+                                                "keys": {
+                                                    "File": {},
+                                                    "Help": {
+                                                        "args": [
+                                                            "Anexar o(s) documento(s) enviados à CNPD."
+                                                        ]
+                                                    }
+                                                },
+                                                "extensions": {}
+                                            },
+                                            "condition": null,
+                                            "visibilityCondition": null,
+                                            "duplicable": false,
+                                            "fields": [],
+                                            "order": 16,
+                                            "restricted": false,
+                                            "rootField": false,
+                                            "defaultValue": null
+                                        },
+                                        {
+                                            "id": null,
+                                            "name": "Descrição",
+                                            "required": null,
+                                            "description": "$text $help[Descrever a(s) ação(ões) efetuadas.]",
+                                            "configuration": {
+                                                "description": null,
+                                                "keys": {
+                                                    "Help": {
+                                                        "args": [
+                                                            "Descrever a(s) ação(ões) efetuadas."
+                                                        ]
+                                                    }
+                                                },
+                                                "extensions": {
+                                                    "$text": {}
+                                                }
+                                            },
+                                            "condition": null,
+                                            "visibilityCondition": null,
+                                            "duplicable": false,
+                                            "fields": [],
+                                            "order": 17,
+                                            "restricted": false,
+                                            "rootField": false,
+                                            "defaultValue": null
+                                        }
+                                    ],
+                                    "order": 14,
+                                    "restricted": false,
+                                    "rootField": false,
+                                    "defaultValue": null
+                                },
+                                {
+                                    "id": null,
+                                    "name": "Descrição",
+                                    "required": null,
+                                    "description": "$text ",
+                                    "configuration": {
+                                        "description": null,
+                                        "keys": {},
+                                        "extensions": {
+                                            "$text": {}
+                                        }
+                                    },
+                                    "condition": "=Não",
+                                    "visibilityCondition": {
+                                        "type": "Equal",
+                                        "value": [
+                                            "Não"
+                                        ],
+                                        "matcher": {
+                                            "type": "Parent"
+                                        }
+                                    },
+                                    "duplicable": false,
+                                    "fields": [],
+                                    "order": 18,
+                                    "restricted": false,
+                                    "rootField": false,
+                                    "defaultValue": null
+                                }
+                            ],
+                            "order": 13,
+                            "restricted": false,
+                            "rootField": false,
+                            "defaultValue": null
+                        },
+                        {
+                            "id": null,
+                            "name": "Incidente comunicado aos titulares dos dados?",
+                            "required": null,
+                            "description": "$[Sim,Não] $radio $expanded $help[O DPO deverá determinar se o incidente tem que ser comunicado aos titulares dos dados pessoais. Consultar o Art. 34.º]",
+                            "configuration": {
+                                "description": null,
+                                "keys": {
+                                    "Select": {
+                                        "args": [
+                                            "Sim",
+                                            "Não"
+                                        ],
+                                        "default": null
+                                    },
+                                    "Expanded": {
+                                        "args": {}
+                                    },
+                                    "Help": {
+                                        "args": [
+                                            "O DPO deverá determinar se o incidente tem que ser comunicado aos titulares dos dados pessoais. Consultar o Art. 34.º"
+                                        ]
+                                    }
+                                },
+                                "extensions": {
+                                    "$radio": {}
+                                }
+                            },
+                            "condition": "=Sim",
+                            "visibilityCondition": {
+                                "type": "Equal",
+                                "value": [
+                                    "Sim"
+                                ],
+                                "matcher": {
+                                    "type": "Parent"
+                                }
+                            },
+                            "duplicable": false,
+                            "fields": [
+                                {
+                                    "id": null,
+                                    "name": "Informação comunicada ao titulares",
+                                    "required": null,
+                                    "description": "$group $expanded",
+                                    "configuration": {
+                                        "description": null,
+                                        "keys": {
+                                            "Group": {},
+                                            "Expanded": {
+                                                "args": {}
+                                            }
+                                        },
+                                        "extensions": {}
+                                    },
+                                    "condition": "=Sim",
+                                    "visibilityCondition": {
+                                        "type": "Equal",
+                                        "value": [
+                                            "Sim"
+                                        ],
+                                        "matcher": {
+                                            "type": "Parent"
+                                        }
+                                    },
+                                    "duplicable": true,
+                                    "fields": [
+                                        {
+                                            "id": null,
+                                            "name": "Data e hora da comunicação",
+                                            "required": null,
+                                            "description": "$datetime $default(now)",
+                                            "configuration": {
+                                                "description": null,
+                                                "keys": {
+                                                    "Default": {
+                                                        "args": {
+                                                            "value": "now"
+                                                        }
+                                                    },
+                                                    "DateTime": {}
+                                                },
+                                                "extensions": {}
+                                            },
+                                            "condition": null,
+                                            "visibilityCondition": null,
+                                            "duplicable": false,
+                                            "fields": [],
+                                            "order": 21,
+                                            "restricted": false,
+                                            "rootField": false,
+                                            "defaultValue": "1734609683286"
+                                        },
+                                        {
+                                            "id": null,
+                                            "name": "Modelo da comunicação aos titulares",
+                                            "required": null,
+                                            "description": "$file",
+                                            "configuration": {
+                                                "description": null,
+                                                "keys": {
+                                                    "File": {}
+                                                },
+                                                "extensions": {}
+                                            },
+                                            "condition": null,
+                                            "visibilityCondition": null,
+                                            "duplicable": false,
+                                            "fields": [],
+                                            "order": 22,
+                                            "restricted": false,
+                                            "rootField": false,
+                                            "defaultValue": null
+                                        },
+                                        {
+                                            "id": null,
+                                            "name": "Descrição",
+                                            "required": null,
+                                            "description": "$text $help[Descrever a forma e os métodos utilizados para a notificação aos titulares dos dados pessoais.]",
+                                            "configuration": {
+                                                "description": null,
+                                                "keys": {
+                                                    "Help": {
+                                                        "args": [
+                                                            "Descrever a forma e os métodos utilizados para a notificação aos titulares dos dados pessoais."
+                                                        ]
+                                                    }
+                                                },
+                                                "extensions": {
+                                                    "$text": {}
+                                                }
+                                            },
+                                            "condition": null,
+                                            "visibilityCondition": null,
+                                            "duplicable": false,
+                                            "fields": [],
+                                            "order": 23,
+                                            "restricted": false,
+                                            "rootField": false,
+                                            "defaultValue": null
+                                        }
+                                    ],
+                                    "order": 20,
+                                    "restricted": false,
+                                    "rootField": false,
+                                    "defaultValue": null
+                                },
+                                {
+                                    "id": null,
+                                    "name": "Descrição",
+                                    "required": null,
+                                    "description": "$text $help[Descrição da decisão tomada para a não comunicação do incidente aos titulares dos dados pessoais.]",
+                                    "configuration": {
+                                        "description": null,
+                                        "keys": {
+                                            "Help": {
+                                                "args": [
+                                                    "Descrição da decisão tomada para a não comunicação do incidente aos titulares dos dados pessoais."
+                                                ]
+                                            }
+                                        },
+                                        "extensions": {
+                                            "$text": {}
+                                        }
+                                    },
+                                    "condition": "=Não",
+                                    "visibilityCondition": {
+                                        "type": "Equal",
+                                        "value": [
+                                            "Não"
+                                        ],
+                                        "matcher": {
+                                            "type": "Parent"
+                                        }
+                                    },
+                                    "duplicable": false,
+                                    "fields": [],
+                                    "order": 24,
+                                    "restricted": false,
+                                    "rootField": false,
+                                    "defaultValue": null
+                                }
+                            ],
+                            "order": 19,
+                            "restricted": false,
+                            "rootField": false,
+                            "defaultValue": null
+                        }
+                    ],
+                    "order": 12,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                }
+            ],
+            "order": 10,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Informação documental",
+            "required": null,
+            "description": "$group",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Group": {}
+                },
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 25,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Anexo",
+            "required": null,
+            "description": "$file",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "File": {}
+                },
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": true,
+            "fields": [],
+            "order": 26,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Sigla Empresa",
+            "required": null,
+            "description": "$style[hide] $editForGroup(System)",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "EditForGroup": {
+                        "args": [
+                            "System"
+                        ]
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "hide"
+                        ]
+                    }
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 27,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        }
+    ],
+    "version": null
+}

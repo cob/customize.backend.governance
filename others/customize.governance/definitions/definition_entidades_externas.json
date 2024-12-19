@@ -1,0 +1,542 @@
+{
+    "id": null,
+    "name": "Entidades Externas",
+    "description": "@GOV",
+    "duplicable": null,
+    "state": "enabled",
+    "fieldDefinitions": [
+        {
+            "id": null,
+            "name": "Identificação de parceiros",
+            "required": null,
+            "description": "$group",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Group": {}
+                },
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 0,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Nome comercial",
+            "required": "mandatory",
+            "description": "$instanceLabel",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "InstanceLabel": {}
+                },
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 1,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Morada local do tratamento",
+            "required": null,
+            "description": null,
+            "configuration": {
+                "description": null,
+                "keys": {},
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 2,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Código Postal",
+            "required": null,
+            "description": null,
+            "configuration": {
+                "description": null,
+                "keys": {},
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 3,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Pessoa de contato",
+            "required": null,
+            "description": null,
+            "configuration": {
+                "description": null,
+                "keys": {},
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 4,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Telefone",
+            "required": null,
+            "description": null,
+            "configuration": {
+                "description": null,
+                "keys": {},
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 5,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "E-mail",
+            "required": null,
+            "description": null,
+            "configuration": {
+                "description": null,
+                "keys": {},
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 6,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Tipo",
+            "required": "mandatory",
+            "description": "$[Fornecedor,Subcontratado] $instanceDescription $expanded",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Select": {
+                        "args": [
+                            "Fornecedor",
+                            "Subcontratado"
+                        ],
+                        "default": null
+                    },
+                    "InstanceDescription": {},
+                    "Expanded": {
+                        "args": {}
+                    }
+                },
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [
+                {
+                    "id": null,
+                    "name": "Identificação do fornecedor principal",
+                    "required": "mandatory",
+                    "description": "$ref(Entidades Externas,-id.raw:\"__id__\")",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "Reference": {
+                                "args": {
+                                    "query": "-id.raw:\"__id__\"",
+                                    "definition": "Entidades Externas"
+                                }
+                            }
+                        },
+                        "extensions": {}
+                    },
+                    "condition": "=Subcontratado",
+                    "visibilityCondition": {
+                        "type": "Equal",
+                        "value": [
+                            "Subcontratado"
+                        ],
+                        "matcher": {
+                            "type": "Parent"
+                        }
+                    },
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 8,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                }
+            ],
+            "order": 7,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Non-disclosure Agreement",
+            "required": null,
+            "description": "$group",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Group": {}
+                },
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 9,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "NDA",
+            "required": null,
+            "description": "$[Sim,Não] $radio",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Select": {
+                        "args": [
+                            "Sim",
+                            "Não"
+                        ],
+                        "default": null
+                    }
+                },
+                "extensions": {
+                    "$radio": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [
+                {
+                    "id": null,
+                    "name": "Documento(s)",
+                    "required": null,
+                    "description": "$file",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "File": {}
+                        },
+                        "extensions": {}
+                    },
+                    "condition": "=Sim",
+                    "visibilityCondition": {
+                        "type": "Equal",
+                        "value": [
+                            "Sim"
+                        ],
+                        "matcher": {
+                            "type": "Parent"
+                        }
+                    },
+                    "duplicable": true,
+                    "fields": [],
+                    "order": 11,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                }
+            ],
+            "order": 10,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "CONTRATO(S) / ADENDA(S)",
+            "required": null,
+            "description": "$group",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Group": {}
+                },
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 12,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Contrato",
+            "required": null,
+            "description": "$[Sim,Não] $radio",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Select": {
+                        "args": [
+                            "Sim",
+                            "Não"
+                        ],
+                        "default": null
+                    }
+                },
+                "extensions": {
+                    "$radio": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [
+                {
+                    "id": null,
+                    "name": "Data do contrato",
+                    "required": null,
+                    "description": "$date",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "Date": {}
+                        },
+                        "extensions": {}
+                    },
+                    "condition": "=Sim",
+                    "visibilityCondition": {
+                        "type": "Equal",
+                        "value": [
+                            "Sim"
+                        ],
+                        "matcher": {
+                            "type": "Parent"
+                        }
+                    },
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 14,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Documento(s)",
+                    "required": null,
+                    "description": "$file",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "File": {}
+                        },
+                        "extensions": {}
+                    },
+                    "condition": "=Sim",
+                    "visibilityCondition": {
+                        "type": "Equal",
+                        "value": [
+                            "Sim"
+                        ],
+                        "matcher": {
+                            "type": "Parent"
+                        }
+                    },
+                    "duplicable": true,
+                    "fields": [],
+                    "order": 15,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                }
+            ],
+            "order": 13,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Adenda ao contrato",
+            "required": null,
+            "description": "$[Sim,Não] $radio",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Select": {
+                        "args": [
+                            "Sim",
+                            "Não"
+                        ],
+                        "default": null
+                    }
+                },
+                "extensions": {
+                    "$radio": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [
+                {
+                    "id": null,
+                    "name": "Data da adenda",
+                    "required": null,
+                    "description": "$date",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "Date": {}
+                        },
+                        "extensions": {}
+                    },
+                    "condition": "=Sim",
+                    "visibilityCondition": {
+                        "type": "Equal",
+                        "value": [
+                            "Sim"
+                        ],
+                        "matcher": {
+                            "type": "Parent"
+                        }
+                    },
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 17,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Identificação do contrato",
+                    "required": null,
+                    "description": null,
+                    "configuration": {
+                        "description": null,
+                        "keys": {},
+                        "extensions": {}
+                    },
+                    "condition": "=Sim",
+                    "visibilityCondition": {
+                        "type": "Equal",
+                        "value": [
+                            "Sim"
+                        ],
+                        "matcher": {
+                            "type": "Parent"
+                        }
+                    },
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 18,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Documento(s)",
+                    "required": null,
+                    "description": "$file",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "File": {}
+                        },
+                        "extensions": {}
+                    },
+                    "condition": "=Sim",
+                    "visibilityCondition": {
+                        "type": "Equal",
+                        "value": [
+                            "Sim"
+                        ],
+                        "matcher": {
+                            "type": "Parent"
+                        }
+                    },
+                    "duplicable": true,
+                    "fields": [],
+                    "order": 19,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                }
+            ],
+            "order": 16,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Sigla Empresa",
+            "required": null,
+            "description": "$editForGroup(System)",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "EditForGroup": {
+                        "args": [
+                            "System"
+                        ]
+                    }
+                },
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 20,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        }
+    ],
+    "version": null
+}

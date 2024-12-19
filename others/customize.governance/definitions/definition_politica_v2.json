@@ -1,0 +1,1075 @@
+{
+    "id": null,
+    "name": "Politica v2",
+    "description": "@GOV",
+    "duplicable": null,
+    "state": "enabled",
+    "fieldDefinitions": [
+        {
+            "id": null,
+            "name": "Definição Política",
+            "required": null,
+            "description": "$group $expanded $style[grelha-titulo-politica]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Group": {},
+                    "Expanded": {
+                        "args": {}
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "grelha-titulo-politica"
+                        ]
+                    }
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [
+                {
+                    "id": null,
+                    "name": "Nome Completo",
+                    "required": null,
+                    "description": "$auto.text(Política Mãe Nome Completo,Nome).join(Política Mãe Nome Completo,' - ',Nome) $text $style[hide]",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "AutoTextJoin": {
+                                "args": [
+                                    "Política Mãe Nome Completo",
+                                    "' - '",
+                                    "Nome"
+                                ]
+                            }
+                        },
+                        "extensions": {
+                            "$text": {},
+                            "$style": {
+                                "args": [
+                                    "hide"
+                                ]
+                            }
+                        }
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 1,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Política Mãe",
+                    "required": null,
+                    "description": "$ref(Politica v2,-id:\\\\__id__) $groupEdit $style[hide-inline]  $help[Deixar vazio <br> se for primeiro nível]",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "Reference": {
+                                "args": {
+                                    "query": "-id:\\__id__",
+                                    "definition": "Politica v2"
+                                }
+                            },
+                            "Help": {
+                                "args": [
+                                    "Deixar vazio <br> se for primeiro nível"
+                                ]
+                            }
+                        },
+                        "extensions": {
+                            "$style": {
+                                "args": [
+                                    "hide-inline"
+                                ]
+                            },
+                            "$groupEdit": {}
+                        }
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [
+                        {
+                            "id": null,
+                            "name": "Política Mãe Nome Completo",
+                            "required": null,
+                            "description": "$auto.ref(Política Mãe).field(Nome Completo)  $instanceDescription",
+                            "configuration": {
+                                "description": null,
+                                "keys": {
+                                    "InstanceDescription": {},
+                                    "AutoRefField": {
+                                        "args": {
+                                            "source_field": "Política Mãe",
+                                            "field_name": "Nome Completo"
+                                        }
+                                    }
+                                },
+                                "extensions": {}
+                            },
+                            "condition": null,
+                            "visibilityCondition": null,
+                            "duplicable": false,
+                            "fields": [],
+                            "order": 3,
+                            "restricted": false,
+                            "rootField": false,
+                            "defaultValue": null
+                        },
+                        {
+                            "id": null,
+                            "name": "Nível Mãe",
+                            "required": null,
+                            "description": "$auto.ref(Política Mãe).field(Nível) $style[hide] $var.parent_level",
+                            "configuration": {
+                                "description": null,
+                                "keys": {
+                                    "AutoRefField": {
+                                        "args": {
+                                            "source_field": "Política Mãe",
+                                            "field_name": "Nível"
+                                        }
+                                    }
+                                },
+                                "extensions": {
+                                    "$style": {
+                                        "args": [
+                                            "hide"
+                                        ]
+                                    },
+                                    "$var.parent_level": {}
+                                }
+                            },
+                            "condition": null,
+                            "visibilityCondition": null,
+                            "duplicable": false,
+                            "fields": [],
+                            "order": 4,
+                            "restricted": false,
+                            "rootField": false,
+                            "defaultValue": null
+                        },
+                        {
+                            "id": null,
+                            "name": "Nível",
+                            "required": null,
+                            "description": "$calc.sum(var.parent_level,1) $instanceDescription",
+                            "configuration": {
+                                "description": null,
+                                "keys": {
+                                    "InstanceDescription": {}
+                                },
+                                "extensions": {
+                                    "$calc.sum": {
+                                        "args": [
+                                            "var.parent_level",
+                                            "1"
+                                        ]
+                                    }
+                                }
+                            },
+                            "condition": null,
+                            "visibilityCondition": null,
+                            "duplicable": false,
+                            "fields": [],
+                            "order": 5,
+                            "restricted": false,
+                            "rootField": false,
+                            "defaultValue": null
+                        },
+                        {
+                            "id": null,
+                            "name": "Nível 1",
+                            "required": null,
+                            "description": "$ref(Politica v2,*) $auto.text(id).join(id) $instanceDescription",
+                            "configuration": {
+                                "description": null,
+                                "keys": {
+                                    "InstanceDescription": {},
+                                    "Reference": {
+                                        "args": {
+                                            "query": "*",
+                                            "definition": "Politica v2"
+                                        }
+                                    },
+                                    "AutoTextJoin": {
+                                        "args": [
+                                            "id"
+                                        ]
+                                    }
+                                },
+                                "extensions": {}
+                            },
+                            "condition": "Nível=1",
+                            "visibilityCondition": {
+                                "type": "Equal",
+                                "value": [
+                                    "1"
+                                ],
+                                "matcher": {
+                                    "type": "Name",
+                                    "name": "Nível"
+                                }
+                            },
+                            "duplicable": false,
+                            "fields": [
+                                {
+                                    "id": null,
+                                    "name": "Nome Nível 1",
+                                    "required": null,
+                                    "description": "$auto.ref(Nível 1).field(Nome)",
+                                    "configuration": {
+                                        "description": null,
+                                        "keys": {
+                                            "AutoRefField": {
+                                                "args": {
+                                                    "source_field": "Nível 1",
+                                                    "field_name": "Nome"
+                                                }
+                                            }
+                                        },
+                                        "extensions": {}
+                                    },
+                                    "condition": null,
+                                    "visibilityCondition": null,
+                                    "duplicable": false,
+                                    "fields": [],
+                                    "order": 7,
+                                    "restricted": false,
+                                    "rootField": false,
+                                    "defaultValue": null
+                                },
+                                {
+                                    "id": null,
+                                    "name": "Peso Nível 1",
+                                    "required": null,
+                                    "description": "$auto.ref(Nível 1).field(Peso)",
+                                    "configuration": {
+                                        "description": null,
+                                        "keys": {
+                                            "AutoRefField": {
+                                                "args": {
+                                                    "source_field": "Nível 1",
+                                                    "field_name": "Peso"
+                                                }
+                                            }
+                                        },
+                                        "extensions": {}
+                                    },
+                                    "condition": null,
+                                    "visibilityCondition": null,
+                                    "duplicable": false,
+                                    "fields": [],
+                                    "order": 8,
+                                    "restricted": false,
+                                    "rootField": false,
+                                    "defaultValue": null
+                                }
+                            ],
+                            "order": 6,
+                            "restricted": false,
+                            "rootField": false,
+                            "defaultValue": null
+                        },
+                        {
+                            "id": null,
+                            "name": "Nível 1",
+                            "required": null,
+                            "description": "$ref(Politica v2,*) $auto.ref(Política Mãe).field(Nível 1)",
+                            "configuration": {
+                                "description": null,
+                                "keys": {
+                                    "Reference": {
+                                        "args": {
+                                            "query": "*",
+                                            "definition": "Politica v2"
+                                        }
+                                    },
+                                    "AutoRefField": {
+                                        "args": {
+                                            "source_field": "Política Mãe",
+                                            "field_name": "Nível 1"
+                                        }
+                                    }
+                                },
+                                "extensions": {}
+                            },
+                            "condition": "Nível>1",
+                            "visibilityCondition": {
+                                "type": "HigherThan",
+                                "value": "1",
+                                "matcher": {
+                                    "type": "Name",
+                                    "name": "Nível"
+                                }
+                            },
+                            "duplicable": false,
+                            "fields": [
+                                {
+                                    "id": null,
+                                    "name": "Nome Nível 1",
+                                    "required": null,
+                                    "description": "$auto.ref(Nível 1).field(Nome)",
+                                    "configuration": {
+                                        "description": null,
+                                        "keys": {
+                                            "AutoRefField": {
+                                                "args": {
+                                                    "source_field": "Nível 1",
+                                                    "field_name": "Nome"
+                                                }
+                                            }
+                                        },
+                                        "extensions": {}
+                                    },
+                                    "condition": null,
+                                    "visibilityCondition": null,
+                                    "duplicable": false,
+                                    "fields": [],
+                                    "order": 10,
+                                    "restricted": false,
+                                    "rootField": false,
+                                    "defaultValue": null
+                                },
+                                {
+                                    "id": null,
+                                    "name": "Peso Nível 1",
+                                    "required": null,
+                                    "description": "$auto.ref(Nível 1).field(Peso)",
+                                    "configuration": {
+                                        "description": null,
+                                        "keys": {
+                                            "AutoRefField": {
+                                                "args": {
+                                                    "source_field": "Nível 1",
+                                                    "field_name": "Peso"
+                                                }
+                                            }
+                                        },
+                                        "extensions": {}
+                                    },
+                                    "condition": null,
+                                    "visibilityCondition": null,
+                                    "duplicable": false,
+                                    "fields": [],
+                                    "order": 11,
+                                    "restricted": false,
+                                    "rootField": false,
+                                    "defaultValue": null
+                                }
+                            ],
+                            "order": 9,
+                            "restricted": false,
+                            "rootField": false,
+                            "defaultValue": null
+                        },
+                        {
+                            "id": null,
+                            "name": "Nível 2",
+                            "required": null,
+                            "description": "$ref(Politica v2,*) $auto.text(id).join(id) $instanceDescription",
+                            "configuration": {
+                                "description": null,
+                                "keys": {
+                                    "InstanceDescription": {},
+                                    "Reference": {
+                                        "args": {
+                                            "query": "*",
+                                            "definition": "Politica v2"
+                                        }
+                                    },
+                                    "AutoTextJoin": {
+                                        "args": [
+                                            "id"
+                                        ]
+                                    }
+                                },
+                                "extensions": {}
+                            },
+                            "condition": "Nível=2",
+                            "visibilityCondition": {
+                                "type": "Equal",
+                                "value": [
+                                    "2"
+                                ],
+                                "matcher": {
+                                    "type": "Name",
+                                    "name": "Nível"
+                                }
+                            },
+                            "duplicable": false,
+                            "fields": [
+                                {
+                                    "id": null,
+                                    "name": "Nome Nível 2",
+                                    "required": null,
+                                    "description": "$auto.ref(Nível 2).field(Nome)",
+                                    "configuration": {
+                                        "description": null,
+                                        "keys": {
+                                            "AutoRefField": {
+                                                "args": {
+                                                    "source_field": "Nível 2",
+                                                    "field_name": "Nome"
+                                                }
+                                            }
+                                        },
+                                        "extensions": {}
+                                    },
+                                    "condition": null,
+                                    "visibilityCondition": null,
+                                    "duplicable": false,
+                                    "fields": [],
+                                    "order": 13,
+                                    "restricted": false,
+                                    "rootField": false,
+                                    "defaultValue": null
+                                },
+                                {
+                                    "id": null,
+                                    "name": "Peso Nível 2",
+                                    "required": null,
+                                    "description": "$auto.ref(Nível 2).field(Peso)",
+                                    "configuration": {
+                                        "description": null,
+                                        "keys": {
+                                            "AutoRefField": {
+                                                "args": {
+                                                    "source_field": "Nível 2",
+                                                    "field_name": "Peso"
+                                                }
+                                            }
+                                        },
+                                        "extensions": {}
+                                    },
+                                    "condition": null,
+                                    "visibilityCondition": null,
+                                    "duplicable": false,
+                                    "fields": [],
+                                    "order": 14,
+                                    "restricted": false,
+                                    "rootField": false,
+                                    "defaultValue": null
+                                }
+                            ],
+                            "order": 12,
+                            "restricted": false,
+                            "rootField": false,
+                            "defaultValue": null
+                        },
+                        {
+                            "id": null,
+                            "name": "Nível 2",
+                            "required": null,
+                            "description": "$ref(Politica v2,*) $auto.ref(Política Mãe).field(Nível 2)",
+                            "configuration": {
+                                "description": null,
+                                "keys": {
+                                    "Reference": {
+                                        "args": {
+                                            "query": "*",
+                                            "definition": "Politica v2"
+                                        }
+                                    },
+                                    "AutoRefField": {
+                                        "args": {
+                                            "source_field": "Política Mãe",
+                                            "field_name": "Nível 2"
+                                        }
+                                    }
+                                },
+                                "extensions": {}
+                            },
+                            "condition": "Nível>2",
+                            "visibilityCondition": {
+                                "type": "HigherThan",
+                                "value": "2",
+                                "matcher": {
+                                    "type": "Name",
+                                    "name": "Nível"
+                                }
+                            },
+                            "duplicable": false,
+                            "fields": [
+                                {
+                                    "id": null,
+                                    "name": "Nome Nível 2",
+                                    "required": null,
+                                    "description": "$auto.ref(Nível 2).field(Nome)",
+                                    "configuration": {
+                                        "description": null,
+                                        "keys": {
+                                            "AutoRefField": {
+                                                "args": {
+                                                    "source_field": "Nível 2",
+                                                    "field_name": "Nome"
+                                                }
+                                            }
+                                        },
+                                        "extensions": {}
+                                    },
+                                    "condition": null,
+                                    "visibilityCondition": null,
+                                    "duplicable": false,
+                                    "fields": [],
+                                    "order": 16,
+                                    "restricted": false,
+                                    "rootField": false,
+                                    "defaultValue": null
+                                },
+                                {
+                                    "id": null,
+                                    "name": "Peso Nível 2",
+                                    "required": null,
+                                    "description": "$auto.ref(Nível 2).field(Peso)",
+                                    "configuration": {
+                                        "description": null,
+                                        "keys": {
+                                            "AutoRefField": {
+                                                "args": {
+                                                    "source_field": "Nível 2",
+                                                    "field_name": "Peso"
+                                                }
+                                            }
+                                        },
+                                        "extensions": {}
+                                    },
+                                    "condition": null,
+                                    "visibilityCondition": null,
+                                    "duplicable": false,
+                                    "fields": [],
+                                    "order": 17,
+                                    "restricted": false,
+                                    "rootField": false,
+                                    "defaultValue": null
+                                }
+                            ],
+                            "order": 15,
+                            "restricted": false,
+                            "rootField": false,
+                            "defaultValue": null
+                        },
+                        {
+                            "id": null,
+                            "name": "Nível 3",
+                            "required": null,
+                            "description": "$ref(Politica v2,*) $auto.text(id).join(id) $instanceDescription",
+                            "configuration": {
+                                "description": null,
+                                "keys": {
+                                    "InstanceDescription": {},
+                                    "Reference": {
+                                        "args": {
+                                            "query": "*",
+                                            "definition": "Politica v2"
+                                        }
+                                    },
+                                    "AutoTextJoin": {
+                                        "args": [
+                                            "id"
+                                        ]
+                                    }
+                                },
+                                "extensions": {}
+                            },
+                            "condition": "Nível=3",
+                            "visibilityCondition": {
+                                "type": "Equal",
+                                "value": [
+                                    "3"
+                                ],
+                                "matcher": {
+                                    "type": "Name",
+                                    "name": "Nível"
+                                }
+                            },
+                            "duplicable": false,
+                            "fields": [
+                                {
+                                    "id": null,
+                                    "name": "Nome Nível 3",
+                                    "required": null,
+                                    "description": "$auto.ref(Nível 3).field(Nome)",
+                                    "configuration": {
+                                        "description": null,
+                                        "keys": {
+                                            "AutoRefField": {
+                                                "args": {
+                                                    "source_field": "Nível 3",
+                                                    "field_name": "Nome"
+                                                }
+                                            }
+                                        },
+                                        "extensions": {}
+                                    },
+                                    "condition": null,
+                                    "visibilityCondition": null,
+                                    "duplicable": false,
+                                    "fields": [],
+                                    "order": 19,
+                                    "restricted": false,
+                                    "rootField": false,
+                                    "defaultValue": null
+                                },
+                                {
+                                    "id": null,
+                                    "name": "Peso Nível 3",
+                                    "required": null,
+                                    "description": "$auto.ref(Nível 3).field(Peso)",
+                                    "configuration": {
+                                        "description": null,
+                                        "keys": {
+                                            "AutoRefField": {
+                                                "args": {
+                                                    "source_field": "Nível 3",
+                                                    "field_name": "Peso"
+                                                }
+                                            }
+                                        },
+                                        "extensions": {}
+                                    },
+                                    "condition": null,
+                                    "visibilityCondition": null,
+                                    "duplicable": false,
+                                    "fields": [],
+                                    "order": 20,
+                                    "restricted": false,
+                                    "rootField": false,
+                                    "defaultValue": null
+                                }
+                            ],
+                            "order": 18,
+                            "restricted": false,
+                            "rootField": false,
+                            "defaultValue": null
+                        }
+                    ],
+                    "order": 2,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Nome",
+                    "required": "mandatory",
+                    "description": "$instanceLabel ",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "InstanceLabel": {}
+                        },
+                        "extensions": {}
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 21,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Peso",
+                    "required": null,
+                    "description": "$number $default(1) Peso que este Goal tem no atingimento do Goal acima $groupEdit",
+                    "configuration": {
+                        "description": "Peso que este Goal tem no atingimento do Goal acima",
+                        "keys": {
+                            "Default": {
+                                "args": {
+                                    "value": "1"
+                                }
+                            },
+                            "Number": {
+                                "args": {}
+                            }
+                        },
+                        "extensions": {
+                            "$groupEdit": {}
+                        }
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 22,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": "1"
+                },
+                {
+                    "id": null,
+                    "name": "State",
+                    "required": "mandatory",
+                    "description": "$[*Draft,Finalized,Monitoring,Review,Retired] $groupEdit",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "Select": {
+                                "args": [
+                                    "Draft",
+                                    "Finalized",
+                                    "Monitoring",
+                                    "Review",
+                                    "Retired"
+                                ],
+                                "default": "Draft"
+                            }
+                        },
+                        "extensions": {
+                            "$groupEdit": {}
+                        }
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 23,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": "Draft"
+                }
+            ],
+            "order": 0,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Detalhes",
+            "required": null,
+            "description": "$group $expanded $style[grelha-titulo-politica]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Group": {},
+                    "Expanded": {
+                        "args": {}
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "grelha-titulo-politica"
+                        ]
+                    }
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [
+                {
+                    "id": null,
+                    "name": "Objetivo",
+                    "required": null,
+                    "description": "$markdown $help[Secção para descrever o objetivo da política.]",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "Help": {
+                                "args": [
+                                    "Secção para descrever o objetivo da política."
+                                ]
+                            }
+                        },
+                        "extensions": {
+                            "$markdown": {}
+                        }
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 25,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Âmbito",
+                    "required": null,
+                    "description": "$markdown $help[Secção para descrever a quem / ao que é que a política se aplica (âmbito) no contexto do negócio.]",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "Help": {
+                                "args": [
+                                    "Secção para descrever a quem / ao que é que a política se aplica (âmbito) no contexto do negócio."
+                                ]
+                            }
+                        },
+                        "extensions": {
+                            "$markdown": {}
+                        }
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 26,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Responsabilidade",
+                    "required": null,
+                    "description": "$markdown $help[Secção para descrever as várias entidades relevantes e respetivas responsabilidades perante esta política.]",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "Help": {
+                                "args": [
+                                    "Secção para descrever as várias entidades relevantes e respetivas responsabilidades perante esta política."
+                                ]
+                            }
+                        },
+                        "extensions": {
+                            "$markdown": {}
+                        }
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 27,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Implementação",
+                    "required": null,
+                    "description": "$markdown $help[Secção para descrição de medidas, planos, guias ou regras a implementar para estar de acordo com a política em questão.]",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "Help": {
+                                "args": [
+                                    "Secção para descrição de medidas",
+                                    "planos",
+                                    "guias ou regras a implementar para estar de acordo com a política em questão."
+                                ]
+                            }
+                        },
+                        "extensions": {
+                            "$markdown": {}
+                        }
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 28,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Incidentes",
+                    "required": null,
+                    "description": "$markdown $help[Secção para descrição de procedimentos relativos a incidentes contextualizados da política.]",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "Help": {
+                                "args": [
+                                    "Secção para descrição de procedimentos relativos a incidentes contextualizados da política."
+                                ]
+                            }
+                        },
+                        "extensions": {
+                            "$markdown": {}
+                        }
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 29,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Revisão",
+                    "required": null,
+                    "description": "$markdown $help[Secção para indicar a regularidade com que a política deve ser revista.]",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "Help": {
+                                "args": [
+                                    "Secção para indicar a regularidade com que a política deve ser revista."
+                                ]
+                            }
+                        },
+                        "extensions": {
+                            "$markdown": {}
+                        }
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 30,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Anexos",
+                    "required": null,
+                    "description": "$file",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "File": {}
+                        },
+                        "extensions": {}
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": true,
+                    "fields": [],
+                    "order": 31,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Controlos",
+                    "required": null,
+                    "description": "$group",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "Group": {}
+                        },
+                        "extensions": {}
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [
+                        {
+                            "id": null,
+                            "name": "Controlos Ativos",
+                            "required": null,
+                            "description": "$references(Control,Goal Nível 3)",
+                            "configuration": {
+                                "description": null,
+                                "keys": {
+                                    "References": {
+                                        "args": {
+                                            "field": "Goal Nível 3",
+                                            "definition": "Control"
+                                        }
+                                    }
+                                },
+                                "extensions": {}
+                            },
+                            "condition": null,
+                            "visibilityCondition": null,
+                            "duplicable": false,
+                            "fields": [],
+                            "order": 33,
+                            "restricted": false,
+                            "rootField": false,
+                            "defaultValue": null
+                        }
+                    ],
+                    "order": 32,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Internal",
+                    "required": null,
+                    "description": "$expanded $style[hide]",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "Expanded": {
+                                "args": {}
+                            }
+                        },
+                        "extensions": {
+                            "$style": {
+                                "args": [
+                                    "hide"
+                                ]
+                            }
+                        }
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [
+                        {
+                            "id": null,
+                            "name": "Internal State",
+                            "required": null,
+                            "description": "$[*Por Preencher,Definir Controlos,Treino,Publicado,Revisão]",
+                            "configuration": {
+                                "description": null,
+                                "keys": {
+                                    "Select": {
+                                        "args": [
+                                            "Por Preencher",
+                                            "Definir Controlos",
+                                            "Treino",
+                                            "Publicado",
+                                            "Revisão"
+                                        ],
+                                        "default": "Por Preencher"
+                                    }
+                                },
+                                "extensions": {}
+                            },
+                            "condition": null,
+                            "visibilityCondition": null,
+                            "duplicable": false,
+                            "fields": [],
+                            "order": 35,
+                            "restricted": false,
+                            "rootField": false,
+                            "defaultValue": "Por Preencher"
+                        }
+                    ],
+                    "order": 34,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                }
+            ],
+            "order": 24,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        }
+    ],
+    "version": null
+}
