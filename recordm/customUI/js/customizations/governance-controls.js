@@ -116,7 +116,7 @@ cob.custom.customize.push(function (core, utils, ui) {
                 xhrFields: { withCredentials: true },
                 cache: false,
                 success: function () {
-                    ui.notification.showInfo('Avaliação do Control concluida.');
+                    ui.notification.showInfo('Criação de questionários concluída.');
                     utils.delayed(successCb, 1000);
                 },
                 error: function (e) {

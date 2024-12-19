@@ -1,6 +1,5 @@
 // vim: et sw=4 ts=4
 
-
 import com.cultofbits.integrationm.service.dictionary.recordm.RecordmStats
 import groovy.transform.Field
 
@@ -32,7 +31,6 @@ import config.GovernanceConfig
         .build()
 
 @Field DEF_MANUAL_FORM = "Questionário"
-
 
 // ====================================================================================================
 //  MAIN LOGIC - START  -  As Avaliações (Assessments) acontece em 2 circunstâncias:
@@ -68,18 +66,17 @@ if ((msg.product == "governance" && msg.type == "clock" && msg.action == "clockT
 
 
         // Se control marcado para avaliação então avalia, actualiza resultado do assessment e cria/actualiza findings
-        if (control["_marked_ToEval_"] || control["_marked_CollectDeviceMValues_"] || control["_marked_assessmentId_"]) {
+        if(control["_marked_ToEval_"] || control["_marked_CollectDeviceMValues_"] || control["_marked_assessmentId_"]) {
             log.info("Evaluate Control and gather Assessment info ${control[_("Nome")]} ...")
 
             //Avalia control e complementa dados do assessment com os resultados !!
             assessment << assessControl(control)
 
-
             //Processa acções complementares: envia Emails e SMSs
             executaAccoesComplementares(control, assessment)
 
             // Se não for necessário actualizar dados remove campo de Data e Observações para não haver alterações na instância desnecessárias
-            if (control["_marked_OnlyUpdateDataIfChanged"] && !assessment["_marked_Changed"]) {
+            if(control["_marked_OnlyUpdateDataIfChanged"] && !assessment["_marked_Changed"] ) {
                 assessment.remove("Data do Resultado")
                 assessment.remove("Observações")
             }
@@ -117,10 +114,13 @@ if ((msg.product == "governance" && msg.type == "clock" && msg.action == "clockT
 
 def manualFormsCreationVerifications(control, new_assessment, runType) {
     def new_assessment_id = (new_assessment instanceof RecordmStats) ? "" : new_assessment["id"]
+
     // Bool para saber se existia assessment do dia anterior.
     def hasPreviousDayAssessment = control.containsKey('_marked_hasPrevious_') ? control['_marked_hasPrevious_'] : false
-    def old_assessment_id = control.containsKey('_marked_previousAssessmentId_') ? control['_marked_previousAssessmentId_'] : ""
+
     // ID do ultimo assessment valido encontrado
+    def old_assessment_id = control.containsKey('_marked_previousAssessmentId_') ? control['_marked_previousAssessmentId_'] : ""
+
     def canCreate = false
 
     def days_advance = 0 //control.containsKey("período_lançamento_de_perguntas") ? Integer.parseInt(control[_("Período Lançamento de Perguntas")][0]) : 0
@@ -208,7 +208,15 @@ def manualFormsCreationVerifications(control, new_assessment, runType) {
         }
 
         if (canCreate || (runType == "forceQuestions")) {
-
+            def assessmentId = new_assessment_id ?: control["_marked_assessmentId_"]
+            if (control["_marked_assessmentId_"] || control["_marked_ToEval_"]) {
+                createManualForms(control, assessmentId)
+            } else if (new_assessment_id && !hasPreviousDayAssessment) {
+                createManualForms(control, new_assessment_id)
+            } else if (old_assessment_id) {
+                createManualForms(control, old_assessment_id)
+            }
+            /*
             // Rever esta ordem dos IFs
             if (control["_marked_assessmentId_"] || control["_marked_ToEval_"]) {
                 createManualForms(control, new_assessment_id ? new_assessment_id : control["_marked_assessmentId_"])
@@ -222,6 +230,7 @@ def manualFormsCreationVerifications(control, new_assessment, runType) {
             } else if (new_assessment_id) {
                 createManualForms(control, new_assessment_id)
             }
+            */
         }
     }
 
@@ -240,62 +249,43 @@ def manualFormsCreationVerifications(control, new_assessment, runType) {
 
 
 def createManualForms(control, assessment_id) {
-    def definition = control[_("Definição")] ? control[_("Definição")][0] : ""
-    def query = control[_("Filtro")] ? control[_("Filtro")][0] : ""
+    def definition = control[_("Definição")]?.get(0) ?: ""
+    def query = control[_("Filtro")]?.get(0) ?: ""
 
-    // TODO - check if failsafe is necessary -> previous forms are always disaled when creating new ones
+    // Disable previous forms
     recordm.update(DEF_MANUAL_FORM, "control:${control[_('id')]} AND activo:Sim", ["Activo": "Não"])
 
-    // Iteramos pelas instancias da definition e query configuradas
-    // e criamos um questionario para cada um
-    if (definition?.trim() && query?.trim()) {
-        recordm.stream(definition, query, { hit ->
-            def manual_form = [:]
-            def assessment_type = control[_("Tipo de Assessment")][0]
-            manual_form << ["Assessment": assessment_id]
-            manual_form << ["Control": control.id]
-            manual_form << ["Data": new Date().time]
-            manual_form << ["Pergunta ou Verificação": control[_("Pergunta ou Verificação")][0]]
-            manual_form << ["Tipo de Assessment": assessment_type]
-            manual_form << ["Âmbito": control[_("Âmbito")][0]]
-
-            def definitionId = hit.getRaw()._source._definitionInfo.id
-            manual_form << ["Entidade": hit.id]
-            manual_form << ["Definição": definition]
-            manual_form << ["ID Definição": definitionId]
-
-            manual_form << ["Descrição de Controlo de Origem": control[_("Descrição")][0] ]
-
-            if (assessment_type.equals("Atingimento de valor")) {
-                manual_form << ["Valor alvo": control[_("Valor alvo")][0]]
-            }
-
-            recordm.create(DEF_MANUAL_FORM, manual_form)
-        })
-    } else {
-        def manual_form = [:]
+    // Helper method to create a manual form
+    def createForm = { entityId, definitionType, definitionId ->
         def assessment_type = control[_("Tipo de Assessment")][0]
-        manual_form << ["Assessment": assessment_id]
-        manual_form << ["Control": control.id]
-        manual_form << ["Data": new Date().time]
-        manual_form << ["Pergunta ou Verificação": control[_("Pergunta ou Verificação")][0]]
-        manual_form << ["Tipo de Assessment": assessment_type]
-        manual_form << ["Âmbito": control[_("Âmbito")][0]]
+        def manual_form = [
+                "Assessment"                        : assessment_id,
+                "Control"                           : control.id,
+                "Data"                              : new Date().time,
+                "Pergunta ou Verificação"           : control[_("Pergunta ou Verificação")][0],
+                "Tipo de Assessment"                : assessment_type,
+                "Âmbito"                            : control[_("Âmbito")][0],
+                "Entidade"                          : entityId,
+                "Definição"                         : definitionType,
+                "ID Definição"                      : definitionId,
+                "Descrição de Controlo de Origem"   : control[_("Descrição")][0]
+        ]
 
-        manual_form << ["Entidade": control.id]
-        // here we associate the form to the control itself because there is no specified scope
-        manual_form << ["Definição": "Control"]
-        manual_form << ["ID Definição": control._definitionInfo.id]
-
-        manual_form << ["Descrição de Controlo de Origem": control[_("Descrição")][0] ]
-
-        if (assessment_type.equals("Atingimento de valor")) {
-            manual_form << ["Valor alvo": control[_("Valor alvo")][0]]
+        if (assessment_type == "Atingimento de valor") {
+            manual_form["Valor alvo"] = control[_("Valor alvo")][0]
         }
 
         recordm.create(DEF_MANUAL_FORM, manual_form)
     }
 
+    if (definition.trim() && query.trim()) {
+        recordm.stream(definition, query) { hit ->
+            def definitionId = hit.getRaw()._source._definitionInfo.id
+            createForm(hit.id, definition, definitionId)
+        }
+    } else {
+        createForm(control.id, "Control", control._definitionInfo.id)
+    }
 }
 
 
