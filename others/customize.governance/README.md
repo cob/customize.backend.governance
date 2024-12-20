@@ -47,6 +47,9 @@
   - GOV Base ISO - Base group for read, write and update access to Governance related defs and instances.
   - GOV Feed Item - Group that contains roles to read and update feed items via concurrent
 
+#### Corrigir Links Dashboards
+* Necessário percorrer os dashboards, e substituir os IDs das definiçoes nos hrefs que levam à criação de novas instâncias. Hint: procurar por "/instance/create/X" e substituir o X pelo ID da def correto.
+
 #### Corrigir Imagens Dashboards
 * Upload das imagens na pasta `dashboard files` para a def Dashboard-Files
 * Atualizar os links das imagens nos dashboards, conforme a relação seguinte:
