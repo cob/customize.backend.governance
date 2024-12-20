@@ -1,0 +1,274 @@
+{
+    "id": null,
+    "name": "Classificação Informação",
+    "description": "@gov",
+    "duplicable": null,
+    "state": "enabled",
+    "fieldDefinitions": [
+        {
+            "id": null,
+            "name": "Nome",
+            "required": null,
+            "description": "$instanceLabel",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "InstanceLabel": {}
+                },
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 0,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Descrição",
+            "required": null,
+            "description": "$text",
+            "configuration": {
+                "description": null,
+                "keys": {},
+                "extensions": {
+                    "$text": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 1,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Classificação",
+            "required": null,
+            "description": "$group $expanded $style[group]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Group": {},
+                    "Expanded": {
+                        "args": {}
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "group"
+                        ]
+                    }
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [
+                {
+                    "id": null,
+                    "name": "Integridade",
+                    "required": null,
+                    "description": "$[1,2,3,4,5,6,7,8,9,*10] $instanceDescription",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "InstanceDescription": {},
+                            "Select": {
+                                "args": [
+                                    "1",
+                                    "2",
+                                    "3",
+                                    "4",
+                                    "5",
+                                    "6",
+                                    "7",
+                                    "8",
+                                    "9",
+                                    "10"
+                                ],
+                                "default": "10"
+                            }
+                        },
+                        "extensions": {}
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 3,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": "10"
+                },
+                {
+                    "id": null,
+                    "name": "Confidencialidade",
+                    "required": null,
+                    "description": "$[1,2,3,4,5,6,7,8,9,*10] $instanceDescription",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "InstanceDescription": {},
+                            "Select": {
+                                "args": [
+                                    "1",
+                                    "2",
+                                    "3",
+                                    "4",
+                                    "5",
+                                    "6",
+                                    "7",
+                                    "8",
+                                    "9",
+                                    "10"
+                                ],
+                                "default": "10"
+                            }
+                        },
+                        "extensions": {}
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 4,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": "10"
+                },
+                {
+                    "id": null,
+                    "name": "Disponibilidade",
+                    "required": null,
+                    "description": "$[1,2,3,4,5,6,7,8,9,*10] $instanceDescription",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "InstanceDescription": {},
+                            "Select": {
+                                "args": [
+                                    "1",
+                                    "2",
+                                    "3",
+                                    "4",
+                                    "5",
+                                    "6",
+                                    "7",
+                                    "8",
+                                    "9",
+                                    "10"
+                                ],
+                                "default": "10"
+                            }
+                        },
+                        "extensions": {}
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 5,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": "10"
+                }
+            ],
+            "order": 2,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Dependências",
+            "required": null,
+            "description": "$group $expanded $style[group]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Group": {},
+                    "Expanded": {
+                        "args": {}
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "group"
+                        ]
+                    }
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 6,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Dependência",
+            "required": null,
+            "description": "$ref(Asset, *)",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Reference": {
+                        "args": {
+                            "query": "*",
+                            "definition": "Asset"
+                        }
+                    }
+                },
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": true,
+            "fields": [
+                {
+                    "id": null,
+                    "name": "Identificador",
+                    "required": null,
+                    "description": "$auto.ref(Dependência).field(Identifier)",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "AutoRefField": {
+                                "args": {
+                                    "source_field": "Dependência",
+                                    "field_name": "Identifier"
+                                }
+                            }
+                        },
+                        "extensions": {}
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 8,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                }
+            ],
+            "order": 7,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        }
+    ],
+    "version": null
+}
