@@ -1,5 +1,9 @@
 # COB Governance
 
+### Dependencias:
+- Dashboard Customization
+- Workflows Customization
+
 ### Passos manuais a fazer no servidor após o `cob-cli customize`
               
 #### Importar definições
@@ -36,6 +40,13 @@
 
 ### After December 2024
 
+#### Permissões
+* Criar permissões para as defs listadas em cima usando o UserM easy com o template "Perms base Definição RM com delete separado"
+* Criar 3 grupos (estes grupos são usados para limitar o acesso aos dashboards):
+  - GOV Base Read - Base group for read access to Governance related defs and instances.
+  - GOV Base ISO - Base group for read, write and update access to Governance related defs and instances.
+  - GOV Feed Item - Group that contains roles to read and update feed items via concurrent
+
 #### Corrigir Imagens Dashboards
 * Upload das imagens na pasta `dashboard files` para a def Dashboard-Files
 * Atualizar os links das imagens nos dashboards, conforme a relação seguinte:
@@ -46,13 +57,11 @@
 | Cybersecurity Awareness        | modulo2        |
 
 
-
 #### Importar Conteúdos exemplo para a def Conteúdos
 * Importar as instâncias de exemplos de conteúdos para a def `Conteúdos` através do ficheiro que está em `others/customize.governance/instances/conteúdos exemplos.xlsx`.
 
 
 #### Importar Kibanas
-
 * **ANTES DE SE IMPORTAR OS KIBANAS**, é preciso substituir os titles dos index-patterns no ficheiro `exported dashes with related objs.ndjson`.
 Exemplo: Para a def Assessment, faz-se um *find & replace* de `recordm-343` por `recordm-DefIdNaMáquinaNova`.
 
