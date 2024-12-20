@@ -64,6 +64,10 @@
 * Importar as instâncias de exemplos de conteúdos para a def `Conteúdos` através do ficheiro que está em `others/customize.governance/instances/conteúdos exemplos.xlsx`.
 
 
+#### Importar BPOs e Work Queues
+* Importar primeiro BPO (Business Processes)
+* Importar Work Queues
+
 #### Importar Kibanas
 * **ANTES DE SE IMPORTAR OS KIBANAS**, é preciso substituir os titles dos index-patterns no ficheiro `exported dashes with related objs.ndjson`.
 Exemplo: Para a def Assessment, faz-se um *find & replace* de `recordm-343` por `recordm-DefIdNaMáquinaNova`.
