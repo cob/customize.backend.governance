@@ -28,6 +28,7 @@
   * Incidentes
   * Questionário
   * Vulnerability
+  * Pedidos de Titulares
 * Opcionalmente criar um dominio Governance e por lá estas defs
 * Corrigir os 2 links na def de Assessments para apontarem para a def id correcta: 
   * Histórico das Inconformidades Encontradas (FINDINGS)
