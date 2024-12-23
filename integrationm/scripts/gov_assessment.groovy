@@ -338,8 +338,11 @@ def obtemMatrizCompletaDePesos(controls) {
     return pesos
 }
 
-// Extension / new version of previous method to support dynamic weights.
-// May be redundant. WIP.
+
+// NOTA: Ignorar por agora este codigo. Foi feito na altura do gdpr-gov3,
+// mas não está a ser utilizado - é preciso relembrar a necessidade
+// para isto ter surgido.
+// Extension / new version of previous method to support dynamic weights. WIP
 def obtemMatrizCompletaDePesosDynamic(controls) {
     def pesos = [:]
     def done = [:]
@@ -449,6 +452,9 @@ def getAssessmentInstance(control,runType, pesos) {
     return assessment
 }
 
+// NOTA: Ignorar por agora este codigo. Foi feito na altura do gdpr-gov3,
+// mas não está a ser utilizado - é preciso relembrar a necessidade
+// para isto ter surgido.
 // New version of previous method for dynamic weight handling. WIP
 def getAssessmentInstanceDynamicWeights(control, runType, pesos) {
     // Obtem último assessment ainda válido feito para este control
