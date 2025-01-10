@@ -426,7 +426,7 @@ def getAssessmentInstance(control,runType, pesos) {
     // Completa preenchimento dos dados do assessment
     assessment << ["Control": ""        + control[_("Nome")][0]]
     assessment << ["Id Control": ""     + control.id]
-    assessment << ["Âmbito": ""         + control[_("Âmbito")][0] ?: ""]
+    //assessment << ["Âmbito": ""         + control[_("Âmbito")][0] ?: ""]
 
     assessment << ["Goal Nível 1":    "" + control[_("Nome Goal Nível 1")][0]]
     assessment << ["Id Goal Nível 1": "" + g1 ]
