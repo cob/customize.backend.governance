@@ -1,0 +1,1523 @@
+{
+    "id": null,
+    "name": "Asset",
+    "description": "@GOV",
+    "duplicable": null,
+    "state": "enabled",
+    "fieldDefinitions": [
+        {
+            "id": null,
+            "name": "General",
+            "required": null,
+            "description": "$group $expanded",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Group": {},
+                    "Expanded": {
+                        "args": {}
+                    }
+                },
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [
+                {
+                    "id": null,
+                    "name": "Âmbito",
+                    "required": null,
+                    "description": "$style[hide] $editForGroup(System) $groupEdit",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "EditForGroup": {
+                                "args": [
+                                    "System"
+                                ]
+                            }
+                        },
+                        "extensions": {
+                            "$style": {
+                                "args": [
+                                    "hide"
+                                ]
+                            },
+                            "$groupEdit": {}
+                        }
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 1,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Identifier",
+                    "required": null,
+                    "description": "$instanceLabel $editForGroup(System)",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "InstanceLabel": {},
+                            "EditForGroup": {
+                                "args": [
+                                    "System"
+                                ]
+                            }
+                        },
+                        "extensions": {}
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 2,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Asset Type",
+                    "required": null,
+                    "description": "$ref(Asset Types,*)  $instanceDescription",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "InstanceDescription": {},
+                            "Reference": {
+                                "args": {
+                                    "query": "*",
+                                    "definition": "Asset Types"
+                                }
+                            }
+                        },
+                        "extensions": {}
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [
+                        {
+                            "id": null,
+                            "name": "Asset Type Name",
+                            "required": null,
+                            "description": "$auto.ref(Asset Type).field(Type)",
+                            "configuration": {
+                                "description": null,
+                                "keys": {
+                                    "AutoRefField": {
+                                        "args": {
+                                            "source_field": "Asset Type",
+                                            "field_name": "Type"
+                                        }
+                                    }
+                                },
+                                "extensions": {}
+                            },
+                            "condition": null,
+                            "visibilityCondition": null,
+                            "duplicable": false,
+                            "fields": [],
+                            "order": 4,
+                            "restricted": false,
+                            "rootField": false,
+                            "defaultValue": null
+                        },
+                        {
+                            "id": null,
+                            "name": "Identifier Field",
+                            "required": null,
+                            "description": "$auto.ref(Asset Type).field(Identifier Field)",
+                            "configuration": {
+                                "description": null,
+                                "keys": {
+                                    "AutoRefField": {
+                                        "args": {
+                                            "source_field": "Asset Type",
+                                            "field_name": "Identifier Field"
+                                        }
+                                    }
+                                },
+                                "extensions": {}
+                            },
+                            "condition": null,
+                            "visibilityCondition": null,
+                            "duplicable": false,
+                            "fields": [],
+                            "order": 5,
+                            "restricted": false,
+                            "rootField": false,
+                            "defaultValue": null
+                        },
+                        {
+                            "id": null,
+                            "name": "Asset Type Description",
+                            "required": null,
+                            "description": "$auto.ref(Asset Type).field(Description) $text",
+                            "configuration": {
+                                "description": null,
+                                "keys": {
+                                    "AutoRefField": {
+                                        "args": {
+                                            "source_field": "Asset Type",
+                                            "field_name": "Description"
+                                        }
+                                    }
+                                },
+                                "extensions": {
+                                    "$text": {}
+                                }
+                            },
+                            "condition": null,
+                            "visibilityCondition": null,
+                            "duplicable": false,
+                            "fields": [],
+                            "order": 6,
+                            "restricted": false,
+                            "rootField": false,
+                            "defaultValue": null
+                        },
+                        {
+                            "id": null,
+                            "name": "Asset Definition",
+                            "required": null,
+                            "description": "$auto.ref(Asset Type).field(RM Definition)",
+                            "configuration": {
+                                "description": null,
+                                "keys": {
+                                    "AutoRefField": {
+                                        "args": {
+                                            "source_field": "Asset Type",
+                                            "field_name": "RM Definition"
+                                        }
+                                    }
+                                },
+                                "extensions": {}
+                            },
+                            "condition": null,
+                            "visibilityCondition": null,
+                            "duplicable": false,
+                            "fields": [],
+                            "order": 7,
+                            "restricted": false,
+                            "rootField": false,
+                            "defaultValue": null
+                        }
+                    ],
+                    "order": 3,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Specific Asset ID",
+                    "required": null,
+                    "description": null,
+                    "configuration": {
+                        "description": null,
+                        "keys": {},
+                        "extensions": {}
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 8,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Specific Asset",
+                    "required": null,
+                    "description": "$ref(Dashboard_v1,*) $auto.text.join(Specific Asset ID)",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "Reference": {
+                                "args": {
+                                    "query": "*",
+                                    "definition": "Dashboard_v1"
+                                }
+                            },
+                            "AutoTextJoin": {
+                                "args": [
+                                    "Specific Asset ID"
+                                ]
+                            }
+                        },
+                        "extensions": {}
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 9,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "State",
+                    "required": null,
+                    "description": "$[*Active,Inactive]",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "Select": {
+                                "args": [
+                                    "Active",
+                                    "Inactive"
+                                ],
+                                "default": "Active"
+                            }
+                        },
+                        "extensions": {}
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 10,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": "Active"
+                },
+                {
+                    "id": null,
+                    "name": "Registration Date",
+                    "required": null,
+                    "description": "$datetime $default(now)",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "Default": {
+                                "args": {
+                                    "value": "now"
+                                }
+                            },
+                            "DateTime": {}
+                        },
+                        "extensions": {}
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 11,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": "1734714680664"
+                },
+                {
+                    "id": null,
+                    "name": "Last Update",
+                    "required": null,
+                    "description": "$datetime $default(now) $instanceDescription",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "Default": {
+                                "args": {
+                                    "value": "now"
+                                }
+                            },
+                            "InstanceDescription": {},
+                            "DateTime": {}
+                        },
+                        "extensions": {}
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 12,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": "1734714680664"
+                },
+                {
+                    "id": null,
+                    "name": "Last Import",
+                    "required": null,
+                    "description": "$datetime $editForGroup(System)",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "DateTime": {},
+                            "EditForGroup": {
+                                "args": [
+                                    "System"
+                                ]
+                            }
+                        },
+                        "extensions": {}
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 13,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Inventory Department Owner",
+                    "required": null,
+                    "description": "$extRef(userm,/userm/group/search?q=FUNC __Âmbito__ {{this}})",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "ExternalReference": {
+                                "args": {
+                                    "product": "userm",
+                                    "query": "/userm/group/search?q=FUNC __Âmbito__ {{this}}"
+                                }
+                            }
+                        },
+                        "extensions": {}
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 14,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Inventory Requirements",
+                    "required": null,
+                    "description": "$group $style[subgroup] $style[hide]",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "Group": {}
+                        },
+                        "extensions": {
+                            "$style": {
+                                "args": [
+                                    "hide"
+                                ]
+                            }
+                        }
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [
+                        {
+                            "id": null,
+                            "name": "Needs Device Assignment Date",
+                            "required": null,
+                            "description": "$auto.ref(Asset Type).field(Device Assignment Date)",
+                            "configuration": {
+                                "description": null,
+                                "keys": {
+                                    "AutoRefField": {
+                                        "args": {
+                                            "source_field": "Asset Type",
+                                            "field_name": "Device Assignment Date"
+                                        }
+                                    }
+                                },
+                                "extensions": {}
+                            },
+                            "condition": null,
+                            "visibilityCondition": null,
+                            "duplicable": false,
+                            "fields": [],
+                            "order": 16,
+                            "restricted": false,
+                            "rootField": false,
+                            "defaultValue": null
+                        },
+                        {
+                            "id": null,
+                            "name": "Needs Status",
+                            "required": null,
+                            "description": "$auto.ref(Asset Type).field(Status)",
+                            "configuration": {
+                                "description": null,
+                                "keys": {
+                                    "AutoRefField": {
+                                        "args": {
+                                            "source_field": "Asset Type",
+                                            "field_name": "Status"
+                                        }
+                                    }
+                                },
+                                "extensions": {}
+                            },
+                            "condition": null,
+                            "visibilityCondition": null,
+                            "duplicable": false,
+                            "fields": [],
+                            "order": 17,
+                            "restricted": false,
+                            "rootField": false,
+                            "defaultValue": null
+                        },
+                        {
+                            "id": null,
+                            "name": "Needs Localization",
+                            "required": null,
+                            "description": "$auto.ref(Asset Type).field(Localization)",
+                            "configuration": {
+                                "description": null,
+                                "keys": {
+                                    "AutoRefField": {
+                                        "args": {
+                                            "source_field": "Asset Type",
+                                            "field_name": "Localization"
+                                        }
+                                    }
+                                },
+                                "extensions": {}
+                            },
+                            "condition": null,
+                            "visibilityCondition": null,
+                            "duplicable": false,
+                            "fields": [],
+                            "order": 18,
+                            "restricted": false,
+                            "rootField": false,
+                            "defaultValue": null
+                        },
+                        {
+                            "id": null,
+                            "name": "Needs Model",
+                            "required": null,
+                            "description": "$auto.ref(Asset Type).field(Model)",
+                            "configuration": {
+                                "description": null,
+                                "keys": {
+                                    "AutoRefField": {
+                                        "args": {
+                                            "source_field": "Asset Type",
+                                            "field_name": "Model"
+                                        }
+                                    }
+                                },
+                                "extensions": {}
+                            },
+                            "condition": null,
+                            "visibilityCondition": null,
+                            "duplicable": false,
+                            "fields": [],
+                            "order": 19,
+                            "restricted": false,
+                            "rootField": false,
+                            "defaultValue": null
+                        },
+                        {
+                            "id": null,
+                            "name": "Needs Asset tag",
+                            "required": null,
+                            "description": "$auto.ref(Asset Type).field(Asset tag)",
+                            "configuration": {
+                                "description": null,
+                                "keys": {
+                                    "AutoRefField": {
+                                        "args": {
+                                            "source_field": "Asset Type",
+                                            "field_name": "Asset tag"
+                                        }
+                                    }
+                                },
+                                "extensions": {}
+                            },
+                            "condition": null,
+                            "visibilityCondition": null,
+                            "duplicable": false,
+                            "fields": [],
+                            "order": 20,
+                            "restricted": false,
+                            "rootField": false,
+                            "defaultValue": null
+                        },
+                        {
+                            "id": null,
+                            "name": "Needs Serial number",
+                            "required": null,
+                            "description": "$auto.ref(Asset Type).field(Serial number)",
+                            "configuration": {
+                                "description": null,
+                                "keys": {
+                                    "AutoRefField": {
+                                        "args": {
+                                            "source_field": "Asset Type",
+                                            "field_name": "Serial number"
+                                        }
+                                    }
+                                },
+                                "extensions": {}
+                            },
+                            "condition": null,
+                            "visibilityCondition": null,
+                            "duplicable": false,
+                            "fields": [],
+                            "order": 21,
+                            "restricted": false,
+                            "rootField": false,
+                            "defaultValue": null
+                        },
+                        {
+                            "id": null,
+                            "name": "Needs PO number",
+                            "required": null,
+                            "description": "$auto.ref(Asset Type).field(PO number)",
+                            "configuration": {
+                                "description": null,
+                                "keys": {
+                                    "AutoRefField": {
+                                        "args": {
+                                            "source_field": "Asset Type",
+                                            "field_name": "PO number"
+                                        }
+                                    }
+                                },
+                                "extensions": {}
+                            },
+                            "condition": null,
+                            "visibilityCondition": null,
+                            "duplicable": false,
+                            "fields": [],
+                            "order": 22,
+                            "restricted": false,
+                            "rootField": false,
+                            "defaultValue": null
+                        },
+                        {
+                            "id": null,
+                            "name": "Needs Personal Data",
+                            "required": null,
+                            "description": "$auto.ref(Asset Type).field(Personal Data)",
+                            "configuration": {
+                                "description": null,
+                                "keys": {
+                                    "AutoRefField": {
+                                        "args": {
+                                            "source_field": "Asset Type",
+                                            "field_name": "Personal Data"
+                                        }
+                                    }
+                                },
+                                "extensions": {}
+                            },
+                            "condition": null,
+                            "visibilityCondition": null,
+                            "duplicable": false,
+                            "fields": [],
+                            "order": 23,
+                            "restricted": false,
+                            "rootField": false,
+                            "defaultValue": null
+                        },
+                        {
+                            "id": null,
+                            "name": "Needs Brand",
+                            "required": null,
+                            "description": "$auto.ref(Asset Type).field(Brand)",
+                            "configuration": {
+                                "description": null,
+                                "keys": {
+                                    "AutoRefField": {
+                                        "args": {
+                                            "source_field": "Asset Type",
+                                            "field_name": "Brand"
+                                        }
+                                    }
+                                },
+                                "extensions": {}
+                            },
+                            "condition": null,
+                            "visibilityCondition": null,
+                            "duplicable": false,
+                            "fields": [],
+                            "order": 24,
+                            "restricted": false,
+                            "rootField": false,
+                            "defaultValue": null
+                        },
+                        {
+                            "id": null,
+                            "name": "Needs Territorial Scope",
+                            "required": null,
+                            "description": "$auto.ref(Asset Type).field(Territorial Scope)",
+                            "configuration": {
+                                "description": null,
+                                "keys": {
+                                    "AutoRefField": {
+                                        "args": {
+                                            "source_field": "Asset Type",
+                                            "field_name": "Territorial Scope"
+                                        }
+                                    }
+                                },
+                                "extensions": {}
+                            },
+                            "condition": null,
+                            "visibilityCondition": null,
+                            "duplicable": false,
+                            "fields": [],
+                            "order": 25,
+                            "restricted": false,
+                            "rootField": false,
+                            "defaultValue": null
+                        },
+                        {
+                            "id": null,
+                            "name": "Needs Business Department",
+                            "required": null,
+                            "description": "$auto.ref(Asset Type).field(Business Department)",
+                            "configuration": {
+                                "description": null,
+                                "keys": {
+                                    "AutoRefField": {
+                                        "args": {
+                                            "source_field": "Asset Type",
+                                            "field_name": "Business Department"
+                                        }
+                                    }
+                                },
+                                "extensions": {}
+                            },
+                            "condition": null,
+                            "visibilityCondition": null,
+                            "duplicable": false,
+                            "fields": [],
+                            "order": 26,
+                            "restricted": false,
+                            "rootField": false,
+                            "defaultValue": null
+                        },
+                        {
+                            "id": null,
+                            "name": "Needs End of Support",
+                            "required": null,
+                            "description": "$auto.ref(Asset Type).field(End of Support)",
+                            "configuration": {
+                                "description": null,
+                                "keys": {
+                                    "AutoRefField": {
+                                        "args": {
+                                            "source_field": "Asset Type",
+                                            "field_name": "End of Support"
+                                        }
+                                    }
+                                },
+                                "extensions": {}
+                            },
+                            "condition": null,
+                            "visibilityCondition": null,
+                            "duplicable": false,
+                            "fields": [],
+                            "order": 27,
+                            "restricted": false,
+                            "rootField": false,
+                            "defaultValue": null
+                        },
+                        {
+                            "id": null,
+                            "name": "Needs End of Life",
+                            "required": null,
+                            "description": "$auto.ref(Asset Type).field(End of Life)",
+                            "configuration": {
+                                "description": null,
+                                "keys": {
+                                    "AutoRefField": {
+                                        "args": {
+                                            "source_field": "Asset Type",
+                                            "field_name": "End of Life"
+                                        }
+                                    }
+                                },
+                                "extensions": {}
+                            },
+                            "condition": null,
+                            "visibilityCondition": null,
+                            "duplicable": false,
+                            "fields": [],
+                            "order": 28,
+                            "restricted": false,
+                            "rootField": false,
+                            "defaultValue": null
+                        },
+                        {
+                            "id": null,
+                            "name": "Needs Username",
+                            "required": null,
+                            "description": "$auto.ref(Asset Type).field(Username)",
+                            "configuration": {
+                                "description": null,
+                                "keys": {
+                                    "AutoRefField": {
+                                        "args": {
+                                            "source_field": "Asset Type",
+                                            "field_name": "Username"
+                                        }
+                                    }
+                                },
+                                "extensions": {}
+                            },
+                            "condition": null,
+                            "visibilityCondition": null,
+                            "duplicable": false,
+                            "fields": [],
+                            "order": 29,
+                            "restricted": false,
+                            "rootField": false,
+                            "defaultValue": null
+                        },
+                        {
+                            "id": null,
+                            "name": "Needs Maintenance Window",
+                            "required": null,
+                            "description": "$auto.ref(Asset Type).field(Maintenance Window)",
+                            "configuration": {
+                                "description": null,
+                                "keys": {
+                                    "AutoRefField": {
+                                        "args": {
+                                            "source_field": "Asset Type",
+                                            "field_name": "Maintenance Window"
+                                        }
+                                    }
+                                },
+                                "extensions": {}
+                            },
+                            "condition": null,
+                            "visibilityCondition": null,
+                            "duplicable": false,
+                            "fields": [],
+                            "order": 30,
+                            "restricted": false,
+                            "rootField": false,
+                            "defaultValue": null
+                        }
+                    ],
+                    "order": 15,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                }
+            ],
+            "order": 0,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Properties",
+            "required": null,
+            "description": "$group $expanded",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Group": {},
+                    "Expanded": {
+                        "args": {}
+                    }
+                },
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [
+                {
+                    "id": null,
+                    "name": "Localization",
+                    "required": null,
+                    "description": "$[On Premises,Cloud,Other] $expanded  $instanceDescription",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "Select": {
+                                "args": [
+                                    "On Premises",
+                                    "Cloud",
+                                    "Other"
+                                ],
+                                "default": null
+                            },
+                            "InstanceDescription": {},
+                            "Expanded": {
+                                "args": {}
+                            }
+                        },
+                        "extensions": {}
+                    },
+                    "condition": "Needs Localization!",
+                    "visibilityCondition": {
+                        "type": "NotEqual",
+                        "value": [
+                            ""
+                        ],
+                        "matcher": {
+                            "type": "Name",
+                            "name": "Needs Localization"
+                        }
+                    },
+                    "duplicable": false,
+                    "fields": [
+                        {
+                            "id": null,
+                            "name": "Store",
+                            "required": null,
+                            "description": null,
+                            "configuration": {
+                                "description": null,
+                                "keys": {},
+                                "extensions": {}
+                            },
+                            "condition": "=Store",
+                            "visibilityCondition": {
+                                "type": "Equal",
+                                "value": [
+                                    "Store"
+                                ],
+                                "matcher": {
+                                    "type": "Parent"
+                                }
+                            },
+                            "duplicable": false,
+                            "fields": [],
+                            "order": 33,
+                            "restricted": false,
+                            "rootField": false,
+                            "defaultValue": null
+                        },
+                        {
+                            "id": null,
+                            "name": "Address",
+                            "required": null,
+                            "description": null,
+                            "configuration": {
+                                "description": null,
+                                "keys": {},
+                                "extensions": {}
+                            },
+                            "condition": "=Store",
+                            "visibilityCondition": {
+                                "type": "Equal",
+                                "value": [
+                                    "Store"
+                                ],
+                                "matcher": {
+                                    "type": "Parent"
+                                }
+                            },
+                            "duplicable": false,
+                            "fields": [],
+                            "order": 34,
+                            "restricted": false,
+                            "rootField": false,
+                            "defaultValue": null
+                        }
+                    ],
+                    "order": 32,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Model",
+                    "required": null,
+                    "description": " $instanceDescription",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "InstanceDescription": {}
+                        },
+                        "extensions": {}
+                    },
+                    "condition": "Needs Model!",
+                    "visibilityCondition": {
+                        "type": "NotEqual",
+                        "value": [
+                            ""
+                        ],
+                        "matcher": {
+                            "type": "Name",
+                            "name": "Needs Model"
+                        }
+                    },
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 35,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Asset tag",
+                    "required": null,
+                    "description": null,
+                    "configuration": {
+                        "description": null,
+                        "keys": {},
+                        "extensions": {}
+                    },
+                    "condition": "Needs Asset tag!",
+                    "visibilityCondition": {
+                        "type": "NotEqual",
+                        "value": [
+                            ""
+                        ],
+                        "matcher": {
+                            "type": "Name",
+                            "name": "Needs Asset tag"
+                        }
+                    },
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 36,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Serial number",
+                    "required": null,
+                    "description": null,
+                    "configuration": {
+                        "description": null,
+                        "keys": {},
+                        "extensions": {}
+                    },
+                    "condition": "Needs Serial number!",
+                    "visibilityCondition": {
+                        "type": "NotEqual",
+                        "value": [
+                            ""
+                        ],
+                        "matcher": {
+                            "type": "Name",
+                            "name": "Needs Serial number"
+                        }
+                    },
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 37,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "PO number",
+                    "required": null,
+                    "description": null,
+                    "configuration": {
+                        "description": null,
+                        "keys": {},
+                        "extensions": {}
+                    },
+                    "condition": "Needs PO number!",
+                    "visibilityCondition": {
+                        "type": "NotEqual",
+                        "value": [
+                            ""
+                        ],
+                        "matcher": {
+                            "type": "Name",
+                            "name": "Needs PO number"
+                        }
+                    },
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 38,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Brand",
+                    "required": null,
+                    "description": null,
+                    "configuration": {
+                        "description": null,
+                        "keys": {},
+                        "extensions": {}
+                    },
+                    "condition": "Needs Brand!",
+                    "visibilityCondition": {
+                        "type": "NotEqual",
+                        "value": [
+                            ""
+                        ],
+                        "matcher": {
+                            "type": "Name",
+                            "name": "Needs Brand"
+                        }
+                    },
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 39,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Business Department",
+                    "required": null,
+                    "description": null,
+                    "configuration": {
+                        "description": null,
+                        "keys": {},
+                        "extensions": {}
+                    },
+                    "condition": "Needs Business Department!",
+                    "visibilityCondition": {
+                        "type": "NotEqual",
+                        "value": [
+                            ""
+                        ],
+                        "matcher": {
+                            "type": "Name",
+                            "name": "Needs Business Department"
+                        }
+                    },
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 40,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Territorial Scope",
+                    "required": null,
+                    "description": null,
+                    "configuration": {
+                        "description": null,
+                        "keys": {},
+                        "extensions": {}
+                    },
+                    "condition": "Needs Territorial Scope!",
+                    "visibilityCondition": {
+                        "type": "NotEqual",
+                        "value": [
+                            ""
+                        ],
+                        "matcher": {
+                            "type": "Name",
+                            "name": "Needs Territorial Scope"
+                        }
+                    },
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 41,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "End of Support",
+                    "required": null,
+                    "description": null,
+                    "configuration": {
+                        "description": null,
+                        "keys": {},
+                        "extensions": {}
+                    },
+                    "condition": "Needs End of Support!",
+                    "visibilityCondition": {
+                        "type": "NotEqual",
+                        "value": [
+                            ""
+                        ],
+                        "matcher": {
+                            "type": "Name",
+                            "name": "Needs End of Support"
+                        }
+                    },
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 42,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Username",
+                    "required": null,
+                    "description": null,
+                    "configuration": {
+                        "description": null,
+                        "keys": {},
+                        "extensions": {}
+                    },
+                    "condition": "Needs Username!",
+                    "visibilityCondition": {
+                        "type": "NotEqual",
+                        "value": [
+                            ""
+                        ],
+                        "matcher": {
+                            "type": "Name",
+                            "name": "Needs Username"
+                        }
+                    },
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 43,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "End of Life",
+                    "required": null,
+                    "description": "$datetime",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "DateTime": {}
+                        },
+                        "extensions": {}
+                    },
+                    "condition": "Needs End of Life!",
+                    "visibilityCondition": {
+                        "type": "NotEqual",
+                        "value": [
+                            ""
+                        ],
+                        "matcher": {
+                            "type": "Name",
+                            "name": "Needs End of Life"
+                        }
+                    },
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 44,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Device Assignment Date",
+                    "required": null,
+                    "description": "$datetime",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "DateTime": {}
+                        },
+                        "extensions": {}
+                    },
+                    "condition": "Needs Device Assignment Date!",
+                    "visibilityCondition": {
+                        "type": "NotEqual",
+                        "value": [
+                            ""
+                        ],
+                        "matcher": {
+                            "type": "Name",
+                            "name": "Needs Device Assignment Date"
+                        }
+                    },
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 45,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Status",
+                    "required": null,
+                    "description": null,
+                    "configuration": {
+                        "description": null,
+                        "keys": {},
+                        "extensions": {}
+                    },
+                    "condition": "Needs Status!",
+                    "visibilityCondition": {
+                        "type": "NotEqual",
+                        "value": [
+                            ""
+                        ],
+                        "matcher": {
+                            "type": "Name",
+                            "name": "Needs Status"
+                        }
+                    },
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 46,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Maintenance Window",
+                    "required": null,
+                    "description": null,
+                    "configuration": {
+                        "description": null,
+                        "keys": {},
+                        "extensions": {}
+                    },
+                    "condition": "Needs Maintenance Window!",
+                    "visibilityCondition": {
+                        "type": "NotEqual",
+                        "value": [
+                            ""
+                        ],
+                        "matcher": {
+                            "type": "Name",
+                            "name": "Needs Maintenance Window"
+                        }
+                    },
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 47,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                }
+            ],
+            "order": 31,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Auxiliary Details",
+            "required": null,
+            "description": "$group $expanded(Notes!=) $style[hide]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Group": {},
+                    "Expanded": {
+                        "args": {
+                            "condition": "Notes!="
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "hide"
+                        ]
+                    }
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [
+                {
+                    "id": null,
+                    "name": "Notes",
+                    "required": null,
+                    "description": "$markdown",
+                    "configuration": {
+                        "description": null,
+                        "keys": {},
+                        "extensions": {
+                            "$markdown": {}
+                        }
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 49,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Anexo",
+                    "required": null,
+                    "description": "$file",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "File": {}
+                        },
+                        "extensions": {}
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": true,
+                    "fields": [],
+                    "order": 50,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                }
+            ],
+            "order": 48,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "ISO Info",
+            "required": null,
+            "description": "$group $expanded $style[hide]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Group": {},
+                    "Expanded": {
+                        "args": {}
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "hide"
+                        ]
+                    }
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [
+                {
+                    "id": null,
+                    "name": "Personal Data",
+                    "required": null,
+                    "description": "$[Yes,NA]",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "Select": {
+                                "args": [
+                                    "Yes",
+                                    "NA"
+                                ],
+                                "default": null
+                            }
+                        },
+                        "extensions": {}
+                    },
+                    "condition": "Needs Personal Data!",
+                    "visibilityCondition": {
+                        "type": "NotEqual",
+                        "value": [
+                            ""
+                        ],
+                        "matcher": {
+                            "type": "Name",
+                            "name": "Needs Personal Data"
+                        }
+                    },
+                    "duplicable": false,
+                    "fields": [
+                        {
+                            "id": null,
+                            "name": "VVZ ID",
+                            "required": null,
+                            "description": null,
+                            "configuration": {
+                                "description": null,
+                                "keys": {},
+                                "extensions": {}
+                            },
+                            "condition": "=Yes",
+                            "visibilityCondition": {
+                                "type": "Equal",
+                                "value": [
+                                    "Yes"
+                                ],
+                                "matcher": {
+                                    "type": "Parent"
+                                }
+                            },
+                            "duplicable": false,
+                            "fields": [],
+                            "order": 53,
+                            "restricted": false,
+                            "rootField": false,
+                            "defaultValue": null
+                        },
+                        {
+                            "id": null,
+                            "name": "TOMs",
+                            "required": null,
+                            "description": "$[Yes,NA]",
+                            "configuration": {
+                                "description": null,
+                                "keys": {
+                                    "Select": {
+                                        "args": [
+                                            "Yes",
+                                            "NA"
+                                        ],
+                                        "default": null
+                                    }
+                                },
+                                "extensions": {}
+                            },
+                            "condition": "=Yes",
+                            "visibilityCondition": {
+                                "type": "Equal",
+                                "value": [
+                                    "Yes"
+                                ],
+                                "matcher": {
+                                    "type": "Parent"
+                                }
+                            },
+                            "duplicable": false,
+                            "fields": [],
+                            "order": 54,
+                            "restricted": false,
+                            "rootField": false,
+                            "defaultValue": null
+                        }
+                    ],
+                    "order": 52,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                }
+            ],
+            "order": 51,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        }
+    ],
+    "version": null
+}

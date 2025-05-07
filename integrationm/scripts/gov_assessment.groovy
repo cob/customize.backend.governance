@@ -1,5 +1,6 @@
 // vim: et sw=4 ts=4
 
+import com.cultofbits.integrationm.service.dictionary.recordm.RecordmStats
 import groovy.transform.Field
 
 import com.google.common.cache.*
@@ -9,6 +10,8 @@ import org.codehaus.jettison.json.*
 import com.fasterxml.jackson.databind.ObjectMapper
 
 import java.util.Calendar
+import java.time.YearMonth;
+import java.time.Year;
 import javax.ws.rs.client.ClientBuilder
 
 import javax.ws.rs.client.*
@@ -27,18 +30,21 @@ import config.GovernanceConfig
         .expireAfterWrite(10, TimeUnit.MINUTES)
         .build()
 
+@Field DEF_MANUAL_FORM = "Questionário"
 
 // ====================================================================================================
 //  MAIN LOGIC - START  -  As Avaliações (Assessments) acontece em 2 circunstâncias:
 //   1) nos instantes previstos pela periodicidade do Control (ver ~/others/GovernanceGlobal/governance_clock.sh)
 //   2) ou directamente na interface do Control (ver recordm/customUI/js/cob/governance.js)
 // ====================================================================================================
-if(    (msg.product == "governance" && msg.type == "clock"     && msg.action == "clockTick")
-        || (msg.product == "governance" && msg.type == "controlUI" && msg.action == "forceAssessment") ) {
-    log.info ("Start Controls evaluations.")
 
-    if(GovernanceConfig.usesEmailActionPack) GovernanceConfig.emailActionPack = email
-    if(GovernanceConfig.usesSmsActionPack) GovernanceConfig.smsActionPack = sms
+if ((msg.product == "governance" && msg.type == "clock" && msg.action == "clockTick")
+        || (msg.product == "governance" && msg.type == "controlUI" && msg.action == "forceAssessment")
+        || (msg.product == "governance" && msg.type == "controlUI" && msg.action == "forceQuestions")) {
+    log.info("Start Controls evaluations.")
+
+    if (GovernanceConfig.usesEmailActionPack) GovernanceConfig.emailActionPack = email
+    if (GovernanceConfig.usesSmsActionPack) GovernanceConfig.smsActionPack = sms
 
     // Obtem lista dos controls ligados
     def controls = getInstances("Control", "-periodicidade.raw:Off")
@@ -46,16 +52,21 @@ if(    (msg.product == "governance" && msg.type == "clock"     && msg.action == 
     // Obtem matriz com  todos os pesos por objectivo para depois usar no cálculo da importância relativa de cada assessment
     def pesos = obtemMatrizCompletaDePesos(controls)
 
+
     // Para cada um destes controls :
-    controls.each{ control ->
+    controls.each { control ->
+        // If one control evaluation fails, we catch the error, log it and continue to the next controls.
+        //try {
         // Se for uma avaliação pedida na interface fazer skip a todos os controls menos a esse id específico
-        if(msg.action == "forceAssessment" && control.id != msg.id) return
+        if (msg.action == "forceAssessment" && control.id != msg.id) return
+        if (msg.action == "forceQuestions" && control.id != msg.id) return
 
         // obtem um assessment válido (com a indicação no control de se necessita de ser avaliado agora)
         def assessment = getAssessmentInstance(control, msg.action, pesos)
 
+
         // Se control marcado para avaliação então avalia, actualiza resultado do assessment e cria/actualiza findings
-        if( control["_marked_ToEval_"] || control["_marked_CollectDeviceMValues_"] ) {
+        if( control["_marked_ToEval_"] || control["_marked_CollectDeviceMValues_"] || control["_marked_assessmentId_"]) {
             log.info ("Evaluate Control and gather Assessment info ${control[_("Nome")]} ...")
 
             //Avalia control e complementa dados do assessment com os resultados !!
@@ -70,11 +81,20 @@ if(    (msg.product == "governance" && msg.type == "clock"     && msg.action == 
                 assessment.remove("Observações")
             }
         } else {
-            log.info ("Just create (or update if exists) the daily Assessment info ${control[_("Nome")]} ...")
+            log.info("Just create (or update if exists) the daily Assessment info ${control[_("Nome")]} ...")
         }
 
         // cria ou actualiza instância de Assessment
-        createOrUpdateInstance("Assessment", assessment)
+        def new_assessment = createOrUpdateInstance("Assessment", assessment)
+
+        // Logic for questionarios manuais criation and updates
+        if (control[_("Assessment Tool")][0].equals("Manual")) {
+            manualFormsCreationVerifications(control, new_assessment, msg.action)
+        }
+        //} catch (e) {
+        //    log.info("Error assessing control with ID ${control.id}. Error: " + e)
+        //}
+
     }
     log.info ("Finished Controls evaluations.")
 }
@@ -83,6 +103,196 @@ if(    (msg.product == "governance" && msg.type == "clock"     && msg.action == 
 //  MAIN LOGIC - END
 // ====================================================================================================
 
+/*
+    Para quando nao é especificados dias de antecedencia para a criaçao de questionarios, criamos os quests on-the-spot.
+    Quando estes dias sao especificados, é preciso calcular em que dia do timespan (semana ou mês) é que os questionarios
+    tem que ser criados. Isto é feito via uma subtraçao normalizada, que tem em conta os dias da semana, e os dias de
+    cada mês (que podem variar).
+
+    O 'canCreate' deve ser/é true quando estamos num dia de criaçao de Questionarios.
+ */
+
+def manualFormsCreationVerifications(control, new_assessment, runType) {
+    def new_assessment_id = (new_assessment instanceof RecordmStats) ? "" : new_assessment["id"]
+
+    // Bool para saber se existia assessment do dia anterior.
+    def hasPreviousDayAssessment = control.containsKey('_marked_hasPrevious_') ? control['_marked_hasPrevious_'] : false
+
+    // ID do ultimo assessment valido encontrado
+    def old_assessment_id = control.containsKey('_marked_previousAssessmentId_') ? control['_marked_previousAssessmentId_'] : ""
+
+    def canCreate = false
+
+    def days_advance = 0 //control.containsKey("período_lançamento_de_perguntas") ? Integer.parseInt(control[_("Período Lançamento de Perguntas")][0]) : 0
+    if (control.containsKey("período_lançamento_de_perguntas")) {
+        if (!control[_("Período Lançamento de Perguntas")][0].equals("undefined")) {
+            days_advance = Integer.parseInt(control[_("Período Lançamento de Perguntas")][0])
+        }
+    }
+    // vamos buscar a periodicidade e os dias atuais (Semana e mes)
+    def periodicidade = control[_("Periodicidade")][0]
+    def dayOfWeek = now.getAt(Calendar.DAY_OF_WEEK)
+    def dayOfMonth = now.getAt(Calendar.DAY_OF_MONTH)
+    def currMonth = now.getAt(Calendar.MONTH)
+    def dayOfYear = now.getAt(Calendar.DAY_OF_YEAR)
+
+    // Inicializamos outra vez os valores target (conforme feito no copyOrCreateAssessment)
+    def targetDayWeek = 2
+    def targetDayMonth = 1
+    def targetMonths = []
+
+    // Vamos buscar os dias em que os controlos é suposto serem avaliados
+    if (periodicidade.equals("Semanal")) {
+        targetDayWeek = getDayOfWeekNumber(control.containsKey("dia_da_semana") ? control[_("Dia da Semana")][0] : "Segunda")
+    }
+    if (periodicidade.equals("Mensal")) {
+        targetDayMonth = control.containsKey("dia_do_mês") ? control[_("Dia do Mês")][0] : 1
+    }
+    if (periodicidade.equals("Anual")) {
+        def months = control[_("Meses")] //.split("\u0000")
+        for (month in months) {
+            targetMonths.add(getMonthNumber(month))
+        }
+        targetMonths = targetMonths.toSet()
+    }
+
+    /*
+    Se foram especificados dias para criaçao previa de questoes, temos que calcular em que dia
+    é que temos que criar os questionarios para ter isso em conta.
+    O calculateQuestionCreationDay calcula exatamente esse dia para o timespan em questao.
+ */
+    switch (periodicidade) {
+        case "Diária":
+            canCreate = true
+            break;
+        case "Semanal":
+            if (days_advance > 0) {
+                canCreate = calculateQuestionCreationDay(7, targetDayWeek, days_advance, dayOfWeek)
+            } else {
+                canCreate = (targetDayWeek == dayOfWeek)
+            }
+            break;
+        case "Mensal":
+            if (days_advance > 0) {
+                def timespan = getTotalDaysInTimespan(periodicidade)
+                canCreate = calculateQuestionCreationDay(timespan, targetDayMonth, days_advance, dayOfMonth)
+            } else {
+                canCreate = (targetDayMonth == dayOfMonth)
+            }
+            break;
+        case "Anual":
+            if (days_advance > 0) {
+                // Precisamos de ter em conta se só escolheu 1 mês, ou vários meses
+                def days_in_year = getTotalDaysInTimespan(periodicidade)
+                def targetDayOfYear = getDayOfYear(currMonth, 1) //get day of year for target month's first day
+                if (targetMonths.size() == 1 || (targetMonths.size() > 1 && targetMonths.contains(currMonth))) {
+                    canCreate = calculateQuestionCreationDay(days_in_year, targetDayOfYear, days_advance, dayOfYear)
+                }
+            } else {
+                // Se nao forem especificados dias de antecedencia, é sempre no primeiro dia do mes atual.
+                canCreate = (targetMonths.contains(currMonth) && dayOfMonth == 1)
+            }
+            break;
+    }
+
+    def quarterHour = now.getAt(Calendar.MINUTE).intdiv(15)
+    def hourOfDay = now.getAt(Calendar.HOUR_OF_DAY)
+
+    if (((hourOfDay == 8 && quarterHour == 2) || (runType == "forceQuestions"))) {
+
+        // Se pedimos para criar perguntas especificamente, temos que invalidar as perguntas anteriores
+        // A invalidaçao e feita apenas quando é feita uma avaliaçao, algo que nao acontece quando
+        // pedimos para criar questionarios "forcibly"
+        if (runType == "forceQuestions") {
+            recordm.update(DEF_MANUAL_FORM, "control:${control[_('id')]} AND activo:Sim", ["Activo": "Não"])
+        }
+
+        if (canCreate || (runType == "forceQuestions")) {
+            def assessmentId = new_assessment_id ?: control["_marked_assessmentId_"]
+            if (control["_marked_assessmentId_"] || control["_marked_ToEval_"]) {
+                createManualForms(control, assessmentId)
+            } else if (new_assessment_id && !hasPreviousDayAssessment) {
+                createManualForms(control, new_assessment_id)
+            } else if (old_assessment_id) {
+                createManualForms(control, old_assessment_id)
+            }
+            /*
+            // Rever esta ordem dos IFs
+            if (control["_marked_assessmentId_"] || control["_marked_ToEval_"]) {
+                createManualForms(control, new_assessment_id ? new_assessment_id : control["_marked_assessmentId_"])
+            } else if (new_assessment_id && !hasPreviousDayAssessment) {
+                createManualForms(control, new_assessment_id)
+            } else if (!new_assessment_id && old_assessment_id) {
+                createManualForms(control, old_assessment_id)
+            } else if (!new_assessment_id && old_assessment_id && days_advance > 0) {
+                // CASO por averiguar
+                createManualForms(control, old_assessment_id)
+            } else if (new_assessment_id) {
+                createManualForms(control, new_assessment_id)
+            }
+            */
+        }
+    }
+
+    /*
+        CASO UPDATE QUESTIONARIOS
+
+        A mudar de um dia para o outro e é criado novo assessment:
+        é necessario atualizar os pointers dos questionarios ACTIVOS para o novo assessment,
+        mesmo que nao se faça a avaliacao!
+     */
+    if (new_assessment_id && hasPreviousDayAssessment) {
+        updateManualForms(control, old_assessment_id, new_assessment_id)
+    }
+
+}
+
+
+def createManualForms(control, assessment_id) {
+    def definition = control[_("Definição")]?.get(0) ?: ""
+    def query = control[_("Filtro")]?.get(0) ?: ""
+
+    // Disable previous forms
+    recordm.update(DEF_MANUAL_FORM, "control:${control[_('id')]} AND activo:Sim", ["Activo": "Não"])
+
+    // Helper method to create a manual form
+    def createForm = { entityId, definitionType, definitionId ->
+        def assessment_type = control[_("Tipo de Assessment")][0]
+        def manual_form = [
+                "Assessment"                        : assessment_id,
+                "Control"                           : control.id,
+                "Data"                              : new Date().time,
+                "Pergunta ou Verificação"           : control[_("Pergunta ou Verificação")][0],
+                "Tipo de Assessment"                : assessment_type,
+                "Âmbito"                            : control[_("Âmbito")][0],
+                "Entidade"                          : entityId,
+                "Definição"                         : definitionType,
+                "ID Definição"                      : definitionId,
+                "Descrição de Controlo de Origem"   : control[_("Descrição")][0]
+        ]
+
+        if (assessment_type == "Atingimento de valor") {
+            manual_form["Valor alvo"] = control[_("Valor alvo")][0]
+        }
+
+        recordm.create(DEF_MANUAL_FORM, manual_form)
+    }
+
+    if (definition.trim() && query.trim()) {
+        recordm.stream(definition, query) { hit ->
+            def definitionId = hit.getRaw()._source._definitionInfo.id
+            createForm(hit.id, definition, definitionId)
+        }
+    } else {
+        createForm(control.id, "Control", control._definitionInfo.id)
+    }
+}
+
+
+def updateManualForms(control, old_assessment_id, new_assessment_id) {
+    def query = "assessment:${old_assessment_id} AND activo:Sim"
+    recordm.update(DEF_MANUAL_FORM, query, ["Assessment": new_assessment_id])
+}
 
 
 // ====================================================================================================
@@ -91,7 +301,7 @@ if(    (msg.product == "governance" && msg.type == "clock"     && msg.action == 
 // ----------------------------------------------------------------------------------------------------
 // obtemMatrizCompletaDePesos - retorna matriz com pesos de cada nível e control
 // ----------------------------------------------------------------------------------------------------
-static def obtemMatrizCompletaDePesos(controls){
+def obtemMatrizCompletaDePesos(controls) {
     def pesos = [:]
     def done = [:]
 
@@ -103,14 +313,14 @@ static def obtemMatrizCompletaDePesos(controls){
         def c = control.id
 
         // Obtem peso de cada nível. Caso seja 0 põe valor perto de 0 pois queremos contabilizar todos os elementos.
-        float p1 = (control[_("Peso Goal Nível 1")][0]).toInteger()?:0.00001
-        float p2 = (control[_("Peso Goal Nível 2")][0]).toInteger()?:0.00001
-        float p3 = (control[_("Peso Goal Nível 3")][0]).toInteger()?:0.00001
-        float pC = (control[_("Peso")][0]).toInteger()?:0.00001
+        float p1 = (control[_("Peso Goal Nível 1")][0]).toInteger() ?: 0.00001
+        float p2 = (control[_("Peso Goal Nível 2")][0]).toInteger() ?: 0.00001
+        float p3 = (control[_("Peso Goal Nível 3")][0]).toInteger() ?: 0.00001
+        float pC = (control[_("Peso")][0]).toInteger() ?: 0.00001
 
         if(!done[g1]) {
             done[g1]=true
-            pesos["global"] = pesos["global"]  ? pesos["global"] + p1 : p1
+            pesos["global"] = pesos["global"] ? pesos["global"] + p1 : p1
         }
         if(!done[g2]) {
             done[g2]=true
@@ -124,6 +334,71 @@ static def obtemMatrizCompletaDePesos(controls){
             done[c]=true
             pesos[g3] = pesos[g3] ? pesos[g3] + pC : pC
         }
+    }
+    return pesos
+}
+
+
+// NOTA: Ignorar por agora este codigo. Foi feito na altura do gdpr-gov3,
+// mas não está a ser utilizado - é preciso relembrar a necessidade
+// para isto ter surgido.
+// Extension / new version of previous method to support dynamic weights. WIP
+def obtemMatrizCompletaDePesosDynamic(controls) {
+    def pesos = [:]
+    def done = [:]
+
+    controls.each { control ->
+        // Control
+        def c = control.id
+        float pC = (control[_("Peso")][0]).toInteger() ?: 0.00001
+        // Goal IDs and Weights
+        def g1, g2, g3
+        def p1, p2, p3
+
+        // ATM of writing, lvl1 always exists
+        g1 = control[_("Id Goal Nível 1")][0]
+        p1 = (control[_("Peso Goal Nível 1")][0]).toInteger() ?: 0.00001
+        if (!done[g1]) {
+            done[g1] = true
+            pesos["global"] = pesos["global"] ? pesos["global"] + p1 : p1
+        }
+
+        // Se existir um lvl2
+        if ( control[_("Nome Goal Nível 2")] ) {
+            g2 = control[_("Id Goal Nível 2")][0]
+            p2 = (control[_("Peso Goal Nível 2")][0]).toInteger() ?: 0.00001
+            if (!done[g2]) {
+                done[g2] = true
+                pesos[g1] = pesos[g1] ? pesos[g1] + p2 : p2
+            }
+        }
+
+        // atm, por defeito da def, o lvl3 existe smp tmb e PODE ser igual ao lvl1 se corresponder
+        // ao goal escolhido.
+        g3 = control[_("Id Goal Nível 3")][0]
+        p3 = (control[_("Peso Goal Nível 3")][0]).toInteger() ?: 0.00001
+        if (g1 != g3) {
+            if (!done[g3]) {
+                done[g3] = true
+                // se existiu um lvl2, queremos ter isso em conta. senao vamos usar os pesos do lvl1
+                pesos[g2 ?: g1] = pesos[g2 ?: g1] ? pesos[g2 ?: g1] + p3 : p3
+
+            }
+        }
+
+        // Contar com peso final do controlo
+        if (!done[c]) {
+            done[c] = true
+            // se existe um g3 != g1, entao é o ultimo goal cujos pesos queremos contar
+            if (g1 != g3) {
+                pesos[g3] = pesos[g3] ? pesos[g3] + pC : pC
+            } else {
+                // caso contrario queremos o ultimo goal: g1 ou g2 dependendo do nivel
+                pesos[g3] = pesos[g2 ?: g1] ? pesos[g2 ?: g1] + pC : pC
+            }
+
+        }
+
     }
     return pesos
 }
@@ -149,9 +424,9 @@ def getAssessmentInstance(control,runType, pesos) {
     def p4 = control[_("Peso")][0]
 
     // Completa preenchimento dos dados do assessment
-    assessment << ["Control":         "" + control[_("Nome")][0]]
-    assessment << ["Id Control":      "" + control.id]
-    assessment << ["Âmbito":          "" + control[_("Âmbito")][0]?: ""]
+    assessment << ["Control": ""        + control[_("Nome")][0]]
+    assessment << ["Id Control": ""     + control.id]
+    //assessment << ["Âmbito": ""         + control[_("Âmbito")][0] ?: ""]
 
     assessment << ["Goal Nível 1":    "" + control[_("Nome Goal Nível 1")][0]]
     assessment << ["Id Goal Nível 1": "" + g1 ]
@@ -164,38 +439,145 @@ def getAssessmentInstance(control,runType, pesos) {
 
     // Calcula peso relativo de cada nível (usando o total de pesos por nível guardado na matriz) - multiplica por 100 para não provocar arredondamentos imprevistos
     p1 = p1 ? p1.toInteger() * 100 / pesos["global"] : 0
-    p2 = p2 ? p2.toInteger() * 100 / pesos[""+g1] : 0
-    p3 = p3 ? p3.toInteger() * 100 / pesos[""+g2] : 0
-    p4 = p4 ? p4.toInteger() * 100 / pesos[""+g3] : 0
-    float pglobal = p1*p2*p3*p4/(100*100*100)
-    pglobal = pglobal?:0.001 //Caso o peso global seja 0, porque um ou mais dos elementos avaliados tem peso 0, substituimos o valor calculado por um valor muito muito baixo, mas diferente de zero
+    p2 = p2 ? p2.toInteger() * 100 / pesos["" + g1] : 0
+    p3 = p3 ? p3.toInteger() * 100 / pesos["" + g2] : 0
+    p4 = p4 ? p4.toInteger() * 100 / pesos["" + g3] : 0
+    float pglobal = p1 * p2 * p3 * p4 / (100 * 100 * 100)
+    pglobal = pglobal ?: 0.001
+    //Caso o peso global seja 0, porque um ou mais dos elementos avaliados tem peso 0, substituimos o valor calculado por um valor muito muito baixo, mas diferente de zero
 
+    // Atribui peso global relativo ao control. A relação com qq outro control estará assim regulada. - dividido por 100*100*100 para compensar as multiplicações
+    assessment << ["Peso Global": "" + pglobal]
+
+    return assessment
+}
+
+// NOTA: Ignorar por agora este codigo. Foi feito na altura do gdpr-gov3,
+// mas não está a ser utilizado - é preciso relembrar a necessidade
+// para isto ter surgido.
+// New version of previous method for dynamic weight handling. WIP
+def getAssessmentInstanceDynamicWeights(control, runType, pesos) {
+    // Obtem último assessment ainda válido feito para este control
+    def lastValidAssessment = getLastValidAssessment(control)
+
+    // Avalia existência, datas, periodicidade para decidir se se copia dados do assessment ou se se cria um novo
+    def assessment = copyOrCreateAssessment(control, lastValidAssessment, runType)
+
+    def goals = []
+    def weights = []
+    def processed = [:]
+
+    def peso_control = control[_("Peso")][0]
+
+    // Completa preenchimento dos dados do assessment
+    assessment << ["Control": ""        + control[_("Nome")][0]]
+    assessment << ["Id Control": ""     + control.id]
+    assessment << ["Âmbito": ""         + control[_("Âmbito")][0] ?: ""]
+
+    assessment << ["Goal Nível 1": "" + control[_("Nome Goal Nível 1")]?.get(0) ?: ""]
+    assessment << ["Id Goal Nível 1": "" + control[_("Id Goal Nível 1")]?.get(0) ?: ""]
+
+    assessment << ["Goal Nível 2": "" + control[_("Nome Goal Nível 2")]?.get(0) ?: ""]
+    assessment << ["Id Goal Nível 2": "" + control[_("Id Goal Nível 2")]?.get(0) ?: ""]
+
+    assessment << ["Goal Nível 3": "" + control[_("Nome Goal Nível 3")]?.get(0) ?: ""]
+    assessment << ["Id Goal Nível 3": "" + control[_("Id Goal Nível 3")]?.get(0) ?: ""]
+
+
+    def goal_key = "Id Goal Nível "
+    def weight_key = "Peso Goal Nível "
+
+    // LOOP para obter goals and weights. Atualmente mega overcomplicated por causa da definiçao.
+    // ---
+    // We go over each goal we find in our Control, and we store its ID and respective weight.
+    // currently we need to perform checks for repeated goals if we use a non-level 3 goal,
+    // which will appear multiple times due to a currently inflexible definition.
+    for(int i = 1; i <=3; i++) {
+            // if control has "id goal nivel X"
+            if ( control[_(goal_key+i)] ) {
+                def goal_id = control[_(goal_key+i)][0].toInteger()
+                // check if we've processed this model (verification described in the comment above the loop)
+                if ( !processed[goal_id] ) {
+                    processed[goal_id] = true
+                    goals << control[_(goal_key+i)][0]
+                    // if control has "peso goal nivel X"
+                    if ( control[_(weight_key+i)] ) {
+                        weights << control[_(weight_key+i)][0]
+                    }
+                }
+            }
+    }
+
+    // LOOP para calcular o peso relativo de cada nivel
+    def pLevels = []
+    def totalWeight = pesos["global"] ?: 1
+    // Percorrer todos os goals presentes
+    for (int i = 0; i < goals.size(); i++) {
+        def weight = weights[i] ?: 0 // default to 0 if weight not provided
+        if (i == 0) {
+            pLevels << (weight.toInteger() * 100 / totalWeight) // equivalent to peso["global"]
+        } else {
+            def parentGoal = goals[i - 1]
+            def parentWeight = pesos["${parentGoal}"] ?: 1
+            pLevels << (weight.toInteger() * 100 / parentWeight)
+        }
+    }
+
+
+    // Calcula o peso global (nao tem em conta peso do controlo)
+    float pglobal = 1
+    for (int pLevel : pLevels) {
+        pglobal *= pLevel / 100
+    }
+    // logica para contar com o peso do controlo
+    peso_control = peso_control ? peso_control.toInteger() * 100 / pesos["" + goals[goals.size()-1]] : 0
+    pglobal *= peso_control
+
+    pglobal = pglobal ?: 0.001
     // Atribui peso global relativo ao control. A relação com qq outro control estará assim regulada. - dividido por 100*100*100 para compensar as multiplicações
     assessment << ["Peso Global": "" + pglobal ]
 
     return assessment
 }
+
 // ----------------------------------------------------------------------------------------------------
 def getLastValidAssessment(control) {
     def assessment = [:]
-
-    def limiteInferiorData
-    switch (control[_("Periodicidade")][0]) {
-        case "Mensal":  limiteInferiorData = "M"; break
-        case "Semanal": limiteInferiorData = "w"; break
-        default:        limiteInferiorData = "d"; break  // Diário e 15/15m
-    }
+    def dayOfWeek = now.getAt(Calendar.DAY_OF_WEEK)
+    def dayOfMonth = now.getAt(Calendar.DAY_OF_MONTH)
 
     // Obtem offset em horas da timezone para corrigir pesquisa ao ES
     def cal = Calendar.instance
     Date date = cal.getTime()
     TimeZone tz = cal.getTimeZone()
-    long msFromEpochGmt = date.getTime() - ((8 * 60) + 30 ) * 60 * 1000 //Só muda o cálculo às 8h30
-    int offsetFromUTC = tz.getOffset(msFromEpochGmt)/3600000
+    long msFromEpochGmt = date.getTime() - ((8 * 60) + 30) * 60 * 1000 //Só muda o cálculo às 8h30
+    int offsetFromUTC = tz.getOffset(msFromEpochGmt) / 3600000
 
-    // Obtem registo mais recente (primeiro dos resultados) de assessment válidos no RecordM. data.date:>=now-8h-30m+1h\/d+8h+30m-1h
-    // o cálculo é: 'now' menos 'offsetUTC' (para não considerar o dia errado, que provoca engano nas semanas e meses) arredondado ao periodo (d | w | M) e deslocado para as 8h30 (com a devida correcção de 'offsetUTC')
-    def lastValidAssessmentFilter = "${_("Id Control")}.raw:${control.id} AND ${_("Data do Resultado")}.date:>=now-8h-30m+${offsetFromUTC}h\\/${limiteInferiorData}+8h+30m-${offsetFromUTC}h".toString()
+    def limiteInferiorData
+    def subtracaoPeriodo = "" //utilizado para subtrair o periodo correspondente ao periodo do controlo - se a avaliaçao nao corresponder a 2ªf
+    switch (control[_("Periodicidade")][0]) {
+        case "Mensal":
+            limiteInferiorData = "M";
+            if (dayOfMonth != 1) { subtracaoPeriodo = "-1M" }
+            break
+        case "Semanal":
+            limiteInferiorData = "w";
+            if (dayOfWeek != 1) { subtracaoPeriodo = "-1w" }
+            break
+        case "Anual": limiteInferiorData = "y";  break
+        default: limiteInferiorData = "d"; break  // Diário e 15/15m
+    }
+
+    /* Old query:
+     Obtem registo mais recente (primeiro dos resultados) de assessment válidos no RecordM. data.date:>=now-8h-30m+1h\/d+8h+30m-1h
+     o cálculo é: 'now' menos 'offsetUTC' (para não considerar o dia errado, que provoca engano nas semanas e meses) arredondado ao periodo (d | w | M) e deslocado para as 8h30 (com a devida correcção de 'offsetUTC')
+
+     Updated query
+     mantem-se toda a logica, com a adiçao de suporte de subtracao de um periodo correspondente à periodicidade do controlo.
+     isto é necessario para quando os controlos nao sao avaliados às segundas feiras ou no primeiro dia dos meses.
+     data.date:>=now-8h-30m+1h[subtracaoPeriodo]\/w+8h+30m-1h -> data.date:>=now-8h-30m+1h[-1w]\/w+8h+30m-1h
+    */
+    def lastValidAssessmentFilter = "${_("Id Control")}.raw:${control.id} AND ${_("Data do Resultado")}.date:>=now-8h-30m+${offsetFromUTC}h${subtracaoPeriodo}\\/${limiteInferiorData}+8h+30m-${offsetFromUTC}h".toString()
     return getInstances("Assessment", lastValidAssessmentFilter)[0]
 }
 // ----------------------------------------------------------------------------------------------------
@@ -206,32 +588,57 @@ def copyOrCreateAssessment(control, lastValidAssessment, runType) {
     today.set(hourOfDay: 8, minute: 30)
     today = ""+today.time
 
-    if(lastValidAssessment) {
-        if(lastValidAssessment[_("Data")][0] == today) {
+    // Get target days
+    def targetDayWeek = 2
+    def targetDayMonth = 1
+    def targetMonths = [0] //months are 0-indexed
+
+    // Vai buscar o target day of the week ou target day of the month dependendo da periodicidade do controlo
+    // para saber quando pode correr.
+    if (periodicidade.equals("Semanal")) {
+        targetDayWeek = getDayOfWeekNumber(control.containsKey("dia_da_semana") ? control[_("Dia da Semana")][0] : "Segunda")
+    }
+    if (periodicidade.equals("Mensal")) {
+        targetDayMonth = control.containsKey("dia_do_mês") ? Integer.parseInt(control[_("Dia do Mês")][0]) : 1
+    }
+    if (periodicidade.equals("Anual")) {
+        for (month in control[_("Meses")][0].split("\u0000")) {
+            targetMonths.add(getMonthNumber(month))
+        }
+        targetMonths = targetMonths.toSet()
+    }
+
+    if (lastValidAssessment) {
+        if (lastValidAssessment[_("Data")][0] == today) {
             // Se a data da assessment anterior é igual à actual mantem o id (ou seja actualiza o assessment existente) caso contrário cria um novo
-            assessment << ["id":   "" + lastValidAssessment.id]
+            assessment << ["id": "" + lastValidAssessment.id]
 
             // Verifica se há comandos devicem com resultados por avaliar
-            if( control[_("Assessment Tool")][0] == "DeviceM" ) {
-                if( getFirstValue(lastValidAssessment,_("DeviceM JobID")) != null ) {
-                    control << ["_marked_CollectDeviceMValues_":   lastValidAssessment[_("DeviceM JobID")][0] ]
+            if( control[_("Assessment Tool")][0] == "DeviceM") {
+                if( getFirstValue(lastValidAssessment, _("DeviceM JobID")) != null) {
+                    control << ["_marked_CollectDeviceMValues_": lastValidAssessment[_("DeviceM JobID")][0]]
                 }
             }
         } else {
             assessment << ["Data": today]
+            // necessario para verificacoes de casos de criaçao/gestao de questionarios manuais
+            control['_marked_hasPrevious_'] = true
         }
+        // Necessario para poder atualizar pointers de novos questionarios manuais
+        control['_marked_previousAssessmentId_'] = lastValidAssessment.id
 
-        assessment << ["Objectivo":         "" + getFirstValue(lastValidAssessment,_("Objectivo"))?:""]
-        assessment << ["Resultado":         "" + getFirstValue(lastValidAssessment,_("Resultado"))?:""]
-        assessment << ["Atingimento":       "" + getFirstValue(lastValidAssessment,_("Atingimento"))?:""]
-        assessment << ["Data do Resultado": "" + getFirstValue(lastValidAssessment,_("Data do Resultado"))?:""]
-        assessment << ["Observações":       "" + getFirstValue(lastValidAssessment,_("Observações"))?:""]
+        assessment << ["Objectivo":         "" + getFirstValue(lastValidAssessment, _("Objectivo")) ?: ""]
+        assessment << ["Resultado":         "" + getFirstValue(lastValidAssessment, _("Resultado")) ?: ""]
+        assessment << ["Atingimento":       "" + getFirstValue(lastValidAssessment, _("Atingimento")) ?: ""]
+        assessment << ["Data do Resultado": "" + getFirstValue(lastValidAssessment, _("Data do Resultado")) ?: ""]
+        assessment << ["Observações":       "" + getFirstValue(lastValidAssessment, _("Observações")) ?: ""]
 
         // Decompõe o clock tick (arrendondado aos 15m certos)
         def quarterHour = now.getAt(Calendar.MINUTE).intdiv(15)
-        def hourOfDay   = now.getAt(Calendar.HOUR_OF_DAY)
-        def dayOfWeek   = now.getAt(Calendar.DAY_OF_WEEK)
-        def dayOfMonth  = now.getAt(Calendar.DAY_OF_MONTH)
+        def hourOfDay = now.getAt(Calendar.HOUR_OF_DAY)
+        def dayOfWeek = now.getAt(Calendar.DAY_OF_WEEK)
+        def dayOfMonth = now.getAt(Calendar.DAY_OF_MONTH)
+        def currMonth = now.getAt(Calendar.MONTH)
 
         // Se há um assessment válido só será para reavaliar se:
         if( (runType == "forceAssessment")  // Avaliação pedida explicitamente na interface
@@ -242,12 +649,21 @@ def copyOrCreateAssessment(control, lastValidAssessment, runType) {
                 && (
                 periodicidade == "Diária"   // Ou for diário
                         ||
-                        (dayOfWeek == 2 && periodicidade == "Semanal") // Ou for Semanal e for segunda(além das 8h30)
+                        (dayOfWeek == targetDayWeek && periodicidade == "Semanal") // Ou for Semanal e for segunda(além das 8h30)
                         ||
-                        (dayOfMonth == 1 && periodicidade == "Mensal") // Ou for Mensal e primeiro dia do mês (além das 8h30)
+                        (dayOfMonth == targetDayMonth && periodicidade == "Mensal") // Ou for Mensal e primeiro dia do mês (além das 8h30)
+                        ||
+                        (targetMonths.contains(currMonth) && dayOfMonth == 1 && periodicidade == "Anual") // Ou se for Anual, e primeiro dia de um mês marcado para avaliaçao
         )
         ) {
-            control    << ["_marked_ToEval_":    true]
+
+            // Se ele for manual, e está dentro da periodicidade, vamos marcar o control com o ID do assessment
+            // para onde os questionarios mais recentes / os ultimos questionarios ativos apontam
+            if (control[_("Assessment Tool")][0].equals("Manual")) {
+                control << ["_marked_assessmentId_": lastValidAssessment.id]
+            }
+
+            control << ["_marked_ToEval_": true]
             assessment << ["Data do Resultado": "" + now.time]
             // Se não é novo marca para apenas actualizar a data se a avaliação mudar
             if(assessment["id"]) control << ["_marked_OnlyUpdateDataIfChanged": true]
@@ -255,10 +671,23 @@ def copyOrCreateAssessment(control, lastValidAssessment, runType) {
     } else {
         assessment << ["Data": today]
         // Se algo correr mal a avaliação base é 0
-        assessment << ["Atingimento":       "0"]
+        assessment << ["Atingimento": "0"]
         assessment << ["Data do Resultado": "" + now.time]
-        // Se é um novo assessment é sempre para avaliar
-        control    << ["_marked_ToEval_":    true]
+        // Se é um novo assessment é sempre para avaliar, EXCEPTO SE FOR MANUAL E NAO DIARIO. se for manual temos que fazer verificaçao
+        if (!control[_("Assessment Tool")][0].equals("Manual")) {
+            control << ["_marked_ToEval_": true]
+        } else if (periodicidade.equals("Diária")) {
+            control << ["_marked_ToEval_": true]
+        } else {
+            // If its a manual control and its NOT daily - we need to confirm the periodicity to check if it CAN be evaluated
+            if (checkPeriodicity(runType, periodicidade, now.getAt(Calendar.HOUR_OF_DAY), now.getAt(Calendar.MINUTE).intdiv(15),
+                    now.getAt(Calendar.DAY_OF_WEEK), targetDayWeek,
+                    now.getAt(Calendar.DAY_OF_MONTH), targetDayMonth, targetMonths, now.getAt(Calendar.MONTH))
+            ) {
+                control << ["_marked_ToEval_": true]
+            }
+        }
+
     }
     return assessment
 }
@@ -268,7 +697,7 @@ def copyOrCreateAssessment(control, lastValidAssessment, runType) {
 // ----------------------------------------------------------------------------------------------------
 def assessControl(control){
     def assessment = [
-            "Findings":[]
+            "Findings": []
     ]
 
     // Constroi lista com findings abertos do control (mais performante que pedir um de cada vez)
@@ -279,13 +708,13 @@ def assessControl(control){
     switch (control[_("Assessment Tool")][0]) {
         case "RecordM" : evaluationData = getEvaluationDataRecordM(control); break
         case "DeviceM" : evaluationData = getEvaluationDataDeviceM(control); break
-        case "Manual"  : evaluationData = getEvaluationDataManual();  break
+        case "Manual"  : evaluationData = getEvaluationDataManual(control); break
     }
     def evaluationList = evaluationData.evalList
     assessment << evaluationData.assessmentInfo
 
     //Se a resposta já tem o valor de atingimento a zero é porque foi encontrado alguma inconformidade e já trás o erro obtido
-    if(assessment["Atingimento"] == "0") { return assessment }
+    if (assessment["Atingimento"] == "0") { return assessment }
 
     // Inicializa resultados
     def objectivoTotal    = 0
@@ -327,9 +756,9 @@ def assessControl(control){
     // Para cada finding aberto que não tenha sido processado (por não fazer mais parte da lista de instâncias a avaliar) repor e indicar remoção
     if(!(control[_("Assessment Tool")][0] == "DeviceM" && control["_marked_ToEval_"])){
         openFindings.each { finding ->
-            def resultado = ["Objectivo":"mock_value","Atingimento":"mock_value","Observações":"Instance removed from evaluation filter"]
+            def resultado = ["Objectivo":"mock_value", "Atingimento":"mock_value", "Observações":"Instance removed from evaluation filter"]
             def instanceToEval = ["id" : finding.key]
-            processedFindings += createOrUpdateFinding(control, openFindings, instanceToEval, resultado)?:[]
+            processedFindings += createOrUpdateFinding(control, openFindings, instanceToEval, resultado) ?: []
         }
     }
 
@@ -337,7 +766,7 @@ def assessControl(control){
     def markedNew = processedFindings.findAll { it.containsKey("_marked_New") }
 
     // Se houver alterações aos findingss (ie, se há algum que não esteja _marked_Inaltered) então marca o assessment como alterado para: indicar envio do email de alterações e necessidade de actualizar Observações e Data de Resultado
-    if( suspeitos.size() != 0 ) {
+    if(suspeitos.size() != 0 ) {
         assessment << ["_marked_Changed":    true]
 
         suspeitos.each{finding ->
@@ -349,7 +778,7 @@ def assessControl(control){
         }
 
 //TODO: se pelo menos uma action com atraso no aviso, então adiciona campo ao assessment com todos os findings
-        if( markedNew.size() != 0 ) {
+        if(markedNew.size() != 0 ) {
             assessment << ["_marked_New_Findings":    true]
 
             markedNew.each{finding ->
@@ -395,8 +824,8 @@ def addSpecialAssessMap(specVar, resultado, finding, specialVarAssessments){
 
         if(sa == null){
             sa = [
-                    "Findings": [finding],
-                    "Objectivo": Double.valueOf(resultado["Objectivo"] ?: 0),
+                    "Findings"   : [finding],
+                    "Objectivo"  : Double.valueOf(resultado["Objectivo"] ?: 0),
                     "Atingimento": Double.valueOf(resultado["Atingimento"] ?: 0),
                     "Observações": ""
             ]
@@ -412,39 +841,78 @@ def addSpecialAssessMap(specVar, resultado, finding, specialVarAssessments){
     }
 }
 
-def buildAssessmentResultMap(findings, objectivoTotal, atingimentoTotal){
+def buildAssessmentResultMap(findings, objectivoTotal, atingimentoTotal) {
     return [
-            "Objectivo": "" + objectivoTotal,
+            "Objectivo"  : "" + objectivoTotal,
             "Atingimento": "" + atingimentoTotal,
-            "Resultado": "" + ( (atingimentoTotal==0 && objectivoTotal==0) ? 100: Math.round((100 * atingimentoTotal / (objectivoTotal?:1) )*100)/100 ), // % arredondada às décimas
-            "Observações":  "" + buildReport(findings)
+            "Resultado"  : "" + ((atingimentoTotal == 0 && objectivoTotal == 0) ? 100 : Math.round((100 * atingimentoTotal / (objectivoTotal ?: 1)) * 100) / 100), // % arredondada às décimas
+            "Observações": "" + buildReport(findings)
     ]
 }
 // ----------------------------------------------------------------------------------------------------
-def obterFindingsAbertos(control){
+def obterFindingsAbertos(control) {
     def existingFindings = [:]
     def query = "control.raw:${control.id} AND ${_("Estado")}.raw:(Suspeito OR \"Por Tratar\" OR \"Em Resolução\") ".toString()
-    def searchResult =  getInstances("Finding", query)
+    def searchResult = getInstances("Finding", query)
     searchResult.each { finding ->
         existingFindings << [
-                (finding[_("Id Asset Origem")][0]) : [
-                        "id":                       "" + finding.id,
-                        "Control":                  "" + control.id,
-                        "Identificador do Finding": getFirstValue(finding,_("Identificador do Finding"))?:"",
-                        "Estado":                   getFirstValue(finding,_("Estado"))?:"",
-                        "Reposição Detectada":      getFirstValue(finding,_("Reposição Detectada"))?:"",
-                        "Label Asset Origem":       getFirstValue(finding,_("Label Asset Origem"))?:"",
-                        "Observações":              getFirstValue(finding,_("Observações"))?:"",
-                        "Id Definição Origem":      getFirstValue(finding,_("Id Definição Origem"))?:"",
-                        "Id Asset Origem":          getFirstValue(finding,_("Id Asset Origem"))?:"",
-                        "_limite_suspeita_":        getFirstValue(finding,_("Data Limite da Suspeita"))?:""
+                (finding[_("Id Asset Origem")][0]): [
+                        "id"                      : "" + finding.id,
+                        "Control"                 : "" + control.id,
+                        "Identificador do Finding": getFirstValue(finding, _("Identificador do Finding")) ?: "",
+                        "Estado"                  : getFirstValue(finding, _("Estado")) ?: "",
+                        "Reposição Detectada"     : getFirstValue(finding, _("Reposição Detectada")) ?: "",
+                        "Label Asset Origem"      : getFirstValue(finding, _("Label Asset Origem")) ?: "",
+                        "Observações"             : getFirstValue(finding, _("Observações")) ?: "",
+                        "Id Definição Origem"     : getFirstValue(finding, _("Id Definição Origem")) ?: "",
+                        "Id Asset Origem"         : getFirstValue(finding, _("Id Asset Origem")) ?: "",
+                        "_limite_suspeita_"       : getFirstValue(finding, _("Data Limite da Suspeita")) ?: ""
                 ]
         ]
     }
     return existingFindings
 }
 // ----------------------------------------------------------------------------------------------------
+
+// Manual evaluation - instances are always of type DEF_MANUAL_FORM
+def evalInstanceManual(control, instanceToEval, previousFinding) {
+    def resultado = [:]
+    resultado << ["Objectivo": 1]
+    resultado << ["Atingimento": 1]
+    def observacoes = ""
+
+    // Avaliaçao OK NOK
+    if (instanceToEval.tipo_de_assessment[0].equals("OK NOK")) {
+        if (instanceToEval.está_ok) {
+            resultado << ["Atingimento": (instanceToEval.está_ok[0].equals("OK") ? 1 : 0)]
+            observacoes = "Estado: " + instanceToEval.está_ok[0]
+        } else {
+            resultado << ["Atingimento": 0]
+            observacoes = "Estado: NOK"
+        }
+
+    }
+
+    // Avaliaçao c/ valor alvo
+    if (instanceToEval.tipo_de_assessment[0].equals("Avaliação 1 a 10") ||
+            instanceToEval.tipo_de_assessment[0].equals("Atingimento de valor")) {
+        def atingimento = instanceToEval.valor_registado[0].toInteger() / (int) instanceToEval.valor_alvo[0].toInteger()
+        resultado << ["Atingimento": (atingimento == 1 ? 1 : 0)]
+        observacoes = "Evolução: " + (int) Math.ceil(atingimento * 100) + "% (" + instanceToEval.valor_registado[0] + " de " + instanceToEval.valor_alvo[0] + ") "
+    }
+
+    //TODO - Averiguar se aqui é o melhor sitio para colocar uma observaçao default!
+    resultado << ["Observações": observacoes]
+    return resultado
+}
+
 def evalInstance(control, instanceToEval, previousFinding) {
+    // Se o controlo é do tipo Manual, vamos recorrer às verificaçoes manuais
+    // para o avaliar.
+    if (control[_("Assessment Tool")][0].equals("Manual")) {
+        return evalInstanceManual(control, instanceToEval, previousFinding)
+    }
+
     def condicaoSucesso = control[_("Condição de sucesso")][0]
 
     // Assume de cada avaliação vale 1 para o objectivo e que, à partida, o teste vai passar
@@ -692,7 +1160,7 @@ def parse(textWithVars, instanceToEval, nomeVarInstancia){
 // ----------------------------------------------------------------------------------------------------
 def createOrUpdateFinding(control, openFindings, instanceToEval, resultado) {
     def successFlag     = (resultado["Objectivo"] == resultado["Atingimento"])
-    def previousFinding = openFindings[""+instanceToEval.id]
+    def previousFinding = openFindings["" + instanceToEval.id]
     def previousTestOk  = previousFinding ? previousFinding["Reposição Detectada"] : ""
     def previousState   = previousFinding ? previousFinding["Estado"] : ""
 
@@ -755,18 +1223,26 @@ def createOrUpdateFinding(control, openFindings, instanceToEval, resultado) {
             }
 
             def newFinding = [
-                    "Estado":                   suspectFindindNotYetToCreate ? "Suspeito" : "Por Tratar" ,
-                    "Data Limite da Suspeita":  suspectFindindNotYetToCreate ? "" + (now.time + control[_("Quantidade repetições")][0].toInteger() * 60000 * intervalo) : "",
-                    "Reposição Detectada":      "Não" ,
-                    "Control":                  "" + control.id,
-                    "Atribuido a":              "" + getFirstValue(control,_("Responsável"))?:"",
+                    "Estado"                  : suspectFindindNotYetToCreate ? "Suspeito" : "Por Tratar",
+                    "Data Limite da Suspeita" : suspectFindindNotYetToCreate ? "" + (now.time + control[_("Quantidade repetições")][0].toInteger() * 60000 * intervalo) : "",
+                    "Reposição Detectada"     : "Não",
+                    "Control"                 : "" + control.id,
+                    "Atribuido a"             : "" + getFirstValue(control, _("Responsável")) ?: "",
                     "Identificador do Finding": "" + control[_("Código")][0] + "-" + instanceToEval.id,
-                    "Label Asset Origem":       "" + (instanceToEval[_(instanceToEval._definitionInfo.instanceLabel.name[0])]?:[""])[0],
-                    "Id Definição Origem":      "" + instanceToEval._definitionInfo.id,
-                    "Id Asset Origem":          "" + instanceToEval.id
+                    "Label Asset Origem"      : "" + (instanceToEval[_(instanceToEval._definitionInfo.instanceLabel.name[0])] ?: [""])[0],
+                    "Id Definição Origem"     : "" + instanceToEval._definitionInfo.id,
+                    "Id Asset Origem"         : "" + instanceToEval.id
             ]
 
-            newFinding["Observações"] = resultado["Observações"] ?: (newFinding["Label Asset Origem"]?:"id:"+instanceToEval.id) + " - " + control[_("Código")][0]
+            // Se a instancia a avaliar for um questionario, temos que apontar para o asset
+            // para o qual o questionario aponta - em vez de apontar para o proprio questionario,
+            // uma vez que nos interessa ver qual o asset problematico, e nao o questionario em si.
+            if (instanceToEval._definitionInfo.name == DEF_MANUAL_FORM) {
+                newFinding["Id Definição Origem"] = "" + instanceToEval.id_definição[0]
+                newFinding["Id Asset Origem"] = "" + instanceToEval.entidade[0]
+            }
+
+            newFinding["Observações"] = resultado["Observações"] ?: (newFinding["Label Asset Origem"] ?: "id:" + instanceToEval.id) + " - " + control[_("Código")][0]
 
             if(getFirstValue(control,_("Acção"))=="Contabilizar e Reportar Inconformidades") {
                 createOrUpdateInstance("Finding", newFinding)
@@ -907,8 +1383,22 @@ def execCmdWhere(cmd,condition){
     }
 }
 // ----------------------------------------------------------------------------------------------------
-static def getEvaluationDataManual() {
-    return ["evalList": [["id":26075],["id":999]] ]
+def getEvaluationDataManual(control) {
+    def evaluationList = []
+    def assessmentInfo = [:]
+    def control_id = control[_('id')]
+    def questionarios_query = "control:${control_id} AND activo:Sim"
+    // Vamos buscar os questionarios ativos conforme o controlo atual
+    evaluationList = getInstances(DEF_MANUAL_FORM, questionarios_query) //assessment:${assessment_id}
+    if (evaluationList.size() == 0) {
+        assessmentInfo << ["Atingimento": "0"]
+        assessmentInfo << ["Objectivo": "0"]
+        assessmentInfo << ["Observações": "O filtro indicado não devolve QUESTIONARIOS manuais para avaliar"]
+    }
+
+    // Desativamos os questionarios da avaliaçao, porque nao os queremos ter em conta para a proxima vez.
+    recordm.update(DEF_MANUAL_FORM, questionarios_query, ["Activo": "Não"]).getBody()
+    return ["evalList": evaluationList, "assessmentInfo": assessmentInfo]
 }
 // ----------------------------------------------------------------------------------------------------
 
@@ -1137,11 +1627,11 @@ def createOrUpdateInstance(definitionName, instance) {
     if(instance.id) {
         // Update mas apenas se tiver mais que 1 campo (ou seja, excluindo o id)
         if(instance.size() > 1) {
-            recordm.update(definitionName, "recordmInstanceId:" + instance["id"], updates)
+            return recordm.update(definitionName, "recordmInstanceId:" + instance["id"], updates).getBody()
         }
     } else {
         // Create
-        recordm.create(definitionName, updates)
+        return recordm.create(definitionName, updates).getBody()
     }
 }
 
@@ -1176,4 +1666,124 @@ def getUsersWithGroups(groups){
     ])
 
     return result.getHits()
+}
+
+// converts string-based week day to int corresponding to Calendar's enums
+static def getDayOfWeekNumber(day_of_week) {
+    switch (day_of_week) {
+        case "Domingo":
+            return 1;
+        case "Segunda":
+            return 2;
+        case "Terça":
+            return 3;
+        case "Quarta":
+            return 4;
+        case "Quinta":
+            return 5;
+        case "Sexta":
+            return 6;
+        case "Sábado":
+            return 7;
+        default:
+            return 2
+    }
+}
+
+// converts string-based months to ints corresponding to Calendar's enums
+def getMonthNumber(month) {
+    switch (month) {
+        case "Janeiro":
+            return Calendar.JANUARY
+        case "Fevereiro":
+            return Calendar.FEBRUARY
+        case "Março":
+            return Calendar.MARCH
+        case "Abril":
+            return Calendar.APRIL
+        case "Maio":
+            return Calendar.MAY
+        case "Junho":
+            return Calendar.JUNE
+        case "Julho":
+            return Calendar.JULY
+        case "Agosto":
+            return Calendar.AUGUST
+        case "Setembro":
+            return Calendar.SEPTEMBER
+        case "Outubro":
+            return Calendar.OCTOBER
+        case "Novembro":
+            return Calendar.NOVEMBER
+        case "Dezembro":
+            return Calendar.DECEMBER
+        default:
+            return Calendar.JANUARY
+    }
+}
+
+// gets the total timespan according to the periodicity. If its monthly, we get the total number of days for that month.
+// if its yearly, we get the total number of days in that year.
+def getTotalDaysInTimespan(periodicidade) {
+    switch (periodicidade) {
+        case "Semanal":
+            return 7
+        case "Mensal":
+            return YearMonth.of(now.getAt(Calendar.YEAR), now.getAt(Calendar.MONTH)).lengthOfMonth()
+        case "Anual":
+            return Year.of(now.getAt(Calendar.YEAR)).length()
+    }
+}
+
+// Gets day of year for the given month and a day (in that month)
+def getDayOfYear(int month, int firstDayOfMonth) {
+    Calendar calendar = Calendar.getInstance()
+    calendar.set(Calendar.MONTH, month) // Months in Calendar class are 0-indexed
+    calendar.set(Calendar.DAY_OF_MONTH, firstDayOfMonth)
+
+    return calendar.get(Calendar.DAY_OF_YEAR)
+}
+
+
+def normalizeSubtraction(int eval_day, int advance_days, int total_days_in_timespan) {
+    // advance days cannot be higher than the number of days in curr month
+    // isto faz com que, se especificarmos mais dias de antecedencia que os dias do mês, os quests sao
+    // criados assim que possivel (corresponde ao dia da avaliaçao)
+    if (advance_days > total_days_in_timespan) {
+        advance_days = total_days_in_timespan
+    }
+    def result = (eval_day - advance_days) % total_days_in_timespan
+    // If result is negative, add total_days to make it positive
+    if (result <= 0) {
+        // <= 0 para que se o eval_day e o advance_days forem iguais, ele arredonda para o ultimo dia do mes anterior
+        result += total_days_in_timespan
+    }
+    return result
+}
+
+// Returns true if questions can be created today, false if otherwise
+def calculateQuestionCreationDay(timespan, targetDay, days_advance, currDay) {
+    int targetDayForQuestionCreation = normalizeSubtraction(targetDay, days_advance, timespan)
+    return targetDayForQuestionCreation > 0 ? (targetDayForQuestionCreation == currDay) : (targetDay == currDay)
+}
+
+// Replicates logic to check if its time to evaluate a control
+def checkPeriodicity(runType, periodicidade,
+                     hourOfDay, quarterHour,
+                     dayOfWeek, targetDayWeek,
+                     dayOfMonth, targetDayMonth, targetMonths, currMonth) {
+    return ((runType == "forceAssessment")  // Avaliação pedida explicitamente na interface
+            ||
+            (periodicidade == "15m")  // Periodicidade menor que o dia (corre sempre pois é a unidade minima de tempo)
+            ||
+            (hourOfDay == 8 && quarterHour == 2) //&& quarterHour == 2 // Se for o início do dia (definido como 8h30) e:
+            && (
+            periodicidade == "Diária"   // Ou for diário
+                    ||
+                    (dayOfWeek == targetDayWeek && periodicidade == "Semanal") // Ou for Semanal e for segunda(além das 8h30)
+                    ||
+                    (dayOfMonth == targetDayMonth && periodicidade == "Mensal") // Ou for Mensal e primeiro dia do mês (além das 8h30)
+                    ||
+                    (targetMonths.contains(currMonth) && dayOfMonth == 1 && periodicidade == "Anual") // Ou se for Anual, e primeiro dia de um mês marcado para avaliaçao
+    ))
 }

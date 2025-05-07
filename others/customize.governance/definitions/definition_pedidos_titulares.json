@@ -1,0 +1,336 @@
+{
+    "id": null,
+    "name": "Pedidos Titulares",
+    "description": "@gov Pedido ou reclamação de titulares de dados",
+    "duplicable": null,
+    "state": "enabled",
+    "fieldDefinitions": [
+        {
+            "id": null,
+            "name": "Identificação",
+            "required": null,
+            "description": "$group",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Group": {}
+                },
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 0,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Titular dos Dados",
+            "required": "mandatory",
+            "description": "Email, Nome, CC, etc $instanceLabel",
+            "configuration": {
+                "description": "Email, Nome, CC, etc",
+                "keys": {
+                    "InstanceLabel": {}
+                },
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 1,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Caraterização do pedido",
+            "required": null,
+            "description": "$group",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Group": {}
+                },
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 2,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Tipo",
+            "required": "mandatory",
+            "description": "$[Pedido Informação,Pedido de Acesso,Pedido de Correção,Pedido de Apagamento,Pedido Portabilidade,Outro] $instanceDescription",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "InstanceDescription": {},
+                    "Select": {
+                        "args": [
+                            "Pedido Informação",
+                            "Pedido de Acesso",
+                            "Pedido de Correção",
+                            "Pedido de Apagamento",
+                            "Pedido Portabilidade",
+                            "Outro"
+                        ],
+                        "default": null
+                    }
+                },
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 3,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Descrição do pedido",
+            "required": null,
+            "description": "$markdown",
+            "configuration": {
+                "description": null,
+                "keys": {},
+                "extensions": {
+                    "$markdown": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 4,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Dados de Execução",
+            "required": null,
+            "description": "$group",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Group": {}
+                },
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 5,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Data de registo",
+            "required": "mandatory",
+            "description": "$datetime $default(now) $readonly",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Default": {
+                        "args": {
+                            "value": "now"
+                        }
+                    },
+                    "DateTime": {}
+                },
+                "extensions": {
+                    "$readonly": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 6,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": "1734964023347"
+        },
+        {
+            "id": null,
+            "name": "Estado",
+            "required": null,
+            "description": "$[*Novo,Em Curso,Fechado] $instanceDescription",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "InstanceDescription": {},
+                    "Select": {
+                        "args": [
+                            "Novo",
+                            "Em Curso",
+                            "Fechado"
+                        ],
+                        "default": "Novo"
+                    }
+                },
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 7,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": "Novo"
+        },
+        {
+            "id": null,
+            "name": "Responsável",
+            "required": null,
+            "description": "$ref(Colaborador GOV,*)",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Reference": {
+                        "args": {
+                            "query": "*",
+                            "definition": "Colaborador GOV"
+                        }
+                    }
+                },
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [
+                {
+                    "id": null,
+                    "name": "Email Responsável",
+                    "required": null,
+                    "description": "$auto.ref(Responsável).field(Email)",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "AutoRefField": {
+                                "args": {
+                                    "source_field": "Responsável",
+                                    "field_name": "Email"
+                                }
+                            }
+                        },
+                        "extensions": {}
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 9,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Username Responsável",
+                    "required": null,
+                    "description": "$auto.ref(Responsável).field(Username)",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "AutoRefField": {
+                                "args": {
+                                    "source_field": "Responsável",
+                                    "field_name": "Username"
+                                }
+                            }
+                        },
+                        "extensions": {}
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 10,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "UserM Ref",
+                    "required": null,
+                    "description": "$auto.ref(Responsável).field(User) $style[hide]",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "AutoRefField": {
+                                "args": {
+                                    "source_field": "Responsável",
+                                    "field_name": "User"
+                                }
+                            }
+                        },
+                        "extensions": {
+                            "$style": {
+                                "args": [
+                                    "hide"
+                                ]
+                            }
+                        }
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 11,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                }
+            ],
+            "order": 8,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Anexo",
+            "required": null,
+            "description": "$file",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "File": {}
+                },
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 12,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        }
+    ],
+    "version": null
+}

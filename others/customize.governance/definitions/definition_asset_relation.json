@@ -1,0 +1,218 @@
+{
+    "id": null,
+    "name": "Asset Relation",
+    "description": "@gov",
+    "duplicable": null,
+    "state": "enabled",
+    "fieldDefinitions": [
+        {
+            "id": null,
+            "name": "Single Origin",
+            "required": null,
+            "description": "$[*Yes,No] $instanceDescription $expanded",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Select": {
+                        "args": [
+                            "Yes",
+                            "No"
+                        ],
+                        "default": "Yes"
+                    },
+                    "InstanceDescription": {},
+                    "Expanded": {
+                        "args": {}
+                    }
+                },
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [
+                {
+                    "id": null,
+                    "name": "Origin",
+                    "required": null,
+                    "description": "$ref(Asset, *) $instanceDescription",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "InstanceDescription": {},
+                            "Reference": {
+                                "args": {
+                                    "query": "*",
+                                    "definition": "Asset"
+                                }
+                            }
+                        },
+                        "extensions": {}
+                    },
+                    "condition": "Single Origin=Yes",
+                    "visibilityCondition": {
+                        "type": "Equal",
+                        "value": [
+                            "Yes"
+                        ],
+                        "matcher": {
+                            "type": "Name",
+                            "name": "Single Origin"
+                        }
+                    },
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 1,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Origin Class",
+                    "required": null,
+                    "description": "$ref(Asset Types, *) $instanceDescription",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "InstanceDescription": {},
+                            "Reference": {
+                                "args": {
+                                    "query": "*",
+                                    "definition": "Asset Types"
+                                }
+                            }
+                        },
+                        "extensions": {}
+                    },
+                    "condition": "Single Origin=No",
+                    "visibilityCondition": {
+                        "type": "Equal",
+                        "value": [
+                            "No"
+                        ],
+                        "matcher": {
+                            "type": "Name",
+                            "name": "Single Origin"
+                        }
+                    },
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 2,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                }
+            ],
+            "order": 0,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": "Yes"
+        },
+        {
+            "id": null,
+            "name": "Single Dependency",
+            "required": null,
+            "description": "$[*Yes,No] $instanceDescription $expanded",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Select": {
+                        "args": [
+                            "Yes",
+                            "No"
+                        ],
+                        "default": "Yes"
+                    },
+                    "InstanceDescription": {},
+                    "Expanded": {
+                        "args": {}
+                    }
+                },
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [
+                {
+                    "id": null,
+                    "name": "Dependency",
+                    "required": null,
+                    "description": "$ref(Asset, *) $instanceDescription",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "InstanceDescription": {},
+                            "Reference": {
+                                "args": {
+                                    "query": "*",
+                                    "definition": "Asset"
+                                }
+                            }
+                        },
+                        "extensions": {}
+                    },
+                    "condition": "Single Dependency=Yes",
+                    "visibilityCondition": {
+                        "type": "Equal",
+                        "value": [
+                            "Yes"
+                        ],
+                        "matcher": {
+                            "type": "Name",
+                            "name": "Single Dependency"
+                        }
+                    },
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 4,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Dependency Type",
+                    "required": null,
+                    "description": "$ref(Asset Types, *) $instanceDescription",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "InstanceDescription": {},
+                            "Reference": {
+                                "args": {
+                                    "query": "*",
+                                    "definition": "Asset Types"
+                                }
+                            }
+                        },
+                        "extensions": {}
+                    },
+                    "condition": "Single Dependency=No",
+                    "visibilityCondition": {
+                        "type": "Equal",
+                        "value": [
+                            "No"
+                        ],
+                        "matcher": {
+                            "type": "Name",
+                            "name": "Single Dependency"
+                        }
+                    },
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 5,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                }
+            ],
+            "order": 3,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": "Yes"
+        }
+    ],
+    "version": null
+}

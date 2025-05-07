@@ -1,0 +1,520 @@
+{
+    "id": null,
+    "name": "Conteúdos",
+    "description": "@GOV",
+    "duplicable": null,
+    "state": "enabled",
+    "fieldDefinitions": [
+        {
+            "id": null,
+            "name": "Resumo",
+            "required": null,
+            "description": "$group $style[grelha-titulo]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Group": {}
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "grelha-titulo"
+                        ]
+                    }
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 0,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Título",
+            "required": "mandatory",
+            "description": "$instanceLabel",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "InstanceLabel": {}
+                },
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 1,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Resumo",
+            "required": null,
+            "description": "$text",
+            "configuration": {
+                "description": null,
+                "keys": {},
+                "extensions": {
+                    "$text": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 2,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Categoria",
+            "required": "mandatory",
+            "description": "$[Setup,*Introduction,GDPR Training,Cybersecurity Training,GDPR Examples,Data Ethics] $instanceDescription $groupEdit ",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "InstanceDescription": {},
+                    "Select": {
+                        "args": [
+                            "Setup",
+                            "Introduction",
+                            "GDPR Training",
+                            "Cybersecurity Training",
+                            "GDPR Examples",
+                            "Data Ethics"
+                        ],
+                        "default": "Introduction"
+                    }
+                },
+                "extensions": {
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 3,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": "Introduction"
+        },
+        {
+            "id": null,
+            "name": "Perfil",
+            "required": "mandatory",
+            "description": "$[*Sponsor,CISO,ISO,DPO,Responsável,Colaborador] $multiple $groupEdit ",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Select": {
+                        "args": [
+                            "Sponsor",
+                            "CISO",
+                            "ISO",
+                            "DPO",
+                            "Responsável",
+                            "Colaborador"
+                        ],
+                        "default": "Sponsor"
+                    },
+                    "Multiple": {}
+                },
+                "extensions": {
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 4,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": "Sponsor"
+        },
+        {
+            "id": null,
+            "name": "Visível",
+            "required": null,
+            "description": "$[*Não,Sim] $instanceDescription $groupEdit $editForGroup(System)",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Select": {
+                        "args": [
+                            "Não",
+                            "Sim"
+                        ],
+                        "default": "Não"
+                    },
+                    "InstanceDescription": {},
+                    "EditForGroup": {
+                        "args": [
+                            "System"
+                        ]
+                    }
+                },
+                "extensions": {
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 5,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": "Não"
+        },
+        {
+            "id": null,
+            "name": "urlToImage",
+            "required": null,
+            "description": null,
+            "configuration": {
+                "description": null,
+                "keys": {},
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 6,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Conteúdo",
+            "required": null,
+            "description": "$group $style[grelha-titulo]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Group": {}
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "grelha-titulo"
+                        ]
+                    }
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 7,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Tipo",
+            "required": "mandatory",
+            "description": "$[*Apresentação,Regulamento,Notícia] $instanceDescription $expanded",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Select": {
+                        "args": [
+                            "Apresentação",
+                            "Regulamento",
+                            "Notícia"
+                        ],
+                        "default": "Apresentação"
+                    },
+                    "InstanceDescription": {},
+                    "Expanded": {
+                        "args": {}
+                    }
+                },
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [
+                {
+                    "id": null,
+                    "name": "Markdown Apresentação",
+                    "required": null,
+                    "description": "$markdown $instanceDescription $style[mdPreview]",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "InstanceDescription": {}
+                        },
+                        "extensions": {
+                            "$markdown": {},
+                            "$style": {
+                                "args": [
+                                    "mdPreview"
+                                ]
+                            }
+                        }
+                    },
+                    "condition": "=Apresentação",
+                    "visibilityCondition": {
+                        "type": "Equal",
+                        "value": [
+                            "Apresentação"
+                        ],
+                        "matcher": {
+                            "type": "Parent"
+                        }
+                    },
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 9,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Markdown Regulamento",
+                    "required": null,
+                    "description": "$markdown $instanceDescription $style[mdPreview]",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "InstanceDescription": {}
+                        },
+                        "extensions": {
+                            "$markdown": {},
+                            "$style": {
+                                "args": [
+                                    "mdPreview"
+                                ]
+                            }
+                        }
+                    },
+                    "condition": "=Regulamento",
+                    "visibilityCondition": {
+                        "type": "Equal",
+                        "value": [
+                            "Regulamento"
+                        ],
+                        "matcher": {
+                            "type": "Parent"
+                        }
+                    },
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 10,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Markdown Notícia",
+                    "required": null,
+                    "description": "$markdown $instanceDescription $style[mdPreview]",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "InstanceDescription": {}
+                        },
+                        "extensions": {
+                            "$markdown": {},
+                            "$style": {
+                                "args": [
+                                    "mdPreview"
+                                ]
+                            }
+                        }
+                    },
+                    "condition": "=Notícia",
+                    "visibilityCondition": {
+                        "type": "Equal",
+                        "value": [
+                            "Notícia"
+                        ],
+                        "matcher": {
+                            "type": "Parent"
+                        }
+                    },
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 11,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                }
+            ],
+            "order": 8,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": "Apresentação"
+        },
+        {
+            "id": null,
+            "name": "Anexo",
+            "required": null,
+            "description": "$file",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "File": {}
+                },
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": true,
+            "fields": [],
+            "order": 12,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Ordem",
+            "required": "mandatory",
+            "description": "$number $instanceDescription $help[Caso se pretendam mostrar conteúdos apenas depois de outros serem visualizados] $groupEdit",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "InstanceDescription": {},
+                    "Number": {
+                        "args": {}
+                    },
+                    "Help": {
+                        "args": [
+                            "Caso se pretendam mostrar conteúdos apenas depois de outros serem visualizados"
+                        ]
+                    }
+                },
+                "extensions": {
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 13,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Registo de mudanças",
+            "required": null,
+            "description": "$group $style[grelha-titulo]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Group": {}
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "grelha-titulo"
+                        ]
+                    }
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 14,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Data de criação",
+            "required": null,
+            "description": "$datetime $default(now) $readonly",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Default": {
+                        "args": {
+                            "value": "now"
+                        }
+                    },
+                    "DateTime": {}
+                },
+                "extensions": {
+                    "$readonly": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 15,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": "1734609622733"
+        },
+        {
+            "id": null,
+            "name": "Data última atualização",
+            "required": null,
+            "description": "$datetime $audit.updater.time",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "DateTime": {}
+                },
+                "extensions": {
+                    "$audit.updater.time": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 16,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Utilizador da última atualização",
+            "required": null,
+            "description": "$audit.updater.username",
+            "configuration": {
+                "description": null,
+                "keys": {},
+                "extensions": {
+                    "$audit.updater.username": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 17,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        }
+    ],
+    "version": null
+}

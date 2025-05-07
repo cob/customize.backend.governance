@@ -1,0 +1,598 @@
+{
+    "id": null,
+    "name": "Feed Item",
+    "description": "@GOV",
+    "duplicable": null,
+    "state": "enabled",
+    "fieldDefinitions": [
+        {
+            "id": null,
+            "name": "Identificação do utilizador/conteúdo",
+            "required": null,
+            "description": "$group",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Group": {}
+                },
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 0,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Label",
+            "required": null,
+            "description": "$instanceLabel $auto.text(username,Título Conteúdo).join(username,' - ',Título Conteúdo) ",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "InstanceLabel": {},
+                    "AutoTextJoin": {
+                        "args": [
+                            "username",
+                            "' - '",
+                            "Título Conteúdo"
+                        ]
+                    }
+                },
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 1,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Colaborador",
+            "required": null,
+            "description": "$ref(Colaborador GOV,*)  $editForGroup(System) $groupEdit",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Reference": {
+                        "args": {
+                            "query": "*",
+                            "definition": "Colaborador GOV"
+                        }
+                    },
+                    "EditForGroup": {
+                        "args": [
+                            "System"
+                        ]
+                    }
+                },
+                "extensions": {
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [
+                {
+                    "id": null,
+                    "name": "username",
+                    "required": null,
+                    "description": "$auto.ref(Colaborador).field(Username)",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "AutoRefField": {
+                                "args": {
+                                    "source_field": "Colaborador",
+                                    "field_name": "Username"
+                                }
+                            }
+                        },
+                        "extensions": {}
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 3,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                }
+            ],
+            "order": 2,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Conteúdo",
+            "required": null,
+            "description": "$ref(Conteúdos,*) $instanceDescription  $editForGroup(System)",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "InstanceDescription": {},
+                    "Reference": {
+                        "args": {
+                            "query": "*",
+                            "definition": "Conteúdos"
+                        }
+                    },
+                    "EditForGroup": {
+                        "args": [
+                            "System"
+                        ]
+                    }
+                },
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [
+                {
+                    "id": null,
+                    "name": "Tipo Conteúdo",
+                    "required": null,
+                    "description": "$auto.ref(Conteúdo).field(Tipo) $instanceDescription",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "InstanceDescription": {},
+                            "AutoRefField": {
+                                "args": {
+                                    "source_field": "Conteúdo",
+                                    "field_name": "Tipo"
+                                }
+                            }
+                        },
+                        "extensions": {}
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 5,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Título Conteúdo",
+                    "required": null,
+                    "description": "$auto.ref(Conteúdo).field(Título)",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "AutoRefField": {
+                                "args": {
+                                    "source_field": "Conteúdo",
+                                    "field_name": "Título"
+                                }
+                            }
+                        },
+                        "extensions": {}
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 6,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Resumo Conteúdo",
+                    "required": null,
+                    "description": "$auto.ref(Conteúdo).field(Resumo)",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "AutoRefField": {
+                                "args": {
+                                    "source_field": "Conteúdo",
+                                    "field_name": "Resumo"
+                                }
+                            }
+                        },
+                        "extensions": {}
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 7,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "markdown Conteúdo",
+                    "required": null,
+                    "description": "$auto.ref(Conteúdo).field(Markdown Apresentação) $markdown",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "AutoRefField": {
+                                "args": {
+                                    "source_field": "Conteúdo",
+                                    "field_name": "Markdown Apresentação"
+                                }
+                            }
+                        },
+                        "extensions": {
+                            "$markdown": {}
+                        }
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 8,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "urlToImage Conteúdo",
+                    "required": null,
+                    "description": "$auto.ref(Conteúdo).field(urlToImage)",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "AutoRefField": {
+                                "args": {
+                                    "source_field": "Conteúdo",
+                                    "field_name": "urlToImage"
+                                }
+                            }
+                        },
+                        "extensions": {}
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 9,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Ordem Conteúdo",
+                    "required": null,
+                    "description": "$auto.ref(Conteúdo).field(Ordem) $instanceDescription",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "InstanceDescription": {},
+                            "AutoRefField": {
+                                "args": {
+                                    "source_field": "Conteúdo",
+                                    "field_name": "Ordem"
+                                }
+                            }
+                        },
+                        "extensions": {}
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 10,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Categoria Conteúdo",
+                    "required": null,
+                    "description": "$auto.ref(Conteúdo).field(Categoria)",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "AutoRefField": {
+                                "args": {
+                                    "source_field": "Conteúdo",
+                                    "field_name": "Categoria"
+                                }
+                            }
+                        },
+                        "extensions": {}
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 11,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Visivel Conteudo",
+                    "required": null,
+                    "description": "$auto.ref(Conteúdo).field(Visível)",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "AutoRefField": {
+                                "args": {
+                                    "source_field": "Conteúdo",
+                                    "field_name": "Visível"
+                                }
+                            }
+                        },
+                        "extensions": {}
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 12,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Perfil Conteudo",
+                    "required": null,
+                    "description": "$auto.ref(Conteúdo).field(Perfil)",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "AutoRefField": {
+                                "args": {
+                                    "source_field": "Conteúdo",
+                                    "field_name": "Perfil"
+                                }
+                            }
+                        },
+                        "extensions": {}
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 13,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                }
+            ],
+            "order": 4,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Data criação",
+            "required": null,
+            "description": "$datetime $default(now) $readonly $instanceDescription $editForGroup(System)",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Default": {
+                        "args": {
+                            "value": "now"
+                        }
+                    },
+                    "InstanceDescription": {},
+                    "DateTime": {},
+                    "EditForGroup": {
+                        "args": [
+                            "System"
+                        ]
+                    }
+                },
+                "extensions": {
+                    "$readonly": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 14,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": "1734630218828"
+        },
+        {
+            "id": null,
+            "name": "Confirmação de visualização",
+            "required": null,
+            "description": "$group",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Group": {}
+                },
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 15,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Primeira visualização",
+            "required": null,
+            "description": "$datetime $editForGroup(System)",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "DateTime": {},
+                    "EditForGroup": {
+                        "args": [
+                            "System"
+                        ]
+                    }
+                },
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 16,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Visto",
+            "required": null,
+            "description": "$[*Não,Sim] $instanceDescription $groupEdit $editForGroup(System)",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Select": {
+                        "args": [
+                            "Não",
+                            "Sim"
+                        ],
+                        "default": "Não"
+                    },
+                    "InstanceDescription": {},
+                    "EditForGroup": {
+                        "args": [
+                            "System"
+                        ]
+                    }
+                },
+                "extensions": {
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [
+                {
+                    "id": null,
+                    "name": "Visto em",
+                    "required": null,
+                    "description": "$datetime $default(now) $instanceDescription $readonly",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "Default": {
+                                "args": {
+                                    "value": "now"
+                                }
+                            },
+                            "InstanceDescription": {},
+                            "DateTime": {}
+                        },
+                        "extensions": {
+                            "$readonly": {}
+                        }
+                    },
+                    "condition": "=Sim",
+                    "visibilityCondition": {
+                        "type": "Equal",
+                        "value": [
+                            "Sim"
+                        ],
+                        "matcher": {
+                            "type": "Parent"
+                        }
+                    },
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 18,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": "1734630218828"
+                }
+            ],
+            "order": 17,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": "Não"
+        },
+        {
+            "id": null,
+            "name": "Score Resposta",
+            "required": null,
+            "description": "$number $editForGroup(System)",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Number": {
+                        "args": {}
+                    },
+                    "EditForGroup": {
+                        "args": [
+                            "System"
+                        ]
+                    }
+                },
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 19,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Data da resposta",
+            "required": null,
+            "description": "$datetime $editForGroup(System)",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "DateTime": {},
+                    "EditForGroup": {
+                        "args": [
+                            "System"
+                        ]
+                    }
+                },
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 20,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        }
+    ],
+    "version": null
+}

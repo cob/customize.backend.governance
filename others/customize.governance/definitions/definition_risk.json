@@ -1,0 +1,1189 @@
+{
+    "id": null,
+    "name": "Risk",
+    "description": "@GOV Defines a Risk",
+    "duplicable": null,
+    "state": "enabled",
+    "fieldDefinitions": [
+        {
+            "id": null,
+            "name": "Detalhes",
+            "required": null,
+            "description": "$group $style[grelha-titulo-risk]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Group": {}
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "grelha-titulo-risk"
+                        ]
+                    }
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 0,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Nome",
+            "required": null,
+            "description": "$instanceLabel",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "InstanceLabel": {}
+                },
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 1,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Descrição",
+            "required": null,
+            "description": "$instanceDescription $text",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "InstanceDescription": {}
+                },
+                "extensions": {
+                    "$text": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 2,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Classificação Risco",
+            "required": null,
+            "description": "$editForGroup(System) $instanceDescription Classificação dada com base na última análise/review. $help[Risk Classification Intervals <br> Very Low - [1,2] <br> Low - [3,4] <br> Medium - [5,11] <br> High - [12,18] <br> Very High - [19,25] ]",
+            "configuration": {
+                "description": "Classificação dada com base na última análise/review.",
+                "keys": {
+                    "InstanceDescription": {},
+                    "EditForGroup": {
+                        "args": [
+                            "System"
+                        ]
+                    },
+                    "Help": {
+                        "args": [
+                            "Risk Classification Intervals <br> Very Low - [1,2] <br> Low - [3,4] <br> Medium - [5,11] <br> High - [12,18] <br> Very High - [19,25]"
+                        ]
+                    }
+                },
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 3,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Estado",
+            "required": null,
+            "description": "$[*Em Análise,Aguarda Revisão,Ultrapassado] $instanceDescription",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "InstanceDescription": {},
+                    "Select": {
+                        "args": [
+                            "Em Análise",
+                            "Aguarda Revisão",
+                            "Ultrapassado"
+                        ],
+                        "default": "Em Análise"
+                    }
+                },
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 4,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": "Em Análise"
+        },
+        {
+            "id": null,
+            "name": "Responsável",
+            "required": null,
+            "description": "$ref(Colaborador GOV, *)",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Reference": {
+                        "args": {
+                            "query": "*",
+                            "definition": "Colaborador GOV"
+                        }
+                    }
+                },
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [
+                {
+                    "id": null,
+                    "name": "Email Responsável",
+                    "required": null,
+                    "description": "$auto.ref(Responsável).field(Email)",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "AutoRefField": {
+                                "args": {
+                                    "source_field": "Responsável",
+                                    "field_name": "Email"
+                                }
+                            }
+                        },
+                        "extensions": {}
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 6,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Username Responsável",
+                    "required": null,
+                    "description": "$auto.ref(Responsável).field(Username)",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "AutoRefField": {
+                                "args": {
+                                    "source_field": "Responsável",
+                                    "field_name": "Username"
+                                }
+                            }
+                        },
+                        "extensions": {}
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 7,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Sigla",
+                    "required": null,
+                    "description": "$auto.ref(Responsável).field(Sigla)",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "AutoRefField": {
+                                "args": {
+                                    "source_field": "Responsável",
+                                    "field_name": "Sigla"
+                                }
+                            }
+                        },
+                        "extensions": {}
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 8,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                }
+            ],
+            "order": 5,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Threats",
+            "required": null,
+            "description": "$group $style[grelha-titulo-risk]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Group": {}
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "grelha-titulo-risk"
+                        ]
+                    }
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [
+                {
+                    "id": null,
+                    "name": "Threat",
+                    "required": null,
+                    "description": "$ref(Threat, *)",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "Reference": {
+                                "args": {
+                                    "query": "*",
+                                    "definition": "Threat"
+                                }
+                            }
+                        },
+                        "extensions": {}
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": true,
+                    "fields": [],
+                    "order": 10,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                }
+            ],
+            "order": 9,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Origem",
+            "required": null,
+            "description": "$group $style[grelha-titulo-risk]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Group": {}
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "grelha-titulo-risk"
+                        ]
+                    }
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [
+                {
+                    "id": null,
+                    "name": "Tipo Origem",
+                    "required": null,
+                    "description": "$[*Asset,Processo,Recurso Humano]",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "Select": {
+                                "args": [
+                                    "Asset",
+                                    "Processo",
+                                    "Recurso Humano"
+                                ],
+                                "default": "Asset"
+                            }
+                        },
+                        "extensions": {}
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 12,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": "Asset"
+                },
+                {
+                    "id": null,
+                    "name": "Asset Info",
+                    "required": null,
+                    "description": "$group",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "Group": {}
+                        },
+                        "extensions": {}
+                    },
+                    "condition": "Tipo Origem=Asset",
+                    "visibilityCondition": {
+                        "type": "Equal",
+                        "value": [
+                            "Asset"
+                        ],
+                        "matcher": {
+                            "type": "Name",
+                            "name": "Tipo Origem"
+                        }
+                    },
+                    "duplicable": true,
+                    "fields": [
+                        {
+                            "id": null,
+                            "name": "Asset",
+                            "required": null,
+                            "description": "$ref(Asset, *)",
+                            "configuration": {
+                                "description": null,
+                                "keys": {
+                                    "Reference": {
+                                        "args": {
+                                            "query": "*",
+                                            "definition": "Asset"
+                                        }
+                                    }
+                                },
+                                "extensions": {}
+                            },
+                            "condition": null,
+                            "visibilityCondition": null,
+                            "duplicable": false,
+                            "fields": [],
+                            "order": 14,
+                            "restricted": false,
+                            "rootField": false,
+                            "defaultValue": null
+                        },
+                        {
+                            "id": null,
+                            "name": "ID Asset",
+                            "required": null,
+                            "description": "$auto.ref(Asset).field(id)",
+                            "configuration": {
+                                "description": null,
+                                "keys": {
+                                    "AutoRefField": {
+                                        "args": {
+                                            "source_field": "Asset",
+                                            "field_name": "id"
+                                        }
+                                    }
+                                },
+                                "extensions": {}
+                            },
+                            "condition": null,
+                            "visibilityCondition": null,
+                            "duplicable": false,
+                            "fields": [],
+                            "order": 15,
+                            "restricted": false,
+                            "rootField": false,
+                            "defaultValue": null
+                        },
+                        {
+                            "id": null,
+                            "name": "Asset Type Name",
+                            "required": null,
+                            "description": "$auto.ref(Asset).field(Asset Type Name)",
+                            "configuration": {
+                                "description": null,
+                                "keys": {
+                                    "AutoRefField": {
+                                        "args": {
+                                            "source_field": "Asset",
+                                            "field_name": "Asset Type Name"
+                                        }
+                                    }
+                                },
+                                "extensions": {}
+                            },
+                            "condition": null,
+                            "visibilityCondition": null,
+                            "duplicable": false,
+                            "fields": [],
+                            "order": 16,
+                            "restricted": false,
+                            "rootField": false,
+                            "defaultValue": null
+                        },
+                        {
+                            "id": null,
+                            "name": "State",
+                            "required": null,
+                            "description": "$auto.ref(Asset).field(State)",
+                            "configuration": {
+                                "description": null,
+                                "keys": {
+                                    "AutoRefField": {
+                                        "args": {
+                                            "source_field": "Asset",
+                                            "field_name": "State"
+                                        }
+                                    }
+                                },
+                                "extensions": {}
+                            },
+                            "condition": null,
+                            "visibilityCondition": null,
+                            "duplicable": false,
+                            "fields": [],
+                            "order": 17,
+                            "restricted": false,
+                            "rootField": false,
+                            "defaultValue": null
+                        }
+                    ],
+                    "order": 13,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Processo",
+                    "required": null,
+                    "description": "$text",
+                    "configuration": {
+                        "description": null,
+                        "keys": {},
+                        "extensions": {
+                            "$text": {}
+                        }
+                    },
+                    "condition": "Tipo Origem=Processo",
+                    "visibilityCondition": {
+                        "type": "Equal",
+                        "value": [
+                            "Processo"
+                        ],
+                        "matcher": {
+                            "type": "Name",
+                            "name": "Tipo Origem"
+                        }
+                    },
+                    "duplicable": true,
+                    "fields": [],
+                    "order": 18,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Descrição Recurso Humano",
+                    "required": null,
+                    "description": "$text",
+                    "configuration": {
+                        "description": null,
+                        "keys": {},
+                        "extensions": {
+                            "$text": {}
+                        }
+                    },
+                    "condition": "Tipo Origem=Recurso Humano",
+                    "visibilityCondition": {
+                        "type": "Equal",
+                        "value": [
+                            "Recurso Humano"
+                        ],
+                        "matcher": {
+                            "type": "Name",
+                            "name": "Tipo Origem"
+                        }
+                    },
+                    "duplicable": true,
+                    "fields": [],
+                    "order": 19,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                }
+            ],
+            "order": 11,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Controls",
+            "required": null,
+            "description": "$group $style[grelha-titulo-risk]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Group": {}
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "grelha-titulo-risk"
+                        ]
+                    }
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [
+                {
+                    "id": null,
+                    "name": "Control",
+                    "required": null,
+                    "description": "$ref(Control,*) $groupEdit $editForGroup(System)",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "Reference": {
+                                "args": {
+                                    "query": "*",
+                                    "definition": "Control"
+                                }
+                            },
+                            "EditForGroup": {
+                                "args": [
+                                    "System"
+                                ]
+                            }
+                        },
+                        "extensions": {
+                            "$groupEdit": {}
+                        }
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": true,
+                    "fields": [
+                        {
+                            "id": null,
+                            "name": "Nome Controlo",
+                            "required": null,
+                            "description": "$auto.ref(Control).field(Nome) $text",
+                            "configuration": {
+                                "description": null,
+                                "keys": {
+                                    "AutoRefField": {
+                                        "args": {
+                                            "source_field": "Control",
+                                            "field_name": "Nome"
+                                        }
+                                    }
+                                },
+                                "extensions": {
+                                    "$text": {}
+                                }
+                            },
+                            "condition": null,
+                            "visibilityCondition": null,
+                            "duplicable": false,
+                            "fields": [],
+                            "order": 22,
+                            "restricted": false,
+                            "rootField": false,
+                            "defaultValue": null
+                        },
+                        {
+                            "id": null,
+                            "name": "Id Control",
+                            "required": null,
+                            "description": "$auto.ref(Control).field(id)",
+                            "configuration": {
+                                "description": null,
+                                "keys": {
+                                    "AutoRefField": {
+                                        "args": {
+                                            "source_field": "Control",
+                                            "field_name": "id"
+                                        }
+                                    }
+                                },
+                                "extensions": {}
+                            },
+                            "condition": null,
+                            "visibilityCondition": null,
+                            "duplicable": false,
+                            "fields": [],
+                            "order": 23,
+                            "restricted": false,
+                            "rootField": false,
+                            "defaultValue": null
+                        },
+                        {
+                            "id": null,
+                            "name": "Código",
+                            "required": null,
+                            "description": "$auto.ref(Control).field(Código)",
+                            "configuration": {
+                                "description": null,
+                                "keys": {
+                                    "AutoRefField": {
+                                        "args": {
+                                            "source_field": "Control",
+                                            "field_name": "Código"
+                                        }
+                                    }
+                                },
+                                "extensions": {}
+                            },
+                            "condition": null,
+                            "visibilityCondition": null,
+                            "duplicable": false,
+                            "fields": [],
+                            "order": 24,
+                            "restricted": false,
+                            "rootField": false,
+                            "defaultValue": null
+                        },
+                        {
+                            "id": null,
+                            "name": "Goal Nível 1",
+                            "required": null,
+                            "description": "$auto.ref(Control).field(Nome Goal Nível 1)",
+                            "configuration": {
+                                "description": null,
+                                "keys": {
+                                    "AutoRefField": {
+                                        "args": {
+                                            "source_field": "Control",
+                                            "field_name": "Nome Goal Nível 1"
+                                        }
+                                    }
+                                },
+                                "extensions": {}
+                            },
+                            "condition": null,
+                            "visibilityCondition": null,
+                            "duplicable": false,
+                            "fields": [
+                                {
+                                    "id": null,
+                                    "name": "Id Goal Nível 1",
+                                    "required": null,
+                                    "description": "$auto.ref(Control).field(Id Goal Nível 1)",
+                                    "configuration": {
+                                        "description": null,
+                                        "keys": {
+                                            "AutoRefField": {
+                                                "args": {
+                                                    "source_field": "Control",
+                                                    "field_name": "Id Goal Nível 1"
+                                                }
+                                            }
+                                        },
+                                        "extensions": {}
+                                    },
+                                    "condition": null,
+                                    "visibilityCondition": null,
+                                    "duplicable": false,
+                                    "fields": [],
+                                    "order": 26,
+                                    "restricted": false,
+                                    "rootField": false,
+                                    "defaultValue": null
+                                }
+                            ],
+                            "order": 25,
+                            "restricted": false,
+                            "rootField": false,
+                            "defaultValue": null
+                        },
+                        {
+                            "id": null,
+                            "name": "Goal Nível 2",
+                            "required": null,
+                            "description": "$auto.ref(Control).field(Nome Goal Nível 2)",
+                            "configuration": {
+                                "description": null,
+                                "keys": {
+                                    "AutoRefField": {
+                                        "args": {
+                                            "source_field": "Control",
+                                            "field_name": "Nome Goal Nível 2"
+                                        }
+                                    }
+                                },
+                                "extensions": {}
+                            },
+                            "condition": null,
+                            "visibilityCondition": null,
+                            "duplicable": false,
+                            "fields": [
+                                {
+                                    "id": null,
+                                    "name": "Id Goal Nível 2",
+                                    "required": null,
+                                    "description": "$auto.ref(Control).field(Id Goal Nível 2)",
+                                    "configuration": {
+                                        "description": null,
+                                        "keys": {
+                                            "AutoRefField": {
+                                                "args": {
+                                                    "source_field": "Control",
+                                                    "field_name": "Id Goal Nível 2"
+                                                }
+                                            }
+                                        },
+                                        "extensions": {}
+                                    },
+                                    "condition": null,
+                                    "visibilityCondition": null,
+                                    "duplicable": false,
+                                    "fields": [],
+                                    "order": 28,
+                                    "restricted": false,
+                                    "rootField": false,
+                                    "defaultValue": null
+                                }
+                            ],
+                            "order": 27,
+                            "restricted": false,
+                            "rootField": false,
+                            "defaultValue": null
+                        },
+                        {
+                            "id": null,
+                            "name": "Goal Nível 3",
+                            "required": null,
+                            "description": "$auto.ref(Control).field(Nome Goal Nível 3)",
+                            "configuration": {
+                                "description": null,
+                                "keys": {
+                                    "AutoRefField": {
+                                        "args": {
+                                            "source_field": "Control",
+                                            "field_name": "Nome Goal Nível 3"
+                                        }
+                                    }
+                                },
+                                "extensions": {}
+                            },
+                            "condition": null,
+                            "visibilityCondition": null,
+                            "duplicable": false,
+                            "fields": [
+                                {
+                                    "id": null,
+                                    "name": "Id Goal Nível 3",
+                                    "required": null,
+                                    "description": "$auto.ref(Control).field(Id Goal Nível 3)",
+                                    "configuration": {
+                                        "description": null,
+                                        "keys": {
+                                            "AutoRefField": {
+                                                "args": {
+                                                    "source_field": "Control",
+                                                    "field_name": "Id Goal Nível 3"
+                                                }
+                                            }
+                                        },
+                                        "extensions": {}
+                                    },
+                                    "condition": null,
+                                    "visibilityCondition": null,
+                                    "duplicable": false,
+                                    "fields": [],
+                                    "order": 30,
+                                    "restricted": false,
+                                    "rootField": false,
+                                    "defaultValue": null
+                                }
+                            ],
+                            "order": 29,
+                            "restricted": false,
+                            "rootField": false,
+                            "defaultValue": null
+                        },
+                        {
+                            "id": null,
+                            "name": "Assessment Tool Control",
+                            "required": null,
+                            "description": "$auto.ref(Control).field(Assessment Tool)",
+                            "configuration": {
+                                "description": null,
+                                "keys": {
+                                    "AutoRefField": {
+                                        "args": {
+                                            "source_field": "Control",
+                                            "field_name": "Assessment Tool"
+                                        }
+                                    }
+                                },
+                                "extensions": {}
+                            },
+                            "condition": null,
+                            "visibilityCondition": null,
+                            "duplicable": false,
+                            "fields": [],
+                            "order": 31,
+                            "restricted": false,
+                            "rootField": false,
+                            "defaultValue": null
+                        }
+                    ],
+                    "order": 21,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                }
+            ],
+            "order": 20,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Vulnerabilities",
+            "required": null,
+            "description": "$group $style[grelha-titulo-risk]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Group": {}
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "grelha-titulo-risk"
+                        ]
+                    }
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [
+                {
+                    "id": null,
+                    "name": "Associated Vulnerabilities",
+                    "required": null,
+                    "description": "$references(Vulnerability, Risk)",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "References": {
+                                "args": {
+                                    "field": "Risk",
+                                    "definition": "Vulnerability"
+                                }
+                            }
+                        },
+                        "extensions": {}
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 33,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                }
+            ],
+            "order": 32,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Histórico Análises",
+            "required": null,
+            "description": "$group $style[grelha-titulo-risk] $expanded",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Group": {},
+                    "Expanded": {
+                        "args": {}
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "grelha-titulo-risk"
+                        ]
+                    }
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [
+                {
+                    "id": null,
+                    "name": "Conclusão Última Análise",
+                    "required": null,
+                    "description": "$[Ultrapassado,Requer Extensão,N.A] $editForGroup(System) $help[Conclusão da última review feita - só existirá se a última análise for efetivamente uma review, e não uma primeira análise.] Conclusão da última review feita - só existirá se a última análise for efetivamente uma review, e não uma primeira análise.",
+                    "configuration": {
+                        "description": "Conclusão da última review feita - só existirá se a última análise for efetivamente uma review, e não uma primeira análise.",
+                        "keys": {
+                            "Select": {
+                                "args": [
+                                    "Ultrapassado",
+                                    "Requer Extensão",
+                                    "N.A"
+                                ],
+                                "default": null
+                            },
+                            "EditForGroup": {
+                                "args": [
+                                    "System"
+                                ]
+                            },
+                            "Help": {
+                                "args": [
+                                    "Conclusão da última review feita - só existirá se a última análise for efetivamente uma review",
+                                    "e não uma primeira análise."
+                                ]
+                            }
+                        },
+                        "extensions": {}
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 35,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Data Última Análise",
+                    "required": null,
+                    "description": "$datetime $help[Data em que a última revisão/análise foi feita.] $editForGroup(System)",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "DateTime": {},
+                            "Help": {
+                                "args": [
+                                    "Data em que a última revisão/análise foi feita."
+                                ]
+                            },
+                            "EditForGroup": {
+                                "args": [
+                                    "System"
+                                ]
+                            }
+                        },
+                        "extensions": {}
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 36,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Data Próxima Análise",
+                    "required": null,
+                    "description": "$date $editForGroup(System)",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "Date": {},
+                            "EditForGroup": {
+                                "args": [
+                                    "System"
+                                ]
+                            }
+                        },
+                        "extensions": {}
+                    },
+                    "condition": "Estado!Ultrapassado",
+                    "visibilityCondition": {
+                        "type": "NotEqual",
+                        "value": [
+                            "Ultrapassado"
+                        ],
+                        "matcher": {
+                            "type": "Name",
+                            "name": "Estado"
+                        }
+                    },
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 37,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Data Limite Implementação",
+                    "required": null,
+                    "description": "Data limite para implementação se foi elaborado um plano de mitigação. $date $help[Data limite para implementação se foi elaborado um plano de mitigação.] $editForGroup(System)",
+                    "configuration": {
+                        "description": "Data limite para implementação se foi elaborado um plano de mitigação.",
+                        "keys": {
+                            "Date": {},
+                            "Help": {
+                                "args": [
+                                    "Data limite para implementação se foi elaborado um plano de mitigação."
+                                ]
+                            },
+                            "EditForGroup": {
+                                "args": [
+                                    "System"
+                                ]
+                            }
+                        },
+                        "extensions": {}
+                    },
+                    "condition": "Estado!Ultrapassado",
+                    "visibilityCondition": {
+                        "type": "NotEqual",
+                        "value": [
+                            "Ultrapassado"
+                        ],
+                        "matcher": {
+                            "type": "Name",
+                            "name": "Estado"
+                        }
+                    },
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 38,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                }
+            ],
+            "order": 34,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Risk Analysis",
+            "required": null,
+            "description": "$references(Risk Analysis, Risk)",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "References": {
+                        "args": {
+                            "field": "Risk",
+                            "definition": "Risk Analysis"
+                        }
+                    }
+                },
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 39,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Internal",
+            "required": null,
+            "description": "$style[hide] $group",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Group": {}
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "hide"
+                        ]
+                    }
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [
+                {
+                    "id": null,
+                    "name": "Review Update",
+                    "required": null,
+                    "description": "$style[hide] $datetime",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "DateTime": {}
+                        },
+                        "extensions": {
+                            "$style": {
+                                "args": [
+                                    "hide"
+                                ]
+                            }
+                        }
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 41,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                }
+            ],
+            "order": 40,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        }
+    ],
+    "version": null
+}

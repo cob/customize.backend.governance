@@ -1,711 +1,1852 @@
 {
-  "id": null,
-  "name": "Control",
-  "description": "Governance Element",
-  "duplicable": null,
-  "state": "enabled",
-  "fieldDefinitions": [
-    {
-      "id": null,
-      "name": "Dados do Control",
-      "required": null,
-      "description": "$group $style[grelha-titulo]",
-      "condition": null,
-      "duplicable": false,
-      "fields": [],
-      "order": 0,
-      "restricted": false,
-      "rootField": true,
-      "defaultValue": null
-    },
-    {
-      "id": null,
-      "name": "Nome",
-      "required": "mandatory",
-      "description": "$instanceLabel $style[nome]",
-      "condition": null,
-      "duplicable": false,
-      "fields": [],
-      "order": 1,
-      "restricted": false,
-      "rootField": true,
-      "defaultValue": null
-    },
-    {
-      "id": null,
-      "name": "Descrição",
-      "required": null,
-      "description": "$markdown",
-      "condition": null,
-      "duplicable": false,
-      "fields": [],
-      "order": 2,
-      "restricted": false,
-      "rootField": true,
-      "defaultValue": null
-    },
-    {
-      "id": null,
-      "name": "Goal Nível 3",
-      "required": "mandatory",
-      "description": "$ref(Goal,nível:3) $groupEdit  $style[nome]",
-      "condition": null,
-      "duplicable": false,
-      "fields": [
+    "id": null,
+    "name": "Control",
+    "description": "@GOV Governance Element",
+    "duplicable": null,
+    "state": "enabled",
+    "fieldDefinitions": [
         {
-          "id": null,
-          "name": "Âmbito",
-          "required": null,
-          "description": "$auto.ref(Goal Nível 3).field(Âmbito) $instanceDescription",
-          "condition": null,
-          "duplicable": false,
-          "fields": [],
-          "order": 4,
-          "rootField": false,
-          "restricted": false,
-          "defaultValue": null
-        },
-        {
-          "id": null,
-          "name": "Nome Goal Nível 3",
-          "required": null,
-          "description": "$auto.ref(Goal Nível 3).field(Nome)",
-          "condition": null,
-          "duplicable": false,
-          "fields": [
-            {
-              "id": null,
-              "name": "Id Goal Nível 3",
-              "required": null,
-              "description": "$auto.ref(Goal Nível 3).field(id)",
-              "condition": null,
-              "duplicable": false,
-              "fields": [],
-              "order": 6,
-              "restricted": false,
-              "rootField": false,
-              "defaultValue": null
+            "id": null,
+            "name": "Dados do Control",
+            "required": null,
+            "description": "$group $style[grelha-titulo-controlo]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Group": {}
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "grelha-titulo-controlo"
+                        ]
+                    }
+                }
             },
-            {
-              "id": null,
-              "name": "Peso Goal  Nível 3",
-              "required": null,
-              "description": "$auto.ref(Goal Nível 3).field(Peso)",
-              "condition": null,
-              "duplicable": false,
-              "fields": [],
-              "order": 7,
-              "restricted": false,
-              "rootField": false,
-              "defaultValue": null
-            }
-          ],
-          "order": 5,
-          "restricted": false,
-          "rootField": false,
-          "defaultValue": null
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 0,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
         },
         {
-          "id": null,
-          "name": "Nome Goal Nível 2",
-          "required": null,
-          "description": "$auto.ref(Goal Nível 3).field(Nome Goal Nível 2) ",
-          "condition": null,
-          "duplicable": false,
-          "fields": [
-            {
-              "id": null,
-              "name": "Id Goal Nível 2",
-              "required": null,
-              "description": "$auto.ref(Goal Nível 3).field(Nível 2)",
-              "condition": null,
-              "duplicable": false,
-              "fields": [],
-              "order": 9,
-              "restricted": false,
-              "rootField": false,
-              "defaultValue": null
+            "id": null,
+            "name": "Nome",
+            "required": "mandatory",
+            "description": "$instanceLabel $style[nome]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "InstanceLabel": {}
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "nome"
+                        ]
+                    }
+                }
             },
-            {
-              "id": null,
-              "name": "Peso Goal Nível 2",
-              "required": null,
-              "description": "$auto.ref(Goal Nível 3).field(Peso Goal Nível 2)",
-              "condition": null,
-              "duplicable": false,
-              "fields": [],
-              "order": 10,
-              "restricted": false,
-              "rootField": false,
-              "defaultValue": null
-            }
-          ],
-          "order": 8,
-          "restricted": false,
-          "rootField": false,
-          "defaultValue": null
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 1,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
         },
         {
-          "id": null,
-          "name": "Nome Goal Nível 1",
-          "required": null,
-          "description": "$auto.ref(Goal Nível 3).field(Nome Goal Nível 1) ",
-          "condition": null,
-          "duplicable": false,
-          "fields": [
-            {
-              "id": null,
-              "name": "Id Goal Nível 1",
-              "required": null,
-              "description": "$auto.ref(Goal Nível 3).field(Id Goal Nível 1)",
-              "condition": null,
-              "duplicable": false,
-              "fields": [],
-              "order": 12,
-              "restricted": false,
-              "rootField": false,
-              "defaultValue": null
+            "id": null,
+            "name": "Descrição",
+            "required": null,
+            "description": "$markdown",
+            "configuration": {
+                "description": null,
+                "keys": {},
+                "extensions": {
+                    "$markdown": {}
+                }
             },
-            {
-              "id": null,
-              "name": "Peso Goal Nível 1",
-              "required": null,
-              "description": "$auto.ref(Goal Nível 3).field(Peso Goal Nível 1)",
-              "condition": null,
-              "duplicable": false,
-              "fields": [],
-              "order": 13,
-              "restricted": false,
-              "rootField": false,
-              "defaultValue": null
-            }
-          ],
-          "order": 11,
-          "restricted": false,
-          "rootField": false,
-          "defaultValue": null
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 2,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
         },
         {
-          "id": null,
-          "name": "GOALS",
-          "required": null,
-          "description": "$link $auto.text(Id Goal Nível 1,Id Goal Nível 2,Id Goal Nível 3).join('/recordm/index.html#/definitions/__GOALS_DEFINITION_ID__/q=id:',Id Goal Nível 1,' OR id:',Id Goal Nível 2,' OR id:',Id Goal Nível 3) $instanceDescription",
-          "condition": null,
-          "duplicable": false,
-          "fields": [],
-          "order": 14,
-          "restricted": false,
-          "rootField": false,
-          "defaultValue": null
-        }
-      ],
-      "order": 3,
-      "restricted": false,
-      "rootField": true,
-      "defaultValue": null
-    },
-    {
-      "id": null,
-      "name": "Peso",
-      "required": "mandatory",
-      "description": "$number $groupEdit Impacto deste Control no Goal - 1: menor | 20:  maior <br/><small>o zero será para casos onde queremos criar FINDINGS mas não queremos afectar o resultado final, seja para iniciar processos ou para efeitos de afinar controlos </small> ",
-      "condition": null,
-      "duplicable": false,
-      "fields": [],
-      "order": 15,
-      "restricted": false,
-      "rootField": true,
-      "defaultValue": null
-    },
-    {
-      "id": null,
-      "name": "Copiar Control",
-      "required": null,
-      "description": "$create(__CONTROLS_DEFINITION_ID__,Nome=Nome,Descrição=Descrição,Goal Nível 3=Goal Nível 3,Peso=Peso,Periodicidade=Periodicidade,Código=Código,Assessment Tool=Assessment Tool,Definição=Definição,Filtro=Filtro,Condição de sucesso=Condição de sucesso,Comando=Comando,Tipo de Assessment=Tipo de Assessment,Valor alvo=Valor alvo,Acção=Acção,Responsável=Responsável,Quando considerar inconformidade=Quando considerar inconformidade,Quantidade repetições=Quantidade repetições,Acção Complementar=Acção Complementar,Email Destino=Email Destino,Telemóvel=Telemóvel,Texto=Texto,Tolerância=Tolerância,Prazo=Prazo,Estados a considerar=Estados a considerar)",
-      "condition": null,
-      "duplicable": false,
-      "fields": [],
-      "order": 16,
-      "restricted": false,
-      "rootField": true,
-      "defaultValue": null
-    },
-    {
-      "id": null,
-      "name": "Dado para Assessment",
-      "required": null,
-      "description": "$group $style[grelha-titulo]",
-      "condition": null,
-      "duplicable": false,
-      "fields": [],
-      "order": 17,
-      "restricted": false,
-      "rootField": true,
-      "defaultValue": null
-    },
-    {
-      "id": null,
-      "name": "Periodicidade",
-      "required": "mandatory",
-      "description": "$groupEdit $[Off,15m,Diária,Semanal,Mensal] $instanceDescription $help[<table>   <tbody><tr><td>Off</td><td> -> </td><td>Control não é avaliado</td></tr>    <tr><td>15m</td><td> -> </td><td>A cada quarto de hora</td></tr> <tr><td>Diária</td><td> -> </td><td>Às 08:30 de cada dia</td></tr>    <tr><td>Semanal</td><td> -> </td><td>Todas as Segundas às 08:30</td></tr>    <tr><td>Mensal</td><td> -> </td><td>Primeiro dia de cada mês às 8:30</td></tr>  </tbody></table>]",
-      "condition": null,
-      "duplicable": false,
-      "fields": [],
-      "order": 18,
-      "restricted": false,
-      "rootField": true,
-      "defaultValue": null
-    },
-    {
-      "id": null,
-      "name": "Código",
-      "required": "mandatory",
-      "description": "<strong>Código de Inconformidade</strong> usado para criação de Findings $style[larger]",
-      "condition": null,
-      "duplicable": false,
-      "fields": [],
-      "order": 19,
-      "restricted": false,
-      "rootField": true,
-      "defaultValue": null
-    },
-    {
-      "id": null,
-      "name": "Assessment Tool",
-      "required": "mandatory",
-      "description": "$[RecordM,DeviceM,Manual] $expanded $groupEdit ",
-      "condition": null,
-      "duplicable": false,
-      "fields": [
-        {
-          "id": null,
-          "name": "Definição",
-          "required": "mandatory",
-          "description": "Nome da Definição sobre a qual os assessments são executados",
-          "condition": "=RecordM",
-          "duplicable": false,
-          "fields": [],
-          "order": 21,
-          "restricted": false,
-          "rootField": false,
-          "defaultValue": null
-        },
-        {
-          "id": null,
-          "name": "Filtro",
-          "required": "mandatory",
-          "description": "$groupEdit $text Filtro para obter elementos a avaliar",
-          "condition": "=RecordM",
-          "duplicable": false,
-          "fields": [],
-          "order": 22,
-          "restricted": false,
-          "rootField": false,
-          "defaultValue": null
-        },
-        {
-          "id": null,
-          "name": "Condição de sucesso",
-          "required": "mandatory",
-          "description": "$text $style[larger] Condição que determina se cada elemento está ou não de acordo com o pretendido",
-          "condition": "=RecordM",
-          "duplicable": false,
-          "fields": [],
-          "order": 23,
-          "restricted": false,
-          "rootField": false,
-          "defaultValue": null
-        },
-        {
-          "id": null,
-          "name": "Filtro",
-          "required": null,
-          "description": "$groupEdit $text Filtro para obter elementos a avaliar",
-          "condition": "=DeviceM",
-          "duplicable": false,
-          "fields": [],
-          "order": 24,
-          "restricted": false,
-          "rootField": false,
-          "defaultValue": null
-        },
-        {
-          "id": null,
-          "name": "Comando",
-          "required": null,
-          "description": "$text $style[larger]",
-          "condition": "=DeviceM",
-          "duplicable": false,
-          "fields": [],
-          "order": 25,
-          "restricted": false,
-          "rootField": false,
-          "defaultValue": null
-        },
-        {
-          "id": null,
-          "name": "Condição de sucesso",
-          "required": null,
-          "description": "$text $style[larger] Condição que determina se cada elemento está ou não de acordo com o pretendido",
-          "condition": "=DeviceM",
-          "duplicable": false,
-          "fields": [],
-          "order": 26,
-          "restricted": false,
-          "rootField": false,
-          "defaultValue": null
-        },
-        {
-          "id": null,
-          "name": "Definição",
-          "required": null,
-          "description": "Nome da Definição das entidades associadas aos CPEs",
-          "condition": "=DeviceM",
-          "duplicable": false,
-          "fields": [],
-          "order": 27,
-          "restricted": false,
-          "rootField": false,
-          "defaultValue": null
-        },
-        {
-          "id": null,
-          "name": "Tipo de Assessment",
-          "required": null,
-          "description": "$[Atingimento de valor,Avaliação 1 a 10,OK NOK]",
-          "condition": "=Manual",
-          "duplicable": false,
-          "fields": [
-            {
-              "id": null,
-              "name": "Valor alvo",
-              "required": null,
-              "description": "$number",
-              "condition": null,
-              "duplicable": false,
-              "fields": [],
-              "order": 29,
-              "restricted": false,
-              "rootField": false,
-              "defaultValue": null
-            }
-          ],
-          "order": 28,
-          "restricted": false,
-          "rootField": false,
-          "defaultValue": null
-        }
-      ],
-      "order": 20,
-      "restricted": false,
-      "rootField": true,
-      "defaultValue": null
-    },
-    {
-      "id": null,
-      "name": "Vista de Assessments no Governance",
-      "required": null,
-      "description": "$help[Nome de uma vista a usar no link de pesquisa de Assessments de um Control no dashboard do Governance] $groupEdit",
-      "condition": null,
-      "duplicable": false,
-      "fields": [],
-      "order": 30,
-      "restricted": false,
-      "rootField": true,
-      "defaultValue": null
-    },
-    {
-      "id": null,
-      "name": "Histórico das Avaliações Feitas (ASSESSMENTS)",
-      "required": null,
-      "description": "$link $auto.text(id).join('/recordm/index.html#/definitions/__ASSESSSMENTS_DEFINITION_ID__/q=id_control:',id) $instanceDescription",
-      "condition": null,
-      "duplicable": false,
-      "fields": [],
-      "order": 31,
-      "restricted": false,
-      "rootField": true,
-      "defaultValue": null
-    },
-    {
-      "id": null,
-      "name": "Dados para tratamento de Findings",
-      "required": null,
-      "description": "$group $style[grelha-titulo]",
-      "condition": null,
-      "duplicable": false,
-      "fields": [],
-      "order": 32,
-      "restricted": false,
-      "rootField": true,
-      "defaultValue": null
-    },
-    {
-      "id": null,
-      "name": "Acção",
-      "required": "mandatory",
-      "description": "$[Apenas Contabilizar,Contabilizar e Reportar Inconformidades] $groupEdit  $expanded <b>Contabilização</b> é feita com o registo de um *Assessment* por dia <br> <b>Inconformidades</b> são reportados com *Findings*",
-      "condition": null,
-      "duplicable": false,
-      "fields": [
-        {
-          "id": null,
-          "name": "Responsável",
-          "required": null,
-          "description": "$extRef(userm,/userm/user/search?q={{this}})  $groupEdit Responsável inicial por resolver as inconformidades encontradas",
-          "condition": "=Contabilizar e Reportar Inconformidades",
-          "duplicable": false,
-          "fields": [
-            {
-              "id": null,
-              "name": "Nome Responsável",
-              "required": null,
-              "description": "$auto.ref(Responsável).field(name) ",
-              "condition": null,
-              "duplicable": false,
-              "fields": [],
-              "order": 35,
-              "restricted": false,
-              "rootField": false,
-              "defaultValue": null
+            "id": null,
+            "name": "Goal Nível 3",
+            "required": "mandatory",
+            "description": "$ref(Politica v2,*) $groupEdit $style[nome]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Reference": {
+                        "args": {
+                            "query": "*",
+                            "definition": "Politica v2"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "nome"
+                        ]
+                    },
+                    "$groupEdit": {}
+                }
             },
-            {
-              "id": null,
-              "name": "Username Responsável",
-              "required": null,
-              "description": "$auto.ref(Responsável).field(username)",
-              "condition": null,
-              "duplicable": false,
-              "fields": [],
-              "order": 36,
-              "restricted": false,
-              "rootField": false,
-              "defaultValue": null
-            },
-            {
-              "id": null,
-              "name": "Email Responsável",
-              "required": null,
-              "description": "$auto.ref(Responsável).field(email)",
-              "condition": null,
-              "duplicable": false,
-              "fields": [],
-              "order": 37,
-              "restricted": false,
-              "rootField": false,
-              "defaultValue": null
-            }
-          ],
-          "order": 34,
-          "restricted": false,
-          "rootField": false,
-          "defaultValue": null
-        },
-        {
-          "id": null,
-          "name": "Quando considerar inconformidade",
-          "required": "mandatory",
-          "description": "$[Logo que é detectada,Após repetição da detecção] $groupEdit $expanded",
-          "condition": "=Contabilizar e Reportar Inconformidades",
-          "duplicable": false,
-          "fields": [
-            {
-              "id": null,
-              "name": "Quantidade repetições",
-              "required": "mandatory",
-              "description": "$number $groupEdit  Número de detecções seguidas antes de considerar como inconformidade (a acontecer com a periodicidade deste *Control*)",
-              "condition": "=Após repetição da detecção",
-              "duplicable": false,
-              "fields": [],
-              "order": 39,
-              "restricted": false,
-              "rootField": false,
-              "defaultValue": null
-            }
-          ],
-          "order": 38,
-          "restricted": false,
-          "rootField": false,
-          "defaultValue": null
-        },
-        {
-          "id": null,
-          "name": "Acção Complementar",
-          "required": "mandatory",
-          "description": "$[Nenhuma,Enviar Email Resumo alterações,Enviar SMS qd há novas inconformidades] $groupEdit $expanded",
-          "condition": "=Contabilizar e Reportar Inconformidades",
-          "duplicable": true,
-          "fields": [
-            {
-              "id": null,
-              "name": "Email Destino",
-              "required": null,
-              "description": "$groupEdit Pode ser lista de email separada por **,**",
-              "condition": "=Enviar Email Resumo alterações",
-              "duplicable": false,
-              "fields": [],
-              "order": 42,
-              "restricted": false,
-              "rootField": false,
-              "defaultValue": null
-            },
-            {
-              "id": null,
-              "name": "Email Destino BCC",
-              "required": null,
-              "description": "$groupEdit Pode ser lista de email separada por **,**",
-              "condition": "=Enviar Email Resumo alterações",
-              "duplicable": false,
-              "fields": [],
-              "order": 43,
-              "restricted": false,
-              "rootField": false,
-              "defaultValue": null
-            },
-            {
-              "id": null,
-              "name": "Telemóvel",
-              "required": "mandatory",
-              "description": "$groupEdit **NOTA:** Usar número internacional (ou seja, em Portugal acrescentar o +351)",
-              "condition": "=Enviar SMS qd há novas inconformidades",
-              "duplicable": false,
-              "fields": [],
-              "order": 44,
-              "restricted": false,
-              "rootField": false,
-              "defaultValue": null
-            },
-            {
-              "id": null,
-              "name": "Texto",
-              "required": "mandatory",
-              "description": "$text $groupEdit ",
-              "condition": "=Enviar Email Resumo alterações,Enviar SMS qd há novas inconformidades",
-              "duplicable": false,
-              "fields": [],
-              "order": 45,
-              "restricted": false,
-              "rootField": false,
-              "defaultValue": null
-            },
-            {
-              "id": null,
-              "name": "Tolerância",
-              "required": "mandatory",
-              "description": "$[Inclusão imediata após criação,Prazo após criação] Prazo de tolerância a aguardar antes de incluir uma inconformidade (ideal para criar sequências de alarmes e escalar de avisos)",
-              "condition": "=Enviar Email Resumo alterações,Enviar SMS qd há novas inconformidades",
-              "duplicable": false,
-              "fields": [
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [
                 {
-                  "id": null,
-                  "name": "Prazo",
-                  "required": "mandatory",
-                  "description": "$number Quantidade de periodos de 15m após identificação da inconformidade (ex: 6 => 1h30m)",
-                  "condition": "=Prazo após criação",
-                  "duplicable": false,
-                  "fields": [],
-                  "order": 47,
-                  "restricted": false,
-                  "rootField": false,
-                  "defaultValue": null
+                    "id": null,
+                    "name": "Nome Goal Nível 3",
+                    "required": null,
+                    "description": "$auto.ref(Goal Nível 3).field(Nome)",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "AutoRefField": {
+                                "args": {
+                                    "source_field": "Goal Nível 3",
+                                    "field_name": "Nome"
+                                }
+                            }
+                        },
+                        "extensions": {}
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [
+                        {
+                            "id": null,
+                            "name": "Id Goal Nível 3",
+                            "required": null,
+                            "description": "$auto.ref(Goal Nível 3).field(id)",
+                            "configuration": {
+                                "description": null,
+                                "keys": {
+                                    "AutoRefField": {
+                                        "args": {
+                                            "source_field": "Goal Nível 3",
+                                            "field_name": "id"
+                                        }
+                                    }
+                                },
+                                "extensions": {}
+                            },
+                            "condition": null,
+                            "visibilityCondition": null,
+                            "duplicable": false,
+                            "fields": [],
+                            "order": 5,
+                            "restricted": false,
+                            "rootField": false,
+                            "defaultValue": null
+                        },
+                        {
+                            "id": null,
+                            "name": "Peso Goal  Nível 3",
+                            "required": null,
+                            "description": "$auto.ref(Goal Nível 3).field(Peso)",
+                            "configuration": {
+                                "description": null,
+                                "keys": {
+                                    "AutoRefField": {
+                                        "args": {
+                                            "source_field": "Goal Nível 3",
+                                            "field_name": "Peso"
+                                        }
+                                    }
+                                },
+                                "extensions": {}
+                            },
+                            "condition": null,
+                            "visibilityCondition": null,
+                            "duplicable": false,
+                            "fields": [],
+                            "order": 6,
+                            "restricted": false,
+                            "rootField": false,
+                            "defaultValue": null
+                        }
+                    ],
+                    "order": 4,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
                 },
                 {
-                  "id": null,
-                  "name": "Estados a considerar",
-                  "required": "mandatory",
-                  "description": "$[*Por Tratar e Em Resolução,Por Tratar] Ou seja apenas incluir inconformidades cujo estado ainda esteja num dos indicados",
-                  "condition": "=Prazo após criação",
-                  "duplicable": false,
-                  "fields": [],
-                  "order": 48,
-                  "restricted": false,
-                  "rootField": false,
-                  "defaultValue": "Por Tratar e Em Resolução"
+                    "id": null,
+                    "name": "Nome Goal Nível 2",
+                    "required": null,
+                    "description": "$auto.ref(Goal Nível 3).field(Nome Nível 2) ",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "AutoRefField": {
+                                "args": {
+                                    "source_field": "Goal Nível 3",
+                                    "field_name": "Nome Nível 2"
+                                }
+                            }
+                        },
+                        "extensions": {}
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [
+                        {
+                            "id": null,
+                            "name": "Id Goal Nível 2",
+                            "required": null,
+                            "description": "$auto.ref(Goal Nível 3).field(Nível 2)",
+                            "configuration": {
+                                "description": null,
+                                "keys": {
+                                    "AutoRefField": {
+                                        "args": {
+                                            "source_field": "Goal Nível 3",
+                                            "field_name": "Nível 2"
+                                        }
+                                    }
+                                },
+                                "extensions": {}
+                            },
+                            "condition": null,
+                            "visibilityCondition": null,
+                            "duplicable": false,
+                            "fields": [],
+                            "order": 8,
+                            "restricted": false,
+                            "rootField": false,
+                            "defaultValue": null
+                        },
+                        {
+                            "id": null,
+                            "name": "Peso Goal Nível 2",
+                            "required": null,
+                            "description": "$auto.ref(Goal Nível 3).field(Peso Nível 2)",
+                            "configuration": {
+                                "description": null,
+                                "keys": {
+                                    "AutoRefField": {
+                                        "args": {
+                                            "source_field": "Goal Nível 3",
+                                            "field_name": "Peso Nível 2"
+                                        }
+                                    }
+                                },
+                                "extensions": {}
+                            },
+                            "condition": null,
+                            "visibilityCondition": null,
+                            "duplicable": false,
+                            "fields": [],
+                            "order": 9,
+                            "restricted": false,
+                            "rootField": false,
+                            "defaultValue": null
+                        }
+                    ],
+                    "order": 7,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Nome Goal Nível 1",
+                    "required": null,
+                    "description": "$auto.ref(Goal Nível 3).field(Nome Nível 1) ",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "AutoRefField": {
+                                "args": {
+                                    "source_field": "Goal Nível 3",
+                                    "field_name": "Nome Nível 1"
+                                }
+                            }
+                        },
+                        "extensions": {}
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [
+                        {
+                            "id": null,
+                            "name": "Id Goal Nível 1",
+                            "required": null,
+                            "description": "$auto.ref(Goal Nível 3).field(Nível 1)",
+                            "configuration": {
+                                "description": null,
+                                "keys": {
+                                    "AutoRefField": {
+                                        "args": {
+                                            "source_field": "Goal Nível 3",
+                                            "field_name": "Nível 1"
+                                        }
+                                    }
+                                },
+                                "extensions": {}
+                            },
+                            "condition": null,
+                            "visibilityCondition": null,
+                            "duplicable": false,
+                            "fields": [],
+                            "order": 11,
+                            "restricted": false,
+                            "rootField": false,
+                            "defaultValue": null
+                        },
+                        {
+                            "id": null,
+                            "name": "Peso Goal Nível 1",
+                            "required": null,
+                            "description": "$auto.ref(Goal Nível 3).field(Peso Nível 1)",
+                            "configuration": {
+                                "description": null,
+                                "keys": {
+                                    "AutoRefField": {
+                                        "args": {
+                                            "source_field": "Goal Nível 3",
+                                            "field_name": "Peso Nível 1"
+                                        }
+                                    }
+                                },
+                                "extensions": {}
+                            },
+                            "condition": null,
+                            "visibilityCondition": null,
+                            "duplicable": false,
+                            "fields": [],
+                            "order": 12,
+                            "restricted": false,
+                            "rootField": false,
+                            "defaultValue": null
+                        }
+                    ],
+                    "order": 10,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "GOALS",
+                    "required": null,
+                    "description": "$link $auto.text(Id Goal Nível 1,Id Goal Nível 2,Id Goal Nível 3).join('/recordm/index.html#/definitions/32/q=id:',Id Goal Nível 1,' OR id:',Id Goal Nível 2,' OR id:',Id Goal Nível 3) $instanceDescription",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "Link": {
+                                "args": {}
+                            },
+                            "InstanceDescription": {},
+                            "AutoTextJoin": {
+                                "args": [
+                                    "'/recordm/index.html#/definitions/32/q=id:'",
+                                    "Id Goal Nível 1",
+                                    "' OR id:'",
+                                    "Id Goal Nível 2",
+                                    "' OR id:'",
+                                    "Id Goal Nível 3"
+                                ]
+                            }
+                        },
+                        "extensions": {}
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 13,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
                 }
-              ],
-              "order": 46,
-              "restricted": false,
-              "rootField": false,
-              "defaultValue": null
-            }
-          ],
-          "order": 40,
-          "restricted": false,
-          "rootField": false,
-          "defaultValue": null
-        }
-      ],
-      "order": 33,
-      "restricted": false,
-      "rootField": true,
-      "defaultValue": null
-    },
-    {
-      "id": null,
-      "name": "Vista de Findings no Governance",
-      "required": null,
-      "description": "$help[Nome de uma vista a usar no link de pesquisa de Findings de um Control no dashboard do Governance] $groupEdit",
-      "condition": null,
-      "duplicable": false,
-      "fields": [],
-      "order": 49,
-      "restricted": false,
-      "rootField": true,
-      "defaultValue": null
-    },
-    {
-      "id": null,
-      "name": "Histórico das Inconformidades Encontradas (FINDINGS)",
-      "required": null,
-      "description": "$link $auto.text(id).join('/recordm/index.html#/definitions/__FINDINGS_DEFINITION_ID__/q=control.raw:',id) $instanceDescription ",
-      "condition": null,
-      "duplicable": false,
-      "fields": [],
-      "order": 50,
-      "restricted": false,
-      "rootField": true,
-      "defaultValue": null
-    },
-    {
-      "id": null,
-      "name": "Anexos",
-      "required": null,
-      "description": "$group $style[grelha-titulo]",
-      "condition": null,
-      "duplicable": false,
-      "fields": [
-        {
-          "id": null,
-          "name": "Anexo",
-          "required": null,
-          "description": "$file",
-          "condition": null,
-          "duplicable": true,
-          "fields": [],
-          "order": 52,
-          "restricted": false,
-          "rootField": false,
-          "defaultValue": null
+            ],
+            "order": 3,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
         },
         {
-          "id": null,
-          "name": "Id Control",
-          "required": null,
-          "description": "$auto.text(id).join(id)",
-          "condition": null,
-          "duplicable": false,
-          "fields": [],
-          "order": 53,
-          "restricted": false,
-          "rootField": false,
-          "defaultValue": null
+            "id": null,
+            "name": "Peso",
+            "required": "mandatory",
+            "description": "$number $groupEdit Impacto deste Control no Goal - 1: menor | 20:  maior <br/><small>o zero será para casos onde queremos criar FINDINGS mas não queremos afectar o resultado final, seja para iniciar processos ou para efeitos de afinar controlos </small> ",
+            "configuration": {
+                "description": "Impacto deste Control no Goal - 1: menor | 20:  maior <br/><small>o zero será para casos onde queremos criar FINDINGS mas não queremos afectar o resultado final, seja para iniciar processos ou para efeitos de afinar controlos </small>",
+                "keys": {
+                    "Number": {
+                        "args": {}
+                    }
+                },
+                "extensions": {
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 14,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Copiar Control",
+            "required": null,
+            "description": "$create(30,Nome=Nome,Descrição=Descrição,Goal Nível 3=Goal Nível 3,Peso=Peso,Periodicidade=Periodicidade,Código=Código,Assessment Tool=Assessment Tool,Definição=Definição,Filtro=Filtro,Condição de sucesso=Condição de sucesso,Comando=Comando,Tipo de Assessment=Tipo de Assessment,Valor alvo=Valor alvo,Acção=Acção,Responsável=Responsável,Quando considerar inconformidade=Quando considerar inconformidade,Quantidade repetições=Quantidade repetições,Acção Complementar=Acção Complementar,Email Destino=Email Destino,Telemóvel=Telemóvel,Texto=Texto,Tolerância=Tolerância,Prazo=Prazo,Estados a considerar=Estados a considerar, Pergunta ou Verificação=Pergunta ou Verificação)",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Create": {
+                        "args": [
+                            "30",
+                            "Nome=Nome",
+                            "Descrição=Descrição",
+                            "Goal Nível 3=Goal Nível 3",
+                            "Peso=Peso",
+                            "Periodicidade=Periodicidade",
+                            "Código=Código",
+                            "Assessment Tool=Assessment Tool",
+                            "Definição=Definição",
+                            "Filtro=Filtro",
+                            "Condição de sucesso=Condição de sucesso",
+                            "Comando=Comando",
+                            "Tipo de Assessment=Tipo de Assessment",
+                            "Valor alvo=Valor alvo",
+                            "Acção=Acção",
+                            "Responsável=Responsável",
+                            "Quando considerar inconformidade=Quando considerar inconformidade",
+                            "Quantidade repetições=Quantidade repetições",
+                            "Acção Complementar=Acção Complementar",
+                            "Email Destino=Email Destino",
+                            "Telemóvel=Telemóvel",
+                            "Texto=Texto",
+                            "Tolerância=Tolerância",
+                            "Prazo=Prazo",
+                            "Estados a considerar=Estados a considerar",
+                            "Pergunta ou Verificação=Pergunta ou Verificação"
+                        ]
+                    }
+                },
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 15,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Dado para Assessment",
+            "required": null,
+            "description": "$group $style[grelha-titulo-controlo]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Group": {}
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "grelha-titulo-controlo"
+                        ]
+                    }
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 16,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Periodicidade",
+            "required": "mandatory",
+            "description": "$groupEdit $[Off,15m,Diária,Semanal,Mensal,Anual] $expanded $instanceDescription $help[<table>   <tbody><tr><td>Off</td><td> -> </td><td>Control não é avaliado</td></tr>    <tr><td>15m</td><td> -> </td><td>A cada quarto de hora</td></tr> <tr><td>Diária</td><td> -> </td><td>Às 08:30 de cada dia</td></tr>    <tr><td>Semanal</td><td> -> </td><td>Todas as Segundas às 08:30</td></tr>    <tr><td>Mensal</td><td> -> </td><td>Primeiro dia de cada mês às 8:30</td></tr>  </tbody></table>]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Select": {
+                        "args": [
+                            "Off",
+                            "15m",
+                            "Diária",
+                            "Semanal",
+                            "Mensal",
+                            "Anual"
+                        ],
+                        "default": null
+                    },
+                    "InstanceDescription": {},
+                    "Expanded": {
+                        "args": {}
+                    },
+                    "Help": {
+                        "args": [
+                            "<table>   <tbody><tr><td>Off</td><td> -> </td><td>Control não é avaliado</td></tr>    <tr><td>15m</td><td> -> </td><td>A cada quarto de hora</td></tr> <tr><td>Diária</td><td> -> </td><td>Às 08:30 de cada dia</td></tr>    <tr><td>Semanal</td><td> -> </td><td>Todas as Segundas às 08:30</td></tr>    <tr><td>Mensal</td><td> -> </td><td>Primeiro dia de cada mês às 8:30</td></tr>  </tbody></table>"
+                        ]
+                    }
+                },
+                "extensions": {
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [
+                {
+                    "id": null,
+                    "name": "Dia da Semana",
+                    "required": "mandatory",
+                    "description": "$[*Segunda,Terça,Quarta,Quinta,Sexta,Sábado,Domingo] $help[O dia da semana em que o controlo será avaliado (às 8h30).]",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "Select": {
+                                "args": [
+                                    "Segunda",
+                                    "Terça",
+                                    "Quarta",
+                                    "Quinta",
+                                    "Sexta",
+                                    "Sábado",
+                                    "Domingo"
+                                ],
+                                "default": "Segunda"
+                            },
+                            "Help": {
+                                "args": [
+                                    "O dia da semana em que o controlo será avaliado (às 8h30)."
+                                ]
+                            }
+                        },
+                        "extensions": {}
+                    },
+                    "condition": "=Semanal",
+                    "visibilityCondition": {
+                        "type": "Equal",
+                        "value": [
+                            "Semanal"
+                        ],
+                        "matcher": {
+                            "type": "Parent"
+                        }
+                    },
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 18,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": "Segunda"
+                },
+                {
+                    "id": null,
+                    "name": "Dia do Mês",
+                    "required": "mandatory",
+                    "description": "$number(0) $default(1) $help[Dia do Mês em que o controlo será avaliado (às 8h30).]",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "Default": {
+                                "args": {
+                                    "value": "1"
+                                }
+                            },
+                            "Number": {
+                                "args": {
+                                    "decimal_places": "0"
+                                }
+                            },
+                            "Help": {
+                                "args": [
+                                    "Dia do Mês em que o controlo será avaliado (às 8h30)."
+                                ]
+                            }
+                        },
+                        "extensions": {}
+                    },
+                    "condition": "=Mensal",
+                    "visibilityCondition": {
+                        "type": "Equal",
+                        "value": [
+                            "Mensal"
+                        ],
+                        "matcher": {
+                            "type": "Parent"
+                        }
+                    },
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 19,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": "1"
+                },
+                {
+                    "id": null,
+                    "name": "Meses",
+                    "required": "mandatory",
+                    "description": "$[*Janeiro,Fevereiro,Março,Abril,Maio,Junho,Julho,Agosto,Setembro,Outubro,Novembro,Dezembro] $multiple $help[Meses em que o controlo será avaliado. A avaliação correrá sempre no primeiro dia de cada mês, às 8h30]",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "Select": {
+                                "args": [
+                                    "Janeiro",
+                                    "Fevereiro",
+                                    "Março",
+                                    "Abril",
+                                    "Maio",
+                                    "Junho",
+                                    "Julho",
+                                    "Agosto",
+                                    "Setembro",
+                                    "Outubro",
+                                    "Novembro",
+                                    "Dezembro"
+                                ],
+                                "default": "Janeiro"
+                            },
+                            "Multiple": {},
+                            "Help": {
+                                "args": [
+                                    "Meses em que o controlo será avaliado. A avaliação correrá sempre no primeiro dia de cada mês",
+                                    "às 8h30"
+                                ]
+                            }
+                        },
+                        "extensions": {}
+                    },
+                    "condition": "=Anual",
+                    "visibilityCondition": {
+                        "type": "Equal",
+                        "value": [
+                            "Anual"
+                        ],
+                        "matcher": {
+                            "type": "Parent"
+                        }
+                    },
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 20,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": "Janeiro"
+                }
+            ],
+            "order": 17,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Código",
+            "required": "mandatory",
+            "description": "<strong>Código de Inconformidade</strong> usado para criação de Findings $style[larger]",
+            "configuration": {
+                "description": "<strong>Código de Inconformidade</strong> usado para criação de Findings",
+                "keys": {},
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "larger"
+                        ]
+                    }
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 21,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Assessment Tool",
+            "required": "mandatory",
+            "description": "$[RecordM,DeviceM,Manual] $expanded $groupEdit ",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Select": {
+                        "args": [
+                            "RecordM",
+                            "DeviceM",
+                            "Manual"
+                        ],
+                        "default": null
+                    },
+                    "Expanded": {
+                        "args": {}
+                    }
+                },
+                "extensions": {
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [
+                {
+                    "id": null,
+                    "name": "Definição",
+                    "required": "mandatory",
+                    "description": "Nome da Definição sobre a qual os assessments são executados",
+                    "configuration": {
+                        "description": "Nome da Definição sobre a qual os assessments são executados",
+                        "keys": {},
+                        "extensions": {}
+                    },
+                    "condition": "=RecordM",
+                    "visibilityCondition": {
+                        "type": "Equal",
+                        "value": [
+                            "RecordM"
+                        ],
+                        "matcher": {
+                            "type": "Parent"
+                        }
+                    },
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 23,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Filtro",
+                    "required": "mandatory",
+                    "description": "$groupEdit $text Filtro para obter elementos a avaliar",
+                    "configuration": {
+                        "description": "Filtro para obter elementos a avaliar",
+                        "keys": {},
+                        "extensions": {
+                            "$text": {},
+                            "$groupEdit": {}
+                        }
+                    },
+                    "condition": "=RecordM",
+                    "visibilityCondition": {
+                        "type": "Equal",
+                        "value": [
+                            "RecordM"
+                        ],
+                        "matcher": {
+                            "type": "Parent"
+                        }
+                    },
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 24,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Condição de sucesso",
+                    "required": "mandatory",
+                    "description": "$text $style[larger] Condição que determina se cada elemento está ou não de acordo com o pretendido",
+                    "configuration": {
+                        "description": "Condição que determina se cada elemento está ou não de acordo com o pretendido",
+                        "keys": {},
+                        "extensions": {
+                            "$text": {},
+                            "$style": {
+                                "args": [
+                                    "larger"
+                                ]
+                            }
+                        }
+                    },
+                    "condition": "=RecordM",
+                    "visibilityCondition": {
+                        "type": "Equal",
+                        "value": [
+                            "RecordM"
+                        ],
+                        "matcher": {
+                            "type": "Parent"
+                        }
+                    },
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 25,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Filtro",
+                    "required": null,
+                    "description": "$groupEdit $text Filtro para obter elementos a avaliar",
+                    "configuration": {
+                        "description": "Filtro para obter elementos a avaliar",
+                        "keys": {},
+                        "extensions": {
+                            "$text": {},
+                            "$groupEdit": {}
+                        }
+                    },
+                    "condition": "=DeviceM",
+                    "visibilityCondition": {
+                        "type": "Equal",
+                        "value": [
+                            "DeviceM"
+                        ],
+                        "matcher": {
+                            "type": "Parent"
+                        }
+                    },
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 26,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Comando",
+                    "required": null,
+                    "description": "$text $style[larger]",
+                    "configuration": {
+                        "description": null,
+                        "keys": {},
+                        "extensions": {
+                            "$text": {},
+                            "$style": {
+                                "args": [
+                                    "larger"
+                                ]
+                            }
+                        }
+                    },
+                    "condition": "=DeviceM",
+                    "visibilityCondition": {
+                        "type": "Equal",
+                        "value": [
+                            "DeviceM"
+                        ],
+                        "matcher": {
+                            "type": "Parent"
+                        }
+                    },
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 27,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Condição de sucesso",
+                    "required": null,
+                    "description": "$text $style[larger] Condição que determina se cada elemento está ou não de acordo com o pretendido",
+                    "configuration": {
+                        "description": "Condição que determina se cada elemento está ou não de acordo com o pretendido",
+                        "keys": {},
+                        "extensions": {
+                            "$text": {},
+                            "$style": {
+                                "args": [
+                                    "larger"
+                                ]
+                            }
+                        }
+                    },
+                    "condition": "=DeviceM",
+                    "visibilityCondition": {
+                        "type": "Equal",
+                        "value": [
+                            "DeviceM"
+                        ],
+                        "matcher": {
+                            "type": "Parent"
+                        }
+                    },
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 28,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Definição",
+                    "required": null,
+                    "description": "Nome da Definição das entidades associadas aos CPEs",
+                    "configuration": {
+                        "description": "Nome da Definição das entidades associadas aos CPEs",
+                        "keys": {},
+                        "extensions": {}
+                    },
+                    "condition": "=DeviceM",
+                    "visibilityCondition": {
+                        "type": "Equal",
+                        "value": [
+                            "DeviceM"
+                        ],
+                        "matcher": {
+                            "type": "Parent"
+                        }
+                    },
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 29,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Definição",
+                    "required": null,
+                    "description": "Nome da Definição das entidades associadas aos formularios",
+                    "configuration": {
+                        "description": "Nome da Definição das entidades associadas aos formularios",
+                        "keys": {},
+                        "extensions": {}
+                    },
+                    "condition": "=Manual",
+                    "visibilityCondition": {
+                        "type": "Equal",
+                        "value": [
+                            "Manual"
+                        ],
+                        "matcher": {
+                            "type": "Parent"
+                        }
+                    },
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 30,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Filtro",
+                    "required": null,
+                    "description": "$text Filtro para obter elementos a avaliar",
+                    "configuration": {
+                        "description": "Filtro para obter elementos a avaliar",
+                        "keys": {},
+                        "extensions": {
+                            "$text": {}
+                        }
+                    },
+                    "condition": "=Manual",
+                    "visibilityCondition": {
+                        "type": "Equal",
+                        "value": [
+                            "Manual"
+                        ],
+                        "matcher": {
+                            "type": "Parent"
+                        }
+                    },
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 31,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Pergunta ou Verificação",
+                    "required": "mandatory",
+                    "description": "$text Pergunta ou Verificação associada à verificação manual $help[Coloque a aqui a pergunta ou verificação à qual pretende que seja dado uma resposta no(s) questionário(s)]]",
+                    "configuration": {
+                        "description": "Pergunta ou Verificação associada à verificação manual",
+                        "keys": {
+                            "Help": {
+                                "args": [
+                                    "Coloque a aqui a pergunta ou verificação à qual pretende que seja dado uma resposta no(s) questionário(s)"
+                                ]
+                            }
+                        },
+                        "extensions": {
+                            "$text": {}
+                        }
+                    },
+                    "condition": "=Manual",
+                    "visibilityCondition": {
+                        "type": "Equal",
+                        "value": [
+                            "Manual"
+                        ],
+                        "matcher": {
+                            "type": "Parent"
+                        }
+                    },
+                    "duplicable": false,
+                    "fields": [
+                        {
+                            "id": null,
+                            "name": "Período Lançamento de Perguntas",
+                            "required": null,
+                            "description": "$help[Antecedência (em dias) para lançamento das verificações Manuais. Por exemplo, para um controlo semanal, marcado para ser avaliado às 4ªfs, se pedirmos 3 dias de antecedência os questionários serão criados Domingo.]",
+                            "configuration": {
+                                "description": null,
+                                "keys": {
+                                    "Help": {
+                                        "args": [
+                                            "Antecedência (em dias) para lançamento das verificações Manuais. Por exemplo",
+                                            "para um controlo semanal",
+                                            "marcado para ser avaliado às 4ªfs",
+                                            "se pedirmos 3 dias de antecedência os questionários serão criados Domingo."
+                                        ]
+                                    }
+                                },
+                                "extensions": {}
+                            },
+                            "condition": "Periodicidade=Semanal,Mensal,Anual",
+                            "visibilityCondition": {
+                                "type": "Equal",
+                                "value": [
+                                    "Semanal",
+                                    "Mensal",
+                                    "Anual"
+                                ],
+                                "matcher": {
+                                    "type": "Name",
+                                    "name": "Periodicidade"
+                                }
+                            },
+                            "duplicable": false,
+                            "fields": [],
+                            "order": 33,
+                            "restricted": false,
+                            "rootField": false,
+                            "defaultValue": null
+                        }
+                    ],
+                    "order": 32,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Tipo de Assessment",
+                    "required": "mandatory",
+                    "description": "$[Atingimento de valor,Avaliação 1 a 10,OK NOK] $expanded",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "Select": {
+                                "args": [
+                                    "Atingimento de valor",
+                                    "Avaliação 1 a 10",
+                                    "OK NOK"
+                                ],
+                                "default": null
+                            },
+                            "Expanded": {
+                                "args": {}
+                            }
+                        },
+                        "extensions": {}
+                    },
+                    "condition": "=Manual",
+                    "visibilityCondition": {
+                        "type": "Equal",
+                        "value": [
+                            "Manual"
+                        ],
+                        "matcher": {
+                            "type": "Parent"
+                        }
+                    },
+                    "duplicable": false,
+                    "fields": [
+                        {
+                            "id": null,
+                            "name": "Valor alvo",
+                            "required": null,
+                            "description": "$number",
+                            "configuration": {
+                                "description": null,
+                                "keys": {
+                                    "Number": {
+                                        "args": {}
+                                    }
+                                },
+                                "extensions": {}
+                            },
+                            "condition": "=Atingimento de valor",
+                            "visibilityCondition": {
+                                "type": "Equal",
+                                "value": [
+                                    "Atingimento de valor"
+                                ],
+                                "matcher": {
+                                    "type": "Parent"
+                                }
+                            },
+                            "duplicable": false,
+                            "fields": [],
+                            "order": 35,
+                            "restricted": false,
+                            "rootField": false,
+                            "defaultValue": null
+                        }
+                    ],
+                    "order": 34,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                }
+            ],
+            "order": 22,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Vista de Assessments no Governance",
+            "required": null,
+            "description": "$help[Nome de uma vista a usar no link de pesquisa de Assessments de um Control no dashboard do Governance] $groupEdit",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Help": {
+                        "args": [
+                            "Nome de uma vista a usar no link de pesquisa de Assessments de um Control no dashboard do Governance"
+                        ]
+                    }
+                },
+                "extensions": {
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 36,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Histórico das Avaliações Feitas (ASSESSMENTS)",
+            "required": null,
+            "description": "$link $auto.text(id).join('/recordm/index.html#/definitions/343/q=id_control:',id) $instanceDescription",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Link": {
+                        "args": {}
+                    },
+                    "InstanceDescription": {},
+                    "AutoTextJoin": {
+                        "args": [
+                            "'/recordm/index.html#/definitions/343/q=id_control:'",
+                            "id"
+                        ]
+                    }
+                },
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 37,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Dados para tratamento de Findings",
+            "required": null,
+            "description": "$group $style[grelha-titulo-controlo]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Group": {}
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "grelha-titulo-controlo"
+                        ]
+                    }
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 38,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Acção",
+            "required": "mandatory",
+            "description": "$[Apenas Contabilizar,Contabilizar e Reportar Inconformidades] $groupEdit  $expanded <b>Contabilização</b> é feita com o registo de um *Assessment* por dia <br> <b>Inconformidades</b> são reportados com *Findings*",
+            "configuration": {
+                "description": "<b>Contabilização</b> é feita com o registo de um *Assessment* por dia <br> <b>Inconformidades</b> são reportados com *Findings*",
+                "keys": {
+                    "Select": {
+                        "args": [
+                            "Apenas Contabilizar",
+                            "Contabilizar e Reportar Inconformidades"
+                        ],
+                        "default": null
+                    },
+                    "Expanded": {
+                        "args": {}
+                    }
+                },
+                "extensions": {
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [
+                {
+                    "id": null,
+                    "name": "Responsável",
+                    "required": null,
+                    "description": "$extRef(userm,/userm/user/search?q={{this}})  $groupEdit Responsável inicial por resolver as inconformidades encontradas",
+                    "configuration": {
+                        "description": "Responsável inicial por resolver as inconformidades encontradas",
+                        "keys": {
+                            "ExternalReference": {
+                                "args": {
+                                    "product": "userm",
+                                    "query": "/userm/user/search?q={{this}}"
+                                }
+                            }
+                        },
+                        "extensions": {
+                            "$groupEdit": {}
+                        }
+                    },
+                    "condition": "=Contabilizar e Reportar Inconformidades",
+                    "visibilityCondition": {
+                        "type": "Equal",
+                        "value": [
+                            "Contabilizar e Reportar Inconformidades"
+                        ],
+                        "matcher": {
+                            "type": "Parent"
+                        }
+                    },
+                    "duplicable": false,
+                    "fields": [
+                        {
+                            "id": null,
+                            "name": "Nome Responsável",
+                            "required": null,
+                            "description": "$auto.ref(Responsável).field(name) ",
+                            "configuration": {
+                                "description": null,
+                                "keys": {
+                                    "AutoRefField": {
+                                        "args": {
+                                            "source_field": "Responsável",
+                                            "field_name": "name"
+                                        }
+                                    }
+                                },
+                                "extensions": {}
+                            },
+                            "condition": null,
+                            "visibilityCondition": null,
+                            "duplicable": false,
+                            "fields": [],
+                            "order": 41,
+                            "restricted": false,
+                            "rootField": false,
+                            "defaultValue": null
+                        },
+                        {
+                            "id": null,
+                            "name": "Username Responsável",
+                            "required": null,
+                            "description": "$auto.ref(Responsável).field(username)",
+                            "configuration": {
+                                "description": null,
+                                "keys": {
+                                    "AutoRefField": {
+                                        "args": {
+                                            "source_field": "Responsável",
+                                            "field_name": "username"
+                                        }
+                                    }
+                                },
+                                "extensions": {}
+                            },
+                            "condition": null,
+                            "visibilityCondition": null,
+                            "duplicable": false,
+                            "fields": [],
+                            "order": 42,
+                            "restricted": false,
+                            "rootField": false,
+                            "defaultValue": null
+                        },
+                        {
+                            "id": null,
+                            "name": "Email Responsável",
+                            "required": null,
+                            "description": "$auto.ref(Responsável).field(email)",
+                            "configuration": {
+                                "description": null,
+                                "keys": {
+                                    "AutoRefField": {
+                                        "args": {
+                                            "source_field": "Responsável",
+                                            "field_name": "email"
+                                        }
+                                    }
+                                },
+                                "extensions": {}
+                            },
+                            "condition": null,
+                            "visibilityCondition": null,
+                            "duplicable": false,
+                            "fields": [],
+                            "order": 43,
+                            "restricted": false,
+                            "rootField": false,
+                            "defaultValue": null
+                        }
+                    ],
+                    "order": 40,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Quando considerar inconformidade",
+                    "required": "mandatory",
+                    "description": "$[Logo que é detectada,Após repetição da detecção] $groupEdit $expanded",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "Select": {
+                                "args": [
+                                    "Logo que é detectada",
+                                    "Após repetição da detecção"
+                                ],
+                                "default": null
+                            },
+                            "Expanded": {
+                                "args": {}
+                            }
+                        },
+                        "extensions": {
+                            "$groupEdit": {}
+                        }
+                    },
+                    "condition": "=Contabilizar e Reportar Inconformidades",
+                    "visibilityCondition": {
+                        "type": "Equal",
+                        "value": [
+                            "Contabilizar e Reportar Inconformidades"
+                        ],
+                        "matcher": {
+                            "type": "Parent"
+                        }
+                    },
+                    "duplicable": false,
+                    "fields": [
+                        {
+                            "id": null,
+                            "name": "Quantidade repetições",
+                            "required": "mandatory",
+                            "description": "$number $groupEdit  Número de detecções seguidas antes de considerar como inconformidade (a acontecer com a periodicidade deste *Control*)",
+                            "configuration": {
+                                "description": "Número de detecções seguidas antes de considerar como inconformidade (a acontecer com a periodicidade deste *Control*)",
+                                "keys": {
+                                    "Number": {
+                                        "args": {}
+                                    }
+                                },
+                                "extensions": {
+                                    "$groupEdit": {}
+                                }
+                            },
+                            "condition": "=Após repetição da detecção",
+                            "visibilityCondition": {
+                                "type": "Equal",
+                                "value": [
+                                    "Após repetição da detecção"
+                                ],
+                                "matcher": {
+                                    "type": "Parent"
+                                }
+                            },
+                            "duplicable": false,
+                            "fields": [],
+                            "order": 45,
+                            "restricted": false,
+                            "rootField": false,
+                            "defaultValue": null
+                        }
+                    ],
+                    "order": 44,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Acção Complementar",
+                    "required": "mandatory",
+                    "description": "$[Nenhuma,Enviar Email Resumo alterações,Enviar SMS qd há novas inconformidades] $groupEdit $expanded",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "Select": {
+                                "args": [
+                                    "Nenhuma",
+                                    "Enviar Email Resumo alterações",
+                                    "Enviar SMS qd há novas inconformidades"
+                                ],
+                                "default": null
+                            },
+                            "Expanded": {
+                                "args": {}
+                            }
+                        },
+                        "extensions": {
+                            "$groupEdit": {}
+                        }
+                    },
+                    "condition": "=Contabilizar e Reportar Inconformidades",
+                    "visibilityCondition": {
+                        "type": "Equal",
+                        "value": [
+                            "Contabilizar e Reportar Inconformidades"
+                        ],
+                        "matcher": {
+                            "type": "Parent"
+                        }
+                    },
+                    "duplicable": true,
+                    "fields": [
+                        {
+                            "id": null,
+                            "name": "Email Destino",
+                            "required": null,
+                            "description": "$groupEdit Pode ser lista de email separada por **,**",
+                            "configuration": {
+                                "description": "Pode ser lista de email separada por **,**",
+                                "keys": {},
+                                "extensions": {
+                                    "$groupEdit": {}
+                                }
+                            },
+                            "condition": "=Enviar Email Resumo alterações",
+                            "visibilityCondition": {
+                                "type": "Equal",
+                                "value": [
+                                    "Enviar Email Resumo alterações"
+                                ],
+                                "matcher": {
+                                    "type": "Parent"
+                                }
+                            },
+                            "duplicable": false,
+                            "fields": [],
+                            "order": 47,
+                            "restricted": false,
+                            "rootField": false,
+                            "defaultValue": null
+                        },
+                        {
+                            "id": null,
+                            "name": "Email Destino BCC",
+                            "required": null,
+                            "description": "$groupEdit Pode ser lista de email separada por **,**",
+                            "configuration": {
+                                "description": "Pode ser lista de email separada por **,**",
+                                "keys": {},
+                                "extensions": {
+                                    "$groupEdit": {}
+                                }
+                            },
+                            "condition": "=Enviar Email Resumo alterações",
+                            "visibilityCondition": {
+                                "type": "Equal",
+                                "value": [
+                                    "Enviar Email Resumo alterações"
+                                ],
+                                "matcher": {
+                                    "type": "Parent"
+                                }
+                            },
+                            "duplicable": false,
+                            "fields": [],
+                            "order": 48,
+                            "restricted": false,
+                            "rootField": false,
+                            "defaultValue": null
+                        },
+                        {
+                            "id": null,
+                            "name": "Telemóvel",
+                            "required": "mandatory",
+                            "description": "$groupEdit **NOTA:** Usar número internacional (ou seja, em Portugal acrescentar o +351)",
+                            "configuration": {
+                                "description": "**NOTA:** Usar número internacional (ou seja, em Portugal acrescentar o +351)",
+                                "keys": {},
+                                "extensions": {
+                                    "$groupEdit": {}
+                                }
+                            },
+                            "condition": "=Enviar SMS qd há novas inconformidades",
+                            "visibilityCondition": {
+                                "type": "Equal",
+                                "value": [
+                                    "Enviar SMS qd há novas inconformidades"
+                                ],
+                                "matcher": {
+                                    "type": "Parent"
+                                }
+                            },
+                            "duplicable": false,
+                            "fields": [],
+                            "order": 49,
+                            "restricted": false,
+                            "rootField": false,
+                            "defaultValue": null
+                        },
+                        {
+                            "id": null,
+                            "name": "Texto",
+                            "required": "mandatory",
+                            "description": "$text $groupEdit ",
+                            "configuration": {
+                                "description": null,
+                                "keys": {},
+                                "extensions": {
+                                    "$text": {},
+                                    "$groupEdit": {}
+                                }
+                            },
+                            "condition": "=Enviar Email Resumo alterações,Enviar SMS qd há novas inconformidades",
+                            "visibilityCondition": {
+                                "type": "Equal",
+                                "value": [
+                                    "Enviar Email Resumo alterações",
+                                    "Enviar SMS qd há novas inconformidades"
+                                ],
+                                "matcher": {
+                                    "type": "Parent"
+                                }
+                            },
+                            "duplicable": false,
+                            "fields": [],
+                            "order": 50,
+                            "restricted": false,
+                            "rootField": false,
+                            "defaultValue": null
+                        },
+                        {
+                            "id": null,
+                            "name": "Tolerância",
+                            "required": "mandatory",
+                            "description": "$[Inclusão imediata após criação,Prazo após criação] Prazo de tolerância a aguardar antes de incluir uma inconformidade (ideal para criar sequências de alarmes e escalar de avisos)",
+                            "configuration": {
+                                "description": "Prazo de tolerância a aguardar antes de incluir uma inconformidade (ideal para criar sequências de alarmes e escalar de avisos)",
+                                "keys": {
+                                    "Select": {
+                                        "args": [
+                                            "Inclusão imediata após criação",
+                                            "Prazo após criação"
+                                        ],
+                                        "default": null
+                                    }
+                                },
+                                "extensions": {}
+                            },
+                            "condition": "=Enviar Email Resumo alterações,Enviar SMS qd há novas inconformidades",
+                            "visibilityCondition": {
+                                "type": "Equal",
+                                "value": [
+                                    "Enviar Email Resumo alterações",
+                                    "Enviar SMS qd há novas inconformidades"
+                                ],
+                                "matcher": {
+                                    "type": "Parent"
+                                }
+                            },
+                            "duplicable": false,
+                            "fields": [
+                                {
+                                    "id": null,
+                                    "name": "Prazo",
+                                    "required": "mandatory",
+                                    "description": "$number Quantidade de periodos de 15m após identificação da inconformidade (ex: 6 => 1h30m)",
+                                    "configuration": {
+                                        "description": "Quantidade de periodos de 15m após identificação da inconformidade (ex: 6 => 1h30m)",
+                                        "keys": {
+                                            "Number": {
+                                                "args": {}
+                                            }
+                                        },
+                                        "extensions": {}
+                                    },
+                                    "condition": "=Prazo após criação",
+                                    "visibilityCondition": {
+                                        "type": "Equal",
+                                        "value": [
+                                            "Prazo após criação"
+                                        ],
+                                        "matcher": {
+                                            "type": "Parent"
+                                        }
+                                    },
+                                    "duplicable": false,
+                                    "fields": [],
+                                    "order": 52,
+                                    "restricted": false,
+                                    "rootField": false,
+                                    "defaultValue": null
+                                },
+                                {
+                                    "id": null,
+                                    "name": "Estados a considerar",
+                                    "required": "mandatory",
+                                    "description": "$[*Por Tratar e Em Resolução,Por Tratar] Ou seja apenas incluir inconformidades cujo estado ainda esteja num dos indicados",
+                                    "configuration": {
+                                        "description": "Ou seja apenas incluir inconformidades cujo estado ainda esteja num dos indicados",
+                                        "keys": {
+                                            "Select": {
+                                                "args": [
+                                                    "Por Tratar e Em Resolução",
+                                                    "Por Tratar"
+                                                ],
+                                                "default": "Por Tratar e Em Resolução"
+                                            }
+                                        },
+                                        "extensions": {}
+                                    },
+                                    "condition": "=Prazo após criação",
+                                    "visibilityCondition": {
+                                        "type": "Equal",
+                                        "value": [
+                                            "Prazo após criação"
+                                        ],
+                                        "matcher": {
+                                            "type": "Parent"
+                                        }
+                                    },
+                                    "duplicable": false,
+                                    "fields": [],
+                                    "order": 53,
+                                    "restricted": false,
+                                    "rootField": false,
+                                    "defaultValue": "Por Tratar e Em Resolução"
+                                }
+                            ],
+                            "order": 51,
+                            "restricted": false,
+                            "rootField": false,
+                            "defaultValue": null
+                        }
+                    ],
+                    "order": 46,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                }
+            ],
+            "order": 39,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Vista de Findings no Governance",
+            "required": null,
+            "description": "$help[Nome de uma vista a usar no link de pesquisa de Findings de um Control no dashboard do Governance] $groupEdit",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Help": {
+                        "args": [
+                            "Nome de uma vista a usar no link de pesquisa de Findings de um Control no dashboard do Governance"
+                        ]
+                    }
+                },
+                "extensions": {
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 54,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Histórico das Inconformidades Encontradas (FINDINGS)",
+            "required": null,
+            "description": "$link $auto.text(id).join('/recordm/index.html#/definitions/347/q=control.raw:',id) $instanceDescription ",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Link": {
+                        "args": {}
+                    },
+                    "InstanceDescription": {},
+                    "AutoTextJoin": {
+                        "args": [
+                            "'/recordm/index.html#/definitions/347/q=control.raw:'",
+                            "id"
+                        ]
+                    }
+                },
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 55,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Anexos",
+            "required": null,
+            "description": "$group $style[grelha-titulo-controlo]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Group": {}
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "grelha-titulo-controlo"
+                        ]
+                    }
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [
+                {
+                    "id": null,
+                    "name": "Anexo",
+                    "required": null,
+                    "description": "$file",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "File": {}
+                        },
+                        "extensions": {}
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": true,
+                    "fields": [],
+                    "order": 57,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                },
+                {
+                    "id": null,
+                    "name": "Id Control",
+                    "required": null,
+                    "description": "$auto.text(id).join(id)",
+                    "configuration": {
+                        "description": null,
+                        "keys": {
+                            "AutoTextJoin": {
+                                "args": [
+                                    "id"
+                                ]
+                            }
+                        },
+                        "extensions": {}
+                    },
+                    "condition": null,
+                    "visibilityCondition": null,
+                    "duplicable": false,
+                    "fields": [],
+                    "order": 58,
+                    "restricted": false,
+                    "rootField": false,
+                    "defaultValue": null
+                }
+            ],
+            "order": 56,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
         }
-      ],
-      "order": 51,
-      "restricted": false,
-      "rootField": true,
-      "defaultValue": null
-    }
-  ],
-  "version": null
+    ],
+    "version": null
 }

@@ -1,0 +1,98 @@
+{
+    "id": null,
+    "name": "Threat",
+    "description": "@GOV",
+    "duplicable": null,
+    "state": "enabled",
+    "fieldDefinitions": [
+        {
+            "id": null,
+            "name": "Name",
+            "required": null,
+            "description": "$instanceLabel",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "InstanceLabel": {}
+                },
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 0,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Type",
+            "required": null,
+            "description": "$[*Physical Damage,Natural Events,Loss of Essential Services,Disturbance Due to Radiation,Compromise of Information,Technical Failures,Unauthorized Access,Compromise of Functions] $instanceDescription  $groupEdit",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "InstanceDescription": {},
+                    "Select": {
+                        "args": [
+                            "Physical Damage",
+                            "Natural Events",
+                            "Loss of Essential Services",
+                            "Disturbance Due to Radiation",
+                            "Compromise of Information",
+                            "Technical Failures",
+                            "Unauthorized Access",
+                            "Compromise of Functions"
+                        ],
+                        "default": "Physical Damage"
+                    }
+                },
+                "extensions": {
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 1,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": "Physical Damage"
+        },
+        {
+            "id": null,
+            "name": "Origin",
+            "required": null,
+            "description": "$[Deliberate,Accidental,Environmental] $multiple  $groupEdit",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Select": {
+                        "args": [
+                            "Deliberate",
+                            "Accidental",
+                            "Environmental"
+                        ],
+                        "default": null
+                    },
+                    "Multiple": {}
+                },
+                "extensions": {
+                    "$groupEdit": {}
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 2,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        }
+    ],
+    "version": null
+}

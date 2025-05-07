@@ -1,0 +1,190 @@
+{
+    "id": null,
+    "name": "Colaborador GOV",
+    "description": "@GOV",
+    "duplicable": null,
+    "state": "enabled",
+    "fieldDefinitions": [
+        {
+            "id": null,
+            "name": "Details",
+            "required": null,
+            "description": "$group $expanded",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Group": {},
+                    "Expanded": {
+                        "args": {}
+                    }
+                },
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 0,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "User",
+            "required": null,
+            "description": "$extRef(userm,/userm/user/search?q={{this}}) $commons.validate(uniqueValue(showLink=true)) $instanceLabel",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "InstanceLabel": {},
+                    "ExternalReference": {
+                        "args": {
+                            "product": "userm",
+                            "query": "/userm/user/search?q={{this}}"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$commons.validate": {
+                        "args": [
+                            "uniqueValue(showLink=true)"
+                        ]
+                    }
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 1,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Nome Colaborador",
+            "required": null,
+            "description": "$auto.ref(User).field(name) $style[hide]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "AutoRefField": {
+                        "args": {
+                            "source_field": "User",
+                            "field_name": "name"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$style": {
+                        "args": [
+                            "hide"
+                        ]
+                    }
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 2,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Username",
+            "required": null,
+            "description": "$auto.ref(User).field(username) $instanceDescription",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "InstanceDescription": {},
+                    "AutoRefField": {
+                        "args": {
+                            "source_field": "User",
+                            "field_name": "username"
+                        }
+                    }
+                },
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 3,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Email",
+            "required": null,
+            "description": "$auto.ref(User).field(email) $instanceDescription $commons.validate(email)",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "InstanceDescription": {},
+                    "AutoRefField": {
+                        "args": {
+                            "source_field": "User",
+                            "field_name": "email"
+                        }
+                    }
+                },
+                "extensions": {
+                    "$commons.validate": {
+                        "args": [
+                            "email"
+                        ]
+                    }
+                }
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 4,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": null
+        },
+        {
+            "id": null,
+            "name": "Perfil",
+            "required": "mandatory",
+            "description": "$[*Sponsor,CISO,ISO,DPO,Responsável,Colaborador]",
+            "configuration": {
+                "description": null,
+                "keys": {
+                    "Select": {
+                        "args": [
+                            "Sponsor",
+                            "CISO",
+                            "ISO",
+                            "DPO",
+                            "Responsável",
+                            "Colaborador"
+                        ],
+                        "default": "Sponsor"
+                    }
+                },
+                "extensions": {}
+            },
+            "condition": null,
+            "visibilityCondition": null,
+            "duplicable": false,
+            "fields": [],
+            "order": 5,
+            "restricted": false,
+            "rootField": true,
+            "defaultValue": "Sponsor"
+        }
+    ],
+    "version": null
+}
